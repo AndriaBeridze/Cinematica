@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'AztvKG22bme_CzfQm-HVzzpwqkK4NTOqaXM3MNWvyiHdpW3zyf0PqjxMuWrRyp7n-l0'
 
-DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = True
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'cinematica.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "core/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

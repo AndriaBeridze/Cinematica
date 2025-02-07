@@ -1,7 +1,10 @@
-from . import views
 from django.urls import path
+from . import views 
 
 app_name = 'core'
+
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.home, name='home'),  
+    path('login/', views.loginView, name='login'),  
+    path('logout/', views.logoutView, name='logout')
 ]

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematica</title>
+</head>
+<body>
+
+<nav>
+    <ul>
+        {% if user.is_authenticated %}
+            <li>Welcome, {{ user.username }}!</li>
+            <li><a href="{% url 'core:logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'core:login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

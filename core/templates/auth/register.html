@@ -2,6 +2,8 @@
 
 {% block title %} Cinematica | Register {% endblock %}
 
+{% block extra_css %}{% endblock %}
+
 {% block content %}
     <form action="{% url 'core:register' %}" method="post">
         {% csrf_token %}

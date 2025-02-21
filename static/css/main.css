@@ -1,0 +1,139 @@
+@font-face {
+  font-family: "Poppins";
+  src: url("../../fonts/Poppins-Regular.ttf") format("truetype");
+}
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: "Poppins", sans-serif;
+}
+body.light {
+  --background: #FAF0E6;
+  --primary: #5C5470;
+  --primary-light: rgb(142.5102040816, 133.8571428571, 164.1428571429);
+  --primary-dark: rgb(44.1224489796, 40.2857142857, 53.7142857143);
+  --secondary: #B9B4C7;
+  --secondary-light: rgb(239.5038167939, 238.3969465649, 242.6030534351);
+  --secondary-dark: rgb(130.4961832061, 121.6030534351, 155.3969465649);
+  --text: #352F44;
+  --text-light: rgb(76.5043478261, 67.8434782609, 98.1565217391);
+  --text-dark: rgb(29.4956521739, 26.1565217391, 37.8434782609);
+  --border-color: #B9B4C7;
+}
+body.dark {
+  --background: #352F44;
+  --primary: #5C5470;
+  --primary-light: rgb(142.5102040816, 133.8571428571, 164.1428571429);
+  --primary-dark: rgb(44.1224489796, 40.2857142857, 53.7142857143);
+  --secondary: #B9B4C7;
+  --secondary-light: rgb(239.5038167939, 238.3969465649, 242.6030534351);
+  --secondary-dark: rgb(130.4961832061, 121.6030534351, 155.3969465649);
+  --text: #FAF0E6;
+  --text-light: white;
+  --text-dark: rgb(241.5, 214.5, 187.5);
+  --border-color: #B9B4C7;
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+li, ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  color: var(--text);
+  font-family: "Poppins", sans-serif;
+}
+
+i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-form {
+  width: 300px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--primary);
+  border: 1px solid var(--border-color);
+  padding: 1rem 0.5rem;
+  border-radius: 12px;
+}
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+.auth-form .form-group input {
+  border: none;
+  height: 33px;
+  border: 1px solid var(--border-color);
+  border-bottom-width: 0.5px;
+  border-top-width: 0.5px;
+  background-color: var(--secondary-dark);
+  color: var(--text);
+  padding: 0 0.5rem;
+  outline: none;
+}
+.auth-form .form-group input:first-child {
+  border-radius: 6px 6px 0 0;
+  border-top-width: 1px;
+}
+.auth-form .form-group input:last-child {
+  border-radius: 0 0 6px 6px;
+  border-bottom-width: 1px;
+}
+.auth-form .form-group input:focus {
+  outline: 3px solid #215faf;
+  z-index: 10;
+}
+.auth-form input[type=submit] {
+  background-color: var(--secondary);
+  color: var(--text-);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+.auth-form input[type=submit]:hover {
+  background-color: var(--secondary-dark);
+  color: var(--secondary-light);
+}
+.auth-form .form-title {
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 1rem;
+  margin: 0;
+  padding: 1rem 0;
+}
+.auth-form hr {
+  margin: 1rem 0;
+  border: 0.5px solid var(--border-color);
+}
+.auth-form p {
+  text-align: center;
+  padding: 0.5rem 0;
+  margin: 0;
+}
+.auth-form p a {
+  color: var(--text-dark);
+}
+.auth-form p a:hover {
+  text-decoration: underline;
+}
+
+/*# sourceMappingURL=main.css.map */

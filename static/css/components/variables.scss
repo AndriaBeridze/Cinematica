@@ -1,0 +1,116 @@
+// Define theme maps
+$themes: (
+  light: (
+    background: #FAF0E6,
+    primary: #5C5470,
+    primary-light: lighten(#5C5470, 20%),
+    primary-dark: darken(#5C5470, 20%),
+    secondary: #B9B4C7,
+    secondary-light: lighten(#B9B4C7, 20%),
+    secondary-dark: darken(#B9B4C7, 20%),
+    text: #352F44,
+    text-light: lighten(#352F44, 10%),
+    text-dark: darken(#352F44, 10%),
+    border-color: #B9B4C7
+  ),
+  dark: (
+    background: #352F44,
+    primary: #5C5470,
+    primary-light: lighten(#5C5470, 20%),
+    primary-dark: darken(#5C5470, 20%),
+    secondary: #B9B4C7,
+    secondary-light: lighten(#B9B4C7, 20%),
+    secondary-dark: darken(#B9B4C7, 20%),
+    text: #FAF0E6,
+    text-light: lighten(#FAF0E6, 10%),
+    text-dark: darken(#FAF0E6, 10%),
+    border-color: #B9B4C7
+  )
+);
+
+// Mixin to apply theme styles
+@mixin theme($theme) {
+    $theme-map: map-get($themes, $theme);
+  
+    // Loop through the theme map and apply styles
+    @each $key, $value in $theme-map {
+      --#{$key}: #{$value};
+    }
+}
+
+// Borders
+$border-size: 1px;
+$border-size-lg: 2px;
+$border-radius: 6px;
+$border-radius-lg: 12px;
+
+// Transitions
+$transition-slow: 0.4s;
+$transition: 0.3s;
+$transition-fast: 0.2s;
+
+// Shadows
+$shadow-sm: 0 3px 6px rgba(0, 0, 0, 0.1);
+$shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+$shadow-lg: 0 9px 18px rgba(0, 0, 0, 0.4);
+
+// Spacing
+$spacing: 1rem;
+
+$padding-xs: 0.25 * $spacing;
+$padding-sm: 0.5 * $spacing;
+$padding: $spacing;
+$padding-md: 2 * $spacing;
+$padding-lg: 4 * $spacing;
+
+$margin-xs: 0.25 * $spacing;
+$margin-sm: 0.5 * $spacing;
+$margin: $spacing;
+$margin-md: 2 * $spacing;
+$margin-lg: 4 * $spacing;
+
+// Fonts
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../fonts/Poppins-Regular.ttf') format('truetype');
+}
+$font-family: 'Poppins', sans-serif;
+
+body {
+    &.light {
+        @include theme(light);
+    }
+
+    &.dark {
+        @include theme(dark);
+    }
+    
+    background-color: var(--background);
+    color: var(--text);
+    font-family: $font-family;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+li, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button {
+    color: var(--text);
+    font-family: $font-family;
+}
+
+i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}

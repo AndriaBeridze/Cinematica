@@ -5,7 +5,7 @@
 {% block extra_css %}{% endblock %}
 
 {% block content %}
-    <form action="{% url 'core:register' %}" method="post">
+    <form action="{% url 'core:register' %}" method="post" class="auth-form">
         {% csrf_token %}
         <h3 class="form-title">Register</h3>
         {% if error %}
@@ -17,7 +17,7 @@
             <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
             <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirm Password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <input type="submit" value="Register" class="btn btn-primary">
         <hr>
         <p>Already have an account? <a href="{% url 'core:login' %}">Login</a></p>
     </form>

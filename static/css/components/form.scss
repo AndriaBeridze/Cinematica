@@ -1,0 +1,91 @@
+$auth-form-width: 300px;
+$input-height: 33px;
+
+.auth-form {
+    width: $auth-form-width;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--primary);
+    border: 1px solid var(--border-color);
+    padding: $padding $padding-sm;
+    border-radius: $border-radius-lg;
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+         
+        input {
+            border: none;
+            height: $input-height;
+            border: $border-size solid var(--border-color);
+            border-bottom-width: calc($border-size / 2);
+            border-top-width: calc($border-size / 2);
+            background-color: var(--secondary-dark);
+            color: var(--text);
+            padding: 0 $padding-sm;
+            outline: none;
+
+            &:first-child {
+                border-radius: $border-radius $border-radius 0 0;
+                border-top-width: $border-size;
+            }
+
+            &:last-child {
+                border-radius: 0 0 $border-radius $border-radius;
+                border-bottom-width: $border-size;
+            }
+
+            &:focus {
+                outline: 3px solid #215faf;
+                z-index: 10;
+            }
+        }
+    }
+
+    input[type="submit"] {
+        background-color: var(--secondary);
+        color: var(--text-);
+        border: none;
+        border-radius: $border-radius;
+        padding: $padding-sm;
+        margin-top: $spacing;
+        cursor: pointer;
+        transition: background-color $transition;
+        width: 100%;
+
+        &:hover {
+            background-color: var(--secondary-dark);
+            color: var(--secondary-light);
+        }
+    }
+
+    .form-title {
+        color: var(--text);
+        text-align: center;
+        margin-bottom: $spacing;
+        margin: 0;
+        padding: $padding 0;
+    }
+
+    hr {
+        margin: $margin 0;
+        border: .5px solid var(--border-color)
+    }
+
+    p {
+        text-align: center;
+        padding: $padding-sm 0;
+        margin: 0;
+
+        a {
+            color: var(--text-dark);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

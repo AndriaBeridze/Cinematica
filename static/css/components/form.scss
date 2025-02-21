@@ -28,6 +28,10 @@ $input-height: 33px;
             padding: 0 $padding-sm;
             outline: none;
 
+            ::placeholder {
+                color: var(--text-light);
+            }
+
             &:first-child {
                 border-radius: $border-radius $border-radius 0 0;
                 border-top-width: $border-size;

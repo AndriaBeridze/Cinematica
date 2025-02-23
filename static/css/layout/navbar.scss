@@ -1,0 +1,73 @@
+$navbar-height: 60px;
+$theme-toggler-size: 30px;
+
+.navbar  {
+    height: $navbar-height;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $padding-lg;
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .collapse {
+        display: flex;
+        gap: calc($spacing * 2);
+        align-items: center;
+    }
+
+    .navbar-menu {
+        display: flex;
+        align-items: center;
+        gap: calc($spacing * 2);
+
+        .nav-item {
+            &:hover {
+                .nav-link {
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+
+    .tools {
+        display: flex;
+        align-items: center;
+        gap: $spacing;
+
+        .theme-toggler {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            height: $theme-toggler-size;
+            width: $theme-toggler-size;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: 1px solid var(--accent);
+            border-radius: $border-radius;
+        }
+
+        p {
+            span {
+                color: var(--primary);
+            }
+
+            a {
+                color: var(--accent);
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

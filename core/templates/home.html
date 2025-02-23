@@ -1,13 +1,4 @@
-{% extends "base.html" %}
+{% extends "page.html" %}
 {% load static %}
 
 {% block title %} Cinematica | Home {% endblock %}
-
-{% block content %}
-    <h1 style="display: inline-block;">Welcome to Cinematica</h1>
-    <button onclick="toggleTheme()" class="theme-toggle" style="display: inline-block; margin-left: 20px;">Light/Dark Mode</button>
-{% endblock %}
-
-{% block js %}
-    <script src="{% static 'js/button.js' %}"></script>
-{% endblock %}

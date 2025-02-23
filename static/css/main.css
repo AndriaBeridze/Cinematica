@@ -87,6 +87,62 @@
   text-decoration: underline;
 }
 
+.navbar {
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4rem;
+}
+.navbar .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.navbar .collapse {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.navbar .navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.navbar .navbar-menu .nav-item:hover .nav-link {
+  color: var(--primary);
+}
+.navbar .tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.navbar .tools .theme-toggler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+}
+.navbar .tools p span {
+  color: var(--primary);
+}
+.navbar .tools p a {
+  color: var(--accent);
+}
+.navbar .tools p a:hover {
+  text-decoration: underline;
+}
+
 @font-face {
   font-family: "Poppins";
   src: url("../../fonts/Poppins-Regular.ttf") format("truetype");
@@ -137,19 +193,3 @@ i {
 }
 
 /*# sourceMappingURL=main.css.map */
-
-.theme-toggle {
-  background-color: #f5f5dc;
-  color: black;
-  font-size: 14px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.theme-toggle:hover {
-  background-color: #e0e0b0;
-  transform: scale(1.05);
-}

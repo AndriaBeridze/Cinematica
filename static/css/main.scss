@@ -1,2 +1,48 @@
 @import 'components/variables';
 @import 'components/form';
+
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../fonts/Poppins-Regular.ttf') format('truetype');
+}
+$font-family: 'Poppins', sans-serif;
+
+body {
+    &.light {
+        @include theme(light);
+    }
+
+    &.dark {
+        @include theme(dark);
+    }
+    
+    background-color: var(--background);
+    color: var(--text);
+    font-family: $font-family;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+li, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button {
+    color: var(--text);
+    font-family: $font-family;
+}
+
+i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}

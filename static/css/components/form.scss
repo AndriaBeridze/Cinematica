@@ -1,4 +1,4 @@
-$auth-form-width: 300px;
+$auth-form-width: 275px;
 $input-height: 33px;
 
 .auth-form {
@@ -8,10 +8,12 @@ $input-height: 33px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--primary);
-    border: 1px solid var(--border-color);
-    padding: $padding $padding-sm;
+    padding: $padding;
     border-radius: $border-radius-lg;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary);
+    border: 1px solid var(--accent);
 
     .form-group {
         display: flex;
@@ -20,16 +22,17 @@ $input-height: 33px;
         input {
             border: none;
             height: $input-height;
-            border: $border-size solid var(--border-color);
+            border: $border-size solid var(--accent);
             border-bottom-width: calc($border-size / 2);
             border-top-width: calc($border-size / 2);
-            background-color: var(--secondary-dark);
-            color: var(--text);
             padding: 0 $padding-sm;
             outline: none;
+            background-color: var(--primary);
+            color: var(--text);
 
-            ::placeholder {
-                color: var(--text-light);
+            &::placeholder {
+                color: var(--text);
+                opacity: 0.85;
             }
 
             &:first-child {
@@ -43,40 +46,48 @@ $input-height: 33px;
             }
 
             &:focus {
-                outline: 3px solid #215faf;
+                outline: 2px solid var(--accent);
                 z-index: 10;
             }
         }
     }
 
     input[type="submit"] {
-        background-color: var(--secondary);
-        color: var(--text-);
         border: none;
         border-radius: $border-radius;
         padding: $padding-sm;
-        margin-top: $spacing;
+        margin: $margin 0 0 0;
         cursor: pointer;
-        transition: background-color $transition;
-        width: 100%;
+        transition: $transition;
+        width: 50%;
+        align-self: center;
+        background-color: var(--primary);
+        color: var(--text);
+        align-self: center;
+        border: $border-size solid var(--accent);
+
 
         &:hover {
-            background-color: var(--secondary-dark);
-            color: var(--secondary-light);
+            scale: 1.1;
         }
     }
 
     .form-title {
-        color: var(--text);
         text-align: center;
         margin-bottom: $spacing;
         margin: 0;
         padding: $padding 0;
     }
 
+    .alert {
+        text-align: center;
+        padding: 0 0 $padding 0;
+        color: rgb(245, 74, 74);
+    }
+
     hr {
         margin: $margin 0;
-        border: .5px solid var(--border-color)
+        border: .5px solid var(--accent);
     }
 
     p {
@@ -85,7 +96,7 @@ $input-height: 33px;
         margin: 0;
 
         a {
-            color: var(--text-dark);
+            color: var(--primary);
 
             &:hover {
                 text-decoration: underline;

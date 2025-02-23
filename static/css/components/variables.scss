@@ -1,31 +1,19 @@
 // Define theme maps
 $themes: (
-  light: (
-    background: #FAF0E6,
-    primary: #5C5470,
-    primary-light: lighten(#5C5470, 20%),
-    primary-dark: darken(#5C5470, 20%),
-    secondary: #B9B4C7,
-    secondary-light: lighten(#B9B4C7, 20%),
-    secondary-dark: darken(#B9B4C7, 20%),
-    text: #352F44,
-    text-light: lighten(#352F44, 10%),
-    text-dark: darken(#352F44, 10%),
-    border-color: #B9B4C7
-  ),
-  dark: (
-    background: #352F44,
-    primary: #5C5470,
-    primary-light: lighten(#5C5470, 20%),
-    primary-dark: darken(#5C5470, 20%),
-    secondary: #B9B4C7,
-    secondary-light: lighten(#B9B4C7, 20%),
-    secondary-dark: darken(#B9B4C7, 20%),
-    text: #FAF0E6,
-    text-light: lighten(#FAF0E6, 10%),
-    text-dark: darken(#FAF0E6, 10%),
-    border-color: #B9B4C7
-  )
+    light: (
+        text: #0c120e,
+        background: #f9fbfa,
+        primary: #689d7b,
+        secondary: #a3c3be,
+        accent: #88acb1
+    ),
+    dark: (
+        text: #edf3ef,
+        background: #040605,
+        primary: #639776,
+        secondary: #3c5d58,
+        accent: #4f7378
+    )
 );
 
 // Mixin to apply theme styles
@@ -34,7 +22,7 @@ $themes: (
   
     // Loop through the theme map and apply styles
     @each $key, $value in $theme-map {
-      --#{$key}: #{$value};
+        --#{$key}: #{$value};
     }
 }
 
@@ -68,49 +56,3 @@ $margin-sm: 0.5 * $spacing;
 $margin: $spacing;
 $margin-md: 2 * $spacing;
 $margin-lg: 4 * $spacing;
-
-// Fonts
-@font-face {
-    font-family: 'Poppins';
-    src: url('../../fonts/Poppins-Regular.ttf') format('truetype');
-}
-$font-family: 'Poppins', sans-serif;
-
-body {
-    &.light {
-        @include theme(light);
-    }
-
-    &.dark {
-        @include theme(dark);
-    }
-    
-    background-color: var(--background);
-    color: var(--text);
-    font-family: $font-family;
-}
-
-a {
-    color: var(--text);
-    text-decoration: none;
-    cursor: pointer;
-}
-
-li, ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-button {
-    color: var(--text);
-    font-family: $font-family;
-}
-
-i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-}

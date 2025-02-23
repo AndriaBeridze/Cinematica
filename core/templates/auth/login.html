@@ -7,9 +7,9 @@
 {% block content %}
     <form action="{% url 'core:login' %}" method="post" class="auth-form">
         {% csrf_token %}
-        <h3 class="form-title">Login</h3>
+        <h2 class="form-title">Login</h2>
         {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
+            <div class="alert">{{ error }}</div>
         {% endif %}
         <div class="form-group">
             <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>

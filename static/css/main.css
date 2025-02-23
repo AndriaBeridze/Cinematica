@@ -140,3 +140,19 @@ i {
 }
 
 /*# sourceMappingURL=main.css.map */
+
+.theme-toggle {
+  background-color: #f5f5dc;
+  color: black;
+  font-size: 14px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.theme-toggle:hover {
+  background-color: #e0e0b0;
+  transform: scale(1.05);
+}

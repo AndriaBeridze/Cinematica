@@ -3,7 +3,14 @@
 
 {% block content %}
     <nav class="navbar">
-        <a href="{% url 'core:home' %}" class="navbar-brand">Cinematica</a>
+        <a href="{% url 'core:home' %}" class="navbar-brand">
+            <img 
+                src="{% static 'images/logo.png' %}" 
+                alt="Cinematica Logo" 
+                style="height: 117px; margin-top: 16px; margin-left: -30px;"   
+                >
+            
+        </a>
         <div class="collapse">
             <ul class="navbar-menu">
                 <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link">Home</a></li>

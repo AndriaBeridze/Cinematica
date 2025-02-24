@@ -1,0 +1,10 @@
+.container {
+    border: $border-size solid var(--accent);
+
+    .container-title {
+        padding: 0;
+        margin: 0;
+        font-weight: 500;
+        margin-bottom: $spacing;
+    }
+}

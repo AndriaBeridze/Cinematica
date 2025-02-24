@@ -1,0 +1,23 @@
+body {
+    padding: $navbar-height 0 0 0 !important;
+}
+
+.movie-preference {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 2 * $margin - 2 * $padding-md);
+    height: calc(100vh - 2 * $padding - 2 * $margin - $navbar-height);
+    margin: $margin $margin;
+    padding: $padding $padding-md;
+    border-radius: $border-radius-lg;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        border: $border-size solid var(--accent);
+        padding: $padding $padding-md;
+        border-radius: $border-radius-lg;
+    }
+}

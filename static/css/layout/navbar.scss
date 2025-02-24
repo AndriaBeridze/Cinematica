@@ -1,6 +1,10 @@
 $navbar-height: 60px;
 $theme-toggler-size: 30px;
 
+body {
+    padding: $navbar-height 0 0 0;
+}
+
 .navbar  {
     height: $navbar-height;
     position: fixed;
@@ -12,6 +16,7 @@ $theme-toggler-size: 30px;
     align-items: center;
     justify-content: space-between;
     padding: 0 $padding-lg;
+    background-color: var(--background);
 
     .navbar-brand {
         font-size: 1.5rem;

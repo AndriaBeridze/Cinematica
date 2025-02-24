@@ -1,0 +1,14 @@
+{% extends "page.html" %}
+{% load static %}
+
+{% block title %} Cinematica | Movie Preferences {% endblock %}
+
+{% block main_content %}
+    <div class="container movie-preference">
+        <h2 class="container-title">Movie Preferences</h2>
+        <form action="{% url 'core:movies' %}">
+            <input type="text" name="search" placeholder="Search for a movie">
+        </form>
+    </div>
+{% endblock %}
+    

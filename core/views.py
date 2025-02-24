@@ -7,7 +7,7 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect("core:login")
     
-    return render(request, "home.html")
+    return render(request, "pages/home.html")
 
 def login_user(request):  
     if request.user.is_authenticated:
@@ -50,3 +50,6 @@ def register_user(request):
 def logout_user(request):  
     logout(request)
     return redirect("core:home")  
+
+def movie_preferences(request):
+    return render(request, "pages/movie-preference.html")

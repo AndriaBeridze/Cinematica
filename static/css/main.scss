@@ -1,6 +1,8 @@
 @import 'components/variables';
 @import 'components/form';
 @import 'layout/navbar';
+@import 'components/mpform';
+@import 'components/container';
 
 
 @font-face {
@@ -21,6 +23,8 @@ body {
     background-color: var(--background);
     color: var(--text);
     font-family: $font-family;
+    margin: 0;
+    padding: 0;
 }
 
 a {

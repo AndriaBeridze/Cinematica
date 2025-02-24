@@ -7,13 +7,15 @@
         <div class="collapse">
             <ul class="navbar-menu">
                 <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Favorites</a></li>
+                <li class="nav-item"><a href="{% url 'core:movies' %}" class="nav-link">Movies</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">About</a></li>
             </ul>
             <div class="tools">
-                <button onclick="toggleTheme()" class="theme-toggler" id="theme-toggler">Dark</button>
                 <p><span>{{ user.username }}</span> | <a href="{% url 'core:logout' %}">Logout</a></p>
+                <button onclick="toggleTheme()" class="theme-toggler" id="theme-toggler">Dark</button>
             </div>
         </div>
     </nav>
+    {% block main_content %}
+    {% endblock %}
 {% endblock %}

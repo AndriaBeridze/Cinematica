@@ -148,6 +148,23 @@ body {
   text-decoration: underline;
 }
 
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.logo-slide {
+  animation: slideIn 1s ease-out forwards;
+  margin-top: 10px; /* Adjust to move it down */
+  margin-left: 20px; /* Adjust to move it right */
+  height: 80px; /* Ensure the correct height */
+}
+
 body {
   padding: 60px 0 0 0 !important;
 }
@@ -231,6 +248,5 @@ i {
   margin: 0;
   padding: 0;
 }
-
 
 /*# sourceMappingURL=main.css.map */

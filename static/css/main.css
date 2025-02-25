@@ -227,6 +227,23 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  position: relative;
+}
+.movie-preference form .result .loading-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background-color: var(--background);
+}
+.movie-preference form .result .loading-spinner i {
+  animation: spin 0.75s linear infinite;
 }
 .movie-preference form .commands {
   display: flex;
@@ -252,6 +269,14 @@ body {
   text-decoration: underline;
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .container {
   border: 1px solid var(--accent);
 }
@@ -264,7 +289,7 @@ body {
 
 .card {
   height: 250px;
-  background-color: red;
+  background-color: grey;
   width: auto;
   display: inline-block;
   margin: 1rem;
@@ -273,6 +298,8 @@ body {
   overflow: hidden;
   position: relative;
   flex: 0 0 auto;
+  transition: 0.3s;
+  cursor: pointer;
 }
 .card img {
   height: 100%;
@@ -305,6 +332,9 @@ body {
 .card .card-content span {
   font-size: 0.8rem;
   color: var(--text);
+}
+.card:hover {
+  scale: 1.1;
 }
 
 @font-face {

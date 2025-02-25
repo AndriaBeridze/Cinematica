@@ -1,6 +1,6 @@
 .card {
     height: 250px;
-    background-color: red;
+    background-color: grey;
     width: auto;
     display: inline-block;
     margin: $margin;
@@ -9,6 +9,8 @@
     overflow: hidden;
     position: relative;
     flex: 0 0 auto;
+    transition: .3s;
+    cursor: pointer;
 
     img {
         height: 100%;
@@ -44,5 +46,9 @@
             font-size: 0.8rem;
             color: var(--text);
         }
+    }
+
+    &:hover {
+        scale: 1.1;
     }
 }

@@ -136,7 +136,7 @@ body {
   background-color: var(--primary);
   color: var(--secondary);
   border: 1px solid var(--accent);
-  border-radius: 6px;
+  border-radius: 12px;
 }
 .navbar .tools p span {
   color: var(--primary);
@@ -166,7 +166,7 @@ body {
 }
 
 body {
-  padding: 60px 0 0 0 !important;
+  padding: 58px 0 0 0 !important;
 }
 
 .movie-preference {
@@ -182,10 +182,74 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex: 1;
+  height: calc(100% - 2rem - 4rem);
   border: 1px solid var(--accent);
   padding: 1rem 2rem;
   border-radius: 12px;
+}
+.movie-preference form .search {
+  display: flex;
+  gap: 1rem;
+}
+.movie-preference form .search input {
+  flex: 1;
+  height: 2rem;
+  padding: 0 1rem;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--accent);
+  color: var(--text);
+  transition: 0.3s;
+}
+.movie-preference form .search input::placeholder {
+  color: var(--text);
+  opacity: 0.8;
+}
+.movie-preference form .search input:focus {
+  outline: none;
+  border-bottom-color: var(--text);
+}
+.movie-preference form .search i {
+  background-color: var(--primary);
+  height: 2rem;
+  width: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--accent);
+  color: var(--secondary);
+}
+.movie-preference form .result {
+  border: 1px solid var(--accent);
+  flex: 1;
+  overflow-y: auto;
+  margin: 1rem 0;
+  border-radius: 12px;
+  position: relative !important;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.movie-preference form .commands {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+.movie-preference form .commands button {
+  padding: 0.5rem 2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--text);
+  transition: scale 0.3s;
+  border: 1px solid var(--accent);
+}
+.movie-preference form .commands button:hover {
+  scale: 1.1;
+}
+.movie-preference form .commands a:hover {
+  color: var(--primary);
+  text-decoration: underline;
 }
 
 .container {
@@ -196,6 +260,51 @@ body {
   margin: 0;
   font-weight: 500;
   margin-bottom: 1rem;
+}
+
+.card {
+  height: 250px;
+  background-color: red;
+  width: auto;
+  display: inline-block;
+  margin: 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  flex: 0 0 auto;
+}
+.card img {
+  height: 100%;
+  z-index: -1;
+}
+.card .card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--accent);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0.5rem;
+  gap: 0.25rem;
+}
+.card .card-content h3 {
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card .card-content span {
+  font-size: 0.8rem;
+  color: var(--text);
 }
 
 @font-face {

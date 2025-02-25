@@ -7,7 +7,17 @@
     <div class="container movie-preference">
         <h2 class="container-title">Movie Preferences</h2>
         <form action="{% url 'core:movies' %}">
-            <input type="text" name="search" placeholder="Search for a movie">
+            <div class="search">
+                <i class="bi bi-search"></i>
+                <input type="text" name="search" placeholder="Search for a movie" id="search-input">
+            </div>
+            <div class="result" id="search-result">
+                <script src="{% static 'js/movie-search.js' %}"></script>
+            </div>
+            <div class="commands">
+                <button onclick="" class="btn btn-primary">Save</button>
+                <a href="{% url 'core:movies' %}" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
 {% endblock %}

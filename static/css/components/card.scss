@@ -1,0 +1,48 @@
+.card {
+    height: 250px;
+    background-color: red;
+    width: auto;
+    display: inline-block;
+    margin: $margin;
+    border: 1px solid var(--accent);
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 auto;
+
+    img {
+        height: 100%;
+        z-index: -1;
+    }
+
+    .card-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid var(--accent);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 $padding-sm;
+        gap: $padding-xs;
+
+        h3 {
+            padding: 0;
+            margin: 0;
+            font-size: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        span {
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+    }
+}

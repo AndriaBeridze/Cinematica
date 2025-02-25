@@ -1,5 +1,7 @@
+$input-height: 2rem;
+
 body {
-    padding: $navbar-height 0 0 0 !important;
+    padding: calc($navbar-height - 2px) 0 0 0 !important;
 }
 
 .movie-preference {
@@ -15,9 +17,85 @@ body {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        flex: 1;
+        height: calc(100% - 2 * $padding - 2 * $padding-md);
         border: $border-size solid var(--accent);
         padding: $padding $padding-md;
         border-radius: $border-radius-lg;
+
+        .search {
+            display: flex;
+            gap: $spacing;
+
+            input {
+                flex: 1;
+                height: $input-height;
+                padding: 0 $padding;
+                background-color: transparent;
+                border: none;
+                border-bottom: $border-size solid var(--accent);
+                color: var(--text);
+                transition: .3s;
+
+                &::placeholder {
+                    color: var(--text);
+                    opacity: 0.8;
+                }
+
+                &:focus {
+                    outline: none;
+                    border-bottom-color: var(--text);
+                }
+            }
+
+            i {
+                background-color: var(--primary);
+                height: $input-height;
+                width: $input-height;
+                border-radius: $border-radius-lg;
+                border: 1px solid var(--accent);   
+                color: var(--secondary);
+            }
+        }
+
+        .result {
+            border: 1px solid var(--accent);
+            flex: 1;
+            overflow-y: auto;
+            margin: $margin 0;
+            border-radius: $border-radius-lg;
+            position: relative !important;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .commands {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: $spacing;
+
+            button {
+                padding: $padding-sm $padding-md;
+                border-radius: $border-radius;
+                border: none;
+                cursor: pointer;
+                background-color: var(--primary);
+                color: var(--text);
+                transition: scale .3s;
+                border: 1px solid var(--accent);
+
+                &:hover {
+                    scale: 1.1;
+                }
+            }
+
+            a {
+                &:hover {
+                    color: var(--primary);
+                    text-decoration: underline;
+                }
+            }
+        }
     }
 }

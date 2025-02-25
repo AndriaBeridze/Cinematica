@@ -1,7 +1,10 @@
 import requests
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 
-API_KEY = "595786e6aaaa7490b57f9936a7ae819f" 
+API_KEY = os.getenv("API_KEY")
 
 def format_movie_name(movie_name):
     unnecessary_chars = ["'", ":", "!", "?", "(", ")", ".", ",", "-", "’", "“", "”"] 

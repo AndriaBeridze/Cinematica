@@ -24,7 +24,7 @@ function applySavedTheme() {
         }
     } else {
         // Default theme
-        document.body.classList.add('light');
+        document.body.classList.add('dark');
         button.innerHTML = '<i class="bi bi-moon-fill"></i>';
     }
 }

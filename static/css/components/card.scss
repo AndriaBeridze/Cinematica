@@ -1,50 +1,43 @@
 .card {
-    height: 250px;
-    background-color: grey;
+    height: calc(100% - $spacing * 2);
     width: auto;
-    display: inline-block;
-    margin: $margin;
-    border: 1px solid var(--accent);
-    border-radius: $border-radius-lg;
     overflow: hidden;
     position: relative;
-    flex: 0 0 auto;
-    transition: .3s;
-    cursor: pointer;
+    border: 1px solid var(--accent);
+    border-radius: $border-radius-lg;
+    transition: scale 0.3s;
 
     img {
         height: 100%;
-        z-index: -1;
     }
 
     .card-content {
         position: absolute;
         bottom: 0;
         left: 0;
-        right: 0;
-        height: 60px;
+        width: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid var(--accent);
+        backdrop-filter: blur(5px);
+        height: 60px;
         text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 0 $padding-sm;
-        gap: $padding-xs;
+        gap: 2px;
+        color: white;
 
         h3 {
-            padding: 0;
-            margin: 0;
-            font-size: 1rem;
             overflow: hidden;
+            font-size: 1rem;
             text-overflow: ellipsis;
             white-space: nowrap;
+            padding: 0 $padding;
+            margin: 0;
         }
 
         span {
-            font-size: 0.8rem;
-            color: var(--text);
+            font-size: 0.5rem;
+            
         }
     }
 

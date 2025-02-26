@@ -1,129 +1,131 @@
 $input-height: 2rem;
 
-body {
-    padding: calc($navbar-height - 2px) 0 0 0 !important;
+.page-title {
+    margin: $margin $margin-md;
+    padding: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
-.movie-preference {
+.movie-preference-form {
+    border: $border-size solid var(--accent);
+    margin: $margin $margin-md;
+    padding: $padding;
+    border-radius: $border-radius-lg;
+    height: calc(100dvh - 4 * $margin - 2 * $padding - $navbar-height - 1.5rem);
     display: flex;
     flex-direction: column;
-    width: calc(100% - 2 * $margin - 2 * $padding-md);
-    height: calc(100vh - 2 * $padding - 2 * $margin - $navbar-height);
-    margin: $margin $margin;
-    padding: $padding $padding-md;
-    border-radius: $border-radius-lg;
+    gap: $spacing;
 
-    form {
+    .search {
+        display: flex;
+        align-items: center;
+        gap: $spacing;
+
+        i {
+            height: $input-height;
+            width: $input-height;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: $border-size solid var(--accent);
+            border-radius: $border-radius;
+        }
+
+        input {
+            height: $input-height;
+            flex: 1;
+            border: $border-size solid var(--accent);
+            border-radius: $border-radius;
+            padding: 0 $padding;
+            border: none;
+            border-bottom: $border-size solid var(--accent);
+            border-radius: 0;
+            background-color: transparent;
+            color: var(--text);
+
+            &::placeholder {
+                color: var(--accent);
+            }
+
+            &:focus {
+                outline: none;
+                border-bottom-color: var(--text);
+            }
+        }
+    }
+
+    .result {
+        flex: 1;
+        border: $border-size solid var(--accent);
+        border-radius: $border-radius-lg;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-auto-rows: 100%;
+        place-items: center;
+    }
+
+    .selected-movies {
+        height: 40%;
+        border: $border-size solid var(--accent);
+        border-radius: $border-radius-lg;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        height: calc(100% - 2 * $padding - 2 * $padding-md);
-        border: $border-size solid var(--accent);
-        padding: $padding $padding-md;
-        border-radius: $border-radius-lg;
+        gap: $spacing;
+        background-color: var(--background);
+        position: relative;
 
-        .search {
-            display: flex;
-            gap: $spacing;
-
-            input {
-                flex: 1;
-                height: $input-height;
-                padding: 0 $padding;
-                background-color: transparent;
-                border: none;
-                border-bottom: $border-size solid var(--accent);
-                color: var(--text);
-                transition: .3s;
-
-                &::placeholder {
-                    color: var(--text);
-                    opacity: 0.8;
-                }
-
-                &:focus {
-                    outline: none;
-                    border-bottom-color: var(--text);
-                }
-            }
-
-            i {
-                background-color: var(--primary);
-                height: $input-height;
-                width: $input-height;
-                border-radius: $border-radius-lg;
-                border: 1px solid var(--accent);   
-                color: var(--secondary);
-            }
+        h3 {
+            padding: 0;
+            margin: $margin-sm $margin 0 $margin;
+            height: 1.5rem;
         }
 
-        .result {
-            border: 1px solid var(--accent);
+        .list {
             flex: 1;
-            overflow-y: auto;
-            margin: $margin 0;
+            border: $border-size solid var(--accent);
+            margin: 0 $margin $margin $margin;
             border-radius: $border-radius-lg;
-            position: relative !important;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            overflow-y: hidden;
             position: relative;
-
-            .loading-spinner {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                display: none;
-                z-index: 1000;
-                align-items: center;
-                justify-content: center;
-                font-size: 3rem;
-                background-color: var(--background);
-                
-                i {
-                    animation: spin .75s linear infinite;
-                }
-            }
-        }
-
-        .commands {
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: $spacing;
+            flex-wrap: nowrap;
 
-            button {
-                padding: $padding-sm $padding-md;
-                border-radius: $border-radius;
-                border: none;
-                cursor: pointer;
-                background-color: var(--primary);
-                color: var(--text);
-                transition: scale .3s;
-                border: 1px solid var(--accent);
-
-                &:hover {
-                    scale: 1.1;
-                }
-            }
-
-            a {
-                &:hover {
-                    color: var(--primary);
-                    text-decoration: underline;
-                }
+            .card {
+                margin: $spacing $margin-sm;
+                flex: 0 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }
-}
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
+    .commands {
+        height: 30px;
+        display: flex;
+        gap: $spacing;
+        align-items: center;
+        justify-content: flex-end;
+
+        button {
+            padding: $padding-xs $padding-md;
+            border: $border-size solid var(--accent);
+            border-radius: $border-radius;
+            background-color: var(--primary);
+            color: var(--text);
+            cursor: pointer;
+            transition: scale 0.3s;
+
+            &:hover {
+                scale: 1.1;
+            }
+        }
     }
 }

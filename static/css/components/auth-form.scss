@@ -12,8 +12,7 @@ $input-height: 33px;
     border-radius: $border-radius-lg;
     display: flex;
     flex-direction: column;
-    background-color: var(--secondary);
-    border: 1px solid var(--accent);
+    border: $border-size solid var(--accent);
 
     .form-group {
         display: flex;
@@ -46,7 +45,7 @@ $input-height: 33px;
             }
 
             &:focus {
-                outline: 2px solid var(--accent);
+                outline: $border-size-lg solid var(--accent);
                 z-index: 10;
             }
         }
@@ -61,7 +60,7 @@ $input-height: 33px;
         transition: $transition;
         width: 50%;
         align-self: center;
-        background-color: var(--primary);
+        background-color: var(--secondary);
         color: var(--text);
         align-self: center;
         border: $border-size solid var(--accent);
@@ -87,7 +86,7 @@ $input-height: 33px;
 
     hr {
         margin: $margin 0;
-        border: .5px solid var(--accent);
+        border: calc($border-size / 2) solid var(--accent);
     }
 
     p {

@@ -1,16 +1,8 @@
-@import 'components/variables';
-@import 'components/form';
+@import 'util/variables';
 @import 'layout/navbar';
+@import 'components/auth-form';
 @import 'components/mpform';
-@import 'components/container';
 @import 'components/card';
-
-
-@font-face {
-    font-family: 'Poppins';
-    src: url('../../fonts/Poppins-Regular.ttf') format('truetype');
-}
-$font-family: 'Poppins', sans-serif;
 
 body {
     &.light {
@@ -23,9 +15,9 @@ body {
     
     background-color: var(--background);
     color: var(--text);
-    font-family: $font-family;
+    font-family: $font-family !important;
     margin: 0;
-    padding: 0;
+    padding: $navbar-height 0 0 0;
 }
 
 a {
@@ -51,4 +43,8 @@ i {
     justify-content: center;
     margin: 0;
     padding: 0;
+}
+
+input {
+    font-family: $font-family;
 }

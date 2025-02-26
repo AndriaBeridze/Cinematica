@@ -56,3 +56,16 @@ $margin-sm: 0.5 * $spacing;
 $margin: $spacing;
 $margin-md: 2 * $spacing;
 $margin-lg: 4 * $spacing;
+
+// Fonts
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('../fonts/Nunito-Medium.ttf') format('truetype');
+}
+
+$font-family: 'Nunito';

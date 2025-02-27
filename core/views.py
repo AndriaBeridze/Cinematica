@@ -3,8 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import User, UserPreference
 from django.http import JsonResponse
-import json
 from django.views.decorators.csrf import csrf_exempt
+from .rec import *
+import json
 
 def home(request):
     if not request.user.is_authenticated:
@@ -70,8 +71,11 @@ def movie_preferences(request):
                 "poster_path": movie["poster_path"]
             })
             
+        recommended_movies = fetch_recommendations([movie["id"] for movie in liked_movies])
+            
         user_pref = UserPreference.objects.get(user=request.user)
         user_pref.liked_movies = liked_movies
+        user_pref.recommended_movies = recommended_movies
         user_pref.save()
         
         return redirect("core:home")
@@ -85,9 +89,11 @@ def user_preference_data(request):
         return JsonResponse({
             "liked": user_pref.liked_movies,
             "disliked": user_pref.disliked_movies,
+            "recommended": user_pref.recommended_movies,
         })
     
     return JsonResponse({
         "liked": user_pref.liked_movies,
         "disliked": user_pref.disliked_movies,
+        "recommended": user_pref.recommended
     })

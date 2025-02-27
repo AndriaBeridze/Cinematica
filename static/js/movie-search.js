@@ -139,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        savePreferencesBtn.classList.add('disabled');
+        savePreferencesBtn.innerHTML = 'Saving...';
+        document.body.style.cursor = 'wait';
         fetch('/movies/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -146,13 +149,16 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error:', error))
         .finally(() => {
+            document.body.style.cursor = 'default';
             previouslySelectedMovies = [...selectedMovies];
             savePreferencesBtn.classList.add('disabled');
+            savePreferencesBtn.innerHTML = 'Save';
+            document.body.style.cursor = 'default';
             successAlert.style.display = 'flex';
             searchBarContainer.style.display = 'none';
             setTimeout(() => {
-                successAlert.style.display = 'none';
-                searchBarContainer.style.display = 'flex';
+            successAlert.style.display = 'none';
+            searchBarContainer.style.display = 'flex';
             }, 3000);
         });
     });

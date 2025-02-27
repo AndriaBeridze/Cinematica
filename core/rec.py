@@ -1,59 +1,37 @@
-import pandas as pd
+import requests
 import random
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
-columns = [
-            'id', 
-            'title', 
-            'vote_average', 
-            'vote_count', 
-            'status', 
-            'release_date', 
-            'revenue', 
-            'runtime', 
-            'adult', 
-            'backdrop_path', 
-            'budget', 
-            'homepage', 
-            'imdb_id', 
-            'original_language', 
-            'original_title', 
-            'overview', 
-            'popularity', 
-            'poster_path', 
-            'tagline', 
-            'genres', 
-            'production_companies', 
-            'production_countries', 
-            'spoken_languages', 
-            'keywords'
-        ]
+API_KEY = "595786e6aaaa7490b57f9936a7ae819f"
 
-# Load the data and create a new column that combines all the features
-db = pd.read_csv('db.csv')
-db['combined'] = db.apply(lambda row: ' '.join([str(row[col]) for col in columns]), axis=1)
+def fetch_recommendations(watched_movie_ids):  # Default movie IDs for testing
+    recommendations = {}
 
-def recommend_movies(liked_movies, top_n = 10):
-    # Initialize the TF-IDF vectorizer
-    tfidf = TfidfVectorizer(stop_words='english')
-    tfidf_matrix = tfidf.fit_transform(db['combined'])
+    for movie_id in watched_movie_ids:
+        # Fetch recommendations and similar movies
+        rec_url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key={API_KEY}"
+        sim_url = f"https://api.themoviedb.org/3/movie/{movie_id}/similar?api_key={API_KEY}"
 
-    # Transform the liked movies into TF-IDF vectors
-    liked_movies_combined = ' '.join(liked_movies)
-    liked_movies_tfidf = tfidf.transform([liked_movies_combined])
+        rec_movies = requests.get(rec_url).json().get("results", [])
+        sim_movies = requests.get(sim_url).json().get("results", [])
+
+        for movie in rec_movies + sim_movies:
+            if movie["id"] not in watched_movie_ids:  # Exclude already watched movies
+                recommendations[movie["id"]] = movie  # Store unique movies by ID
+
+    # Sort by popularity in descending order
+    sorted_movies = sorted(recommendations.values(), key=lambda m: m["popularity"], reverse=True)
+
+    # Filter only by id, title, poster_path, and vote_average
+    random.shuffle(sorted_movies)
     
-    # Compute similarities and get the indices of the most similar movies
-    cosine_similarities = cosine_similarity(liked_movies_tfidf, tfidf_matrix).flatten()
-    similar_indices = cosine_similarities.argsort()[-top_n:][::-1]
-    similar_movies = db.iloc[similar_indices].head(top_n)
-    
-    return similar_movies['title'].tolist()
+    filtered_movies = [
+        {
+            "id": movie["id"],
+            "title": movie["title"],
+            "poster_path": movie["poster_path"],
+            "vote_average": movie["vote_average"]
+        }
+        for movie in sorted_movies
+    ]
 
-# Test the function
-liked_movies = ['Iron Man', 'The Avengers', 'Guardians of the Galaxy', 'Spider Man: Homecoming', 'Black Panther', 'Thor: Ragnarok']
-recommendations = recommend_movies(liked_movies)
-
-print('Recommended movies:')
-for i, movie in enumerate(recommendations):
-    print(f'{i + 1}. {movie}')
+    return filtered_movies

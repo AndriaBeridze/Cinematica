@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.models import User
+from .models import User, UserPreference
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     if not request.user.is_authenticated:
@@ -40,6 +43,8 @@ def register_user(request):
             else:
                 user = User.objects.create_user(username=username, password=password)
                 user.save()
+                user_pref = UserPreference(user=user)
+                user_pref.save()
                 login(request, user)
                 return redirect("core:home")
         else:
@@ -51,5 +56,38 @@ def logout_user(request):
     logout(request)
     return redirect("core:home")  
 
+@csrf_exempt
 def movie_preferences(request):
+    if not request.user.is_authenticated:
+        return redirect("core:login")
+    
+    if request.method == "POST":
+        data = json.loads(request.body)
+        liked_movies = []
+        for movie in data.get("movies"):
+            liked_movies.append({
+                "id": movie["id"],
+                "poster_path": movie["poster_path"]
+            })
+            
+        user_pref = UserPreference.objects.get(user=request.user)
+        user_pref.liked_movies = liked_movies
+        user_pref.save()
+        
+        return redirect("core:home")
+    
     return render(request, "pages/movie-preference.html")
+
+def user_preference_data(request):
+    user_pref = UserPreference.objects.get(user=request.user)
+    
+    if request.method == "GET":
+        return JsonResponse({
+            "liked": user_pref.liked_movies,
+            "disliked": user_pref.disliked_movies,
+        })
+    
+    return JsonResponse({
+        "liked": user_pref.liked_movies,
+        "disliked": user_pref.disliked_movies,
+    })

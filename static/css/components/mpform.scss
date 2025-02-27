@@ -98,7 +98,7 @@ $input-height: 2rem;
             flex-wrap: nowrap;
 
             .card {
-                margin: $spacing $margin-sm;
+                margin: calc($spacing / 2) $margin-sm;
                 flex: 0 0 auto;
                 display: flex;
                 justify-content: center;
@@ -114,18 +114,56 @@ $input-height: 2rem;
         align-items: center;
         justify-content: flex-end;
 
-        button {
+        .btn {
             padding: $padding-xs $padding-md;
             border: $border-size solid var(--accent);
             border-radius: $border-radius;
             background-color: var(--primary);
             color: var(--text);
             cursor: pointer;
-            transition: scale 0.3s;
+            transition: scale 0.3s, opacity 0.3s;
 
             &:hover {
                 scale: 1.1;
             }
+
+            &.disabled {
+                opacity: 0.5;
+                pointer-events: none;
+            }
+        }
+
+        a {
+            &:hover {
+                color: var(--primary);
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .msg {
+        background-color: red;
+        border: 1px solid white;
+        color: white;
+        padding: 0 $padding;
+        display: none;
+        height: $input-height;
+        align-items: center;
+        
+        p {
+            margin: 0;
+        }
+
+        &.error {
+            background-color: #dc3545;
+            border-color: #842029;
+            color: #ea868f;
+        }
+
+        &.success {
+            background-color: #198754;
+            border-color: #0f5132;
+            color: #75b798;
         }
     }
 }

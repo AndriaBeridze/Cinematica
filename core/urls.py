@@ -11,4 +11,5 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('logout/', views.logout_user, name='logout'),
     path('movies/', views.movie_preferences, name='movies'),
+    path('movies/data', views.user_preference_data, name='user_data'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

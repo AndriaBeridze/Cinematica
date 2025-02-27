@@ -1,120 +1,159 @@
 const API_KEY = '595786e6aaaa7490b57f9936a7ae819f'; // API key for The Movie Database
-let currentPage = 1; // Current page of movie results
-let totalPages = 1; // Total number of pages available
-let searchResultBar; // Declare searchResultBar globally
+let currentPage = 1;
+let totalPages = 1;
+let searchResultsContainer;
+let selectedMoviesContainer;
+let lastSearchQuery = '';
+let selectedMovies = [];
+let previouslySelectedMovies = [];
+let savePreferencesBtn;
+let searchInputField;
+let searchBarContainer;
+let errorAlert;
+let successAlert;
 
-let selectedMoviesBar;
+// Function to create a movie card element
+function createMovieCard(movie, includeDetails = true) {
+    const { id, poster_path, title, vote_average } = movie;
+    const imageUrl = `https://image.tmdb.org/t/p/w500${poster_path}`;
 
-var lastQuery = '';
-var moviesSelected = [];
-
-
-function generateMovieCard(movie, movieContent = true) {
-    if (movieContent) {
-        return `<div class="card" onclick="clickAction(${movie.id}, '${movie.poster_path}')" id="tmdb-${movie.id}">
-                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-                    <div class="card-content">
-                        <h3>${movie.title}</h3>
-                        <span>Vote Average: ${movie.vote_average.toFixed(3)}</span>
-                    </div>
-                </div>`;
-    } else {
-        return `<div class="card" onclick="clickAction(${movie.id}, '${movie.poster_path}')" id="tmdb-${movie.id}">
-                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-                </div>`;
-    }
+    return `
+        <div class="card" onclick="toggleMovieSelection(${id}, '${poster_path}')" id="movie-${id}">
+            <img src="${imageUrl}" alt="${title}">
+            ${includeDetails ? `
+                <div class="card-details">
+                    <h3>${title}</h3>
+                    <span>Rating: ${vote_average.toFixed(3)}</span>
+                </div>
+            ` : ''}
+        </div>
+    `;
 }
-
 
 // Function to fetch movies from the API
 async function fetchMovies(page, query = '') {
     const url = query
-        ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=${page}` // URL for searching movies
-        : `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&page=${page}`; // URL for top-rated movies
+        ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`
+        : `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&page=${page}`;
 
     try {
-        const response = await fetch(url); // Fetch data from the API
-        const data = await response.json(); // Parse the JSON response
-        totalPages = data.total_pages; // Update the total number of pages
-        return data.results; // Return the list of movies
+        const response = await fetch(url);
+        const data = await response.json();
+        totalPages = data.total_pages;
+        return data.results;
     } catch (error) {
-        console.error("Error fetching movies:", error); // Log any errors
-        return []; // Return an empty array in case of error
+        console.error("Error fetching movies:", error);
+        return [];
     }
 }
 
-// Function to append movies to the search result bar
-function appendMovies(movies) {
-    movies = movies.filter(movie => movie.poster_path); // Filter out movies without a poster
-    movies = movies.filter(movie => movie.vote_average > 3); // Filter out movies without a rating
-    searchResultBar.innerHTML += movies.map(movie => {
-        return generateMovieCard(movie);
-    }).join(''); // Create HTML for each movie and append it to the search result bar
+// Function to render movies on the page
+function renderMovies(movies) {
+    const filteredMovies = movies.filter(movie => movie.poster_path && movie.vote_average > 3);
+    searchResultsContainer.innerHTML += filteredMovies.map(movie => createMovieCard(movie)).join('');
 }
 
-// Function to clear the search result bar
-function clearMovies() {
-    searchResultBar.innerHTML = ''; // Clear the inner HTML of the search result bar
+// Function to clear movie results from the page
+function clearMovieResults() {
+    searchResultsContainer.innerHTML = '';
 }
 
+// Function to toggle movie selection
+function toggleMovieSelection(id, posterPath) {
+    const movieIndex = selectedMovies.findIndex(movie => movie.id === id);
+    if (movieIndex === -1) {
+        selectedMovies.push({ id, poster_path: posterPath });
+        selectedMoviesContainer.innerHTML += createMovieCard({ id, poster_path: posterPath }, false);
+    } else {
+        selectedMovies.splice(movieIndex, 1);
+        selectedMoviesContainer.innerHTML = selectedMovies.map(movie => createMovieCard(movie, false)).join('');
+    }
+
+    const arraysEqual = (arr1, arr2) => {
+        if (arr1.length !== arr2.length) return false;
+        return arr1.slice().sort((a, b) => a.id - b.id).every((item, index) => item.id === arr2.slice().sort((a, b) => a.id - b.id)[index].id);
+    };
+
+    savePreferencesBtn.classList.toggle('disabled', arraysEqual(selectedMovies, previouslySelectedMovies));
+}
+
+// Event listener for DOM content loaded
 document.addEventListener('DOMContentLoaded', () => {
-    searchResultBar = document.getElementById('search-result'); // Get the search result bar element
-    const searchInput = document.getElementById('search-input'); // Get the search input element
+    searchResultsContainer = document.getElementById('search-results');
+    searchInputField = document.getElementById('search-input');
+    searchBarContainer = document.getElementById('search-bar');
+    selectedMoviesContainer = document.getElementById('selected-movies');
+    errorAlert = document.getElementById('error-message');
+    successAlert = document.getElementById('success-message');
+    savePreferencesBtn = document.getElementById('save-preferences');
 
-    // Function to load and display movies
-    async function loadAndDisplayMovies(page, query = '') {  
-        const movies = await fetchMovies(page, query); // Fetch movies from the API
-        appendMovies(movies); // Append the movies to the search result bar
+    // Function to load movies
+    async function loadMovies(page, query = '') {
+        const movies = await fetchMovies(page, query);
+        renderMovies(movies);
     }
 
-    loadAndDisplayMovies(currentPage); // Load and display the first page of movies
+    // Initial load of movies
+    loadMovies(currentPage);
 
-    // Event listener for infinite scrolling
-    searchResultBar.addEventListener('scroll', () => {
-        if (searchResultBar.scrollTop + searchResultBar.clientHeight * 2 >= searchResultBar.scrollHeight - 100) {
-            if (currentPage < totalPages) { // Check if there are more pages to load
-                currentPage++; // Increment the current page
-                loadAndDisplayMovies(currentPage, searchInput.value); // Load and display the next page of movies
+    // Event listener for infinite scroll
+    searchResultsContainer.addEventListener('scroll', async () => {
+        if (searchResultsContainer.scrollTop + searchResultsContainer.clientHeight * 2 >= searchResultsContainer.scrollHeight - 100) {
+            if (currentPage < totalPages) {
+                currentPage++;
+                const movies = await fetchMovies(currentPage, searchInputField.value);
+                renderMovies(movies);
             }
         }
     });
 
-    // Event listener for search input
-    searchInput.addEventListener('input', () => {
-        currentPage = 1; // Reset the current page to 1
-        clearMovies(); // Clear the search result bar
-        loadAndDisplayMovies(currentPage, searchInput.value); // Load and display movies based on the search query
-        lastQuery = searchInput.value;
+    // Event listener for search input field
+    searchInputField.addEventListener('input', () => {
+        currentPage = 1;
+        clearMovieResults();
+        loadMovies(currentPage, searchInputField.value);
+        lastSearchQuery = searchInputField.value;
     });
 
-    selectedMoviesBar = document.getElementById('selected-movies')
-    
+    // Fetch previously liked movies
+    fetch('/movies/data')
+        .then(response => response.json())
+        .then(data => {
+            data.liked.forEach(movie => {
+                previouslySelectedMovies.push(movie);
+                selectedMovies.push(movie);
+                selectedMoviesContainer.innerHTML += createMovieCard(movie, false);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Event listener for save preferences button
+    savePreferencesBtn.addEventListener('click', () => {
+        if (selectedMovies.length === 0) {
+            errorAlert.style.display = 'flex';
+            searchBarContainer.style.display = 'none';
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+                searchBarContainer.style.display = 'flex';
+            }, 3000);
+            return;
+        }
+
+        fetch('/movies/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ movies: selectedMovies })
+        })
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            previouslySelectedMovies = [...selectedMovies];
+            savePreferencesBtn.classList.add('disabled');
+            successAlert.style.display = 'flex';
+            searchBarContainer.style.display = 'none';
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+                searchBarContainer.style.display = 'flex';
+            }, 3000);
+        });
+    });
 });
-
-// Function to handle click action on movie card
-function clickAction(id, poster_path) {
-    const movieExists = moviesSelected.some(movie => movie.id === id);
-    if (!movieExists) {
-        moviesSelected.push({
-            id: id,
-            poster_path: poster_path
-        });
-
-        selectedMoviesBar.innerHTML += generateMovieCard({
-            id: id,
-            poster_path: poster_path
-        }, false);
-    } else {
-        moviesSelected = moviesSelected.filter(movie => movie.id !== id);
-        selectedMoviesBar.innerHTML = '';
-        moviesSelected.forEach(movie => {
-            selectedMoviesBar.innerHTML += generateMovieCard(movie, false);
-        });
-    }
-}
-
-function submitMovies() {
-    console.log(moviesSelected);
-}
-
-

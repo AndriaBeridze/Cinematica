@@ -263,7 +263,7 @@ body {
   flex-wrap: nowrap;
 }
 .movie-preference-form .selected-movies .list .card {
-  margin: 1rem 0.5rem;
+  margin: 0.5rem 0.5rem;
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
@@ -276,59 +276,92 @@ body {
   align-items: center;
   justify-content: flex-end;
 }
-.movie-preference-form .commands button {
+.movie-preference-form .commands .btn {
   padding: 0.25rem 2rem;
   border: 1px solid var(--accent);
   border-radius: 6px;
   background-color: var(--primary);
   color: var(--text);
   cursor: pointer;
-  transition: scale 0.3s;
+  transition: scale 0.3s, opacity 0.3s;
 }
-.movie-preference-form .commands button:hover {
+.movie-preference-form .commands .btn:hover {
   scale: 1.1;
+}
+.movie-preference-form .commands .btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.movie-preference-form .commands a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.movie-preference-form .msg {
+  background-color: red;
+  border: 1px solid white;
+  color: white;
+  padding: 0 1rem;
+  display: none;
+  height: 2rem;
+  align-items: center;
+}
+.movie-preference-form .msg p {
+  margin: 0;
+}
+.movie-preference-form .msg.error {
+  background-color: #dc3545;
+  border-color: #842029;
+  color: #ea868f;
+}
+.movie-preference-form .msg.success {
+  background-color: #198754;
+  border-color: #0f5132;
+  color: #75b798;
 }
 
 .card {
-  height: calc(100% - 2rem);
+  height: calc(100% - 1rem);
   width: auto;
   overflow: hidden;
   position: relative;
   border: 1px solid var(--accent);
   border-radius: 12px;
   transition: scale 0.3s;
+  cursor: pointer;
 }
 .card img {
   height: 100%;
 }
-.card .card-content {
+.card .card-details {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  height: 60px;
-  text-align: center;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 2px;
-  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
-.card .card-content h3 {
-  overflow: hidden;
-  font-size: 1rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 0 1rem;
+.card .card-details h3 {
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 0 0.25rem;
   margin: 0;
 }
-.card .card-content span {
+.card .card-details span {
   font-size: 0.5rem;
 }
-.card:hover {
-  scale: 1.1;
+.card:has(.card-details):hover .card-details {
+  opacity: 1;
+}
+.card:not(:has(.card-details)):hover {
+  scale: 1.05;
 }
 
 body {

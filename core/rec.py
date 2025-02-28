@@ -29,7 +29,13 @@ def fetch_recommendations(watched_movie_ids):  # Default movie IDs for testing
             "id": movie["id"],
             "title": movie["title"],
             "poster_path": movie["poster_path"],
-            "vote_average": movie["vote_average"]
+            "vote_average": movie["vote_average"],
+            "vote_count": movie["vote_count"],
+            "overview": movie["overview"],
+            "genre_ids": movie["genre_ids"],
+            "release_date": movie["release_date"],
+            "popularity": movie["popularity"],
+            "original_language": movie["original_language"]
         }
         for movie in sorted_movies
     ]

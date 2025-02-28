@@ -37,6 +37,9 @@ body {
   align-items: center;
   gap: 2rem;
 }
+.navbar .navbar-menu .nav-item .nav-link {
+  transition: 0.3s;
+}
 .navbar .navbar-menu .nav-item:hover .nav-link {
   color: var(--primary);
 }
@@ -56,6 +59,9 @@ body {
   color: var(--secondary);
   border: 1px solid var(--accent);
   border-radius: 6px;
+}
+.navbar .tools p {
+  cursor: pointer;
 }
 .navbar .tools p span {
   color: var(--primary);
@@ -304,6 +310,7 @@ body {
   display: none;
   height: 2rem;
   align-items: center;
+  border-radius: 6px;
 }
 .movie-preference-form .msg p {
   margin: 0;
@@ -347,6 +354,7 @@ body {
   backdrop-filter: blur(4px);
   opacity: 0;
   transition: opacity 0.3s;
+  color: white;
 }
 .card .card-details h3 {
   text-align: center;
@@ -362,6 +370,41 @@ body {
 }
 .card:not(:has(.card-details)):hover {
   scale: 1.05;
+}
+
+#team {
+  text-align: center;
+  padding: 50px;
+}
+#team h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+}
+#team .team-members {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+#team .team-members .team-member {
+  width: 200px;
+  text-align: center;
+}
+#team .team-members .team-member .team-photo {
+  width: 150px !important;
+  height: 150px !important;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 2px solid var(--accent);
+}
+#team .team-members .team-member h3 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+#team .team-members .team-member p {
+  font-size: 1em;
+  color: #555;
 }
 
 body {
@@ -416,43 +459,3 @@ input {
 }
 
 /*# sourceMappingURL=main.css.map */
-
-#team {
-  text-align: center;
-  padding: 50px;
-}
-
-#team h2 {
-  font-size: 2.5em;
-  margin-bottom: 30px;
-}
-
-.team-members {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 30px;
-}
-
-.team-member {
-  width: 200px;
-  text-align: center;
-}
-
-.team-photo {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 15px;
-}
-
-.team-member h3 {
-  font-size: 1.2em;
-  margin-bottom: 5px;
-}
-
-.team-member p {
-  font-size: 1em;
-  color: #555;
-}

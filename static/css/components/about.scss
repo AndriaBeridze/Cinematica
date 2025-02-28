@@ -1,0 +1,40 @@
+#team {
+    text-align: center;
+    padding: 50px;
+
+    h2 {
+        font-size: 2.5em;
+        margin-bottom: 30px;
+    }
+
+    .team-members {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 30px;
+
+        .team-member {
+            width: 200px;
+            text-align: center;
+
+            .team-photo {
+                width: 150px !important;
+                height: 150px !important;
+                object-fit: cover;
+                border-radius: 50%;
+                margin-bottom: 15px;
+                border: $border-size-lg solid var(--accent);
+            }
+
+            h3 {
+                font-size: 1.2em;
+                margin-bottom: 5px;
+            }
+
+            p {
+                font-size: 1em;
+                color: #555;
+            }
+        }
+    }
+}

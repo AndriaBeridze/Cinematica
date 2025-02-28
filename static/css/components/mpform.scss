@@ -149,6 +149,7 @@ $input-height: 2rem;
         display: none;
         height: $input-height;
         align-items: center;
+        border-radius: $border-radius;
         
         p {
             margin: 0;

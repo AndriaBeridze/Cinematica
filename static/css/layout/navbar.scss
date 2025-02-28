@@ -35,6 +35,10 @@ body {
         gap: calc($spacing * 2);
 
         .nav-item {
+            .nav-link {
+                transition: .3s;
+            }
+
             &:hover {
                 .nav-link {
                     color: var(--primary);
@@ -62,6 +66,8 @@ body {
         }
 
         p {
+            cursor: pointer;
+
             span {
                 color: var(--primary);
             }

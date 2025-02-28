@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import User, UserPreference
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .rec import *
+from .rec import fetch_recommendations
 import json
 
 def home(request):
@@ -103,3 +103,14 @@ def about(request):
         return redirect("core:login")
     
     return render(request, "pages/about.html")
+
+def movies_data(request):
+    user_pref, created = UserPreference.objects.get_or_create(user=request.user)
+    liked = user_pref.liked_movies  
+    
+    recommended = fetch_recommendations([m['id'] for m in liked]) if liked else []
+
+    return JsonResponse({
+        "liked": liked,
+        "recommended": recommended
+    })

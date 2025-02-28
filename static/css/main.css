@@ -119,6 +119,10 @@ body {
   background-color: var(--primary);
   color: var(--text);
 }
+.auth-form .form-group input::-moz-placeholder {
+  color: var(--text);
+  opacity: 0.85;
+}
 .auth-form .form-group input::placeholder {
   color: var(--text);
   opacity: 0.85;
@@ -223,6 +227,9 @@ body {
   border-radius: 0;
   background-color: transparent;
   color: var(--text);
+}
+.movie-preference-form .search input::-moz-placeholder {
+  color: var(--accent);
 }
 .movie-preference-form .search input::placeholder {
   color: var(--accent);
@@ -352,7 +359,8 @@ body {
   justify-content: center;
   gap: 2px;
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
   opacity: 0;
   transition: opacity 0.3s;
   color: white;
@@ -394,7 +402,8 @@ body {
 #team .team-members .team-member .team-photo {
   width: 150px !important;
   height: 150px !important;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 50%;
   margin-bottom: 15px;
   border: 2px solid var(--accent);
@@ -421,7 +430,7 @@ body {
   margin: 0 1rem 2rem 1rem;
 }
 .movie-cards-container .card {
-  margin: 0.5rem 0.5rem;
+  margin: 1rem 0.5rem;
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
@@ -477,6 +486,5 @@ i {
 
 input {
   font-family: "Nunito";
-}
+}/*# sourceMappingURL=main.css.map */
 
-/*# sourceMappingURL=main.css.map */

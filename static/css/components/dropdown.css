@@ -1,0 +1,41 @@
+/* dropdown.css */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: "Nunito", sans-serif;
+}
+
+.dropdown-btn {
+  padding: 0.5rem 1rem;
+  background-color: #689d7b;
+  color: #0c120e;
+  border: 1px solid #88acb1;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-btn:hover {
+  background-color: #a3c3be;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9fbfa;
+  border: 1px solid #88acb1;
+  border-radius: 6px;
+  padding: 1rem;
+  width: 200px;
+  top: 100%;
+  left: 0;
+  z-index: 1001;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

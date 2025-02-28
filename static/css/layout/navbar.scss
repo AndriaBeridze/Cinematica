@@ -17,6 +17,7 @@ body {
     justify-content: space-between;
     padding: 0 $padding-lg;
     background-color: var(--background);
+    z-index: 1000;
 
     .navbar-brand {
         font-size: 1.5rem;

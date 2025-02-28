@@ -1,0 +1,20 @@
+.movie-cards-container {
+    height: 200px;
+    border: $border-size solid var(--accent);
+    margin: 0 $margin $margin $margin;
+    border-radius: $border-radius-lg;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0 $margin $margin-md $margin;
+
+    .card {
+        margin: calc($spacing / 2) $margin-sm;
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

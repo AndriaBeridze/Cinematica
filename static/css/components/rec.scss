@@ -1,5 +1,5 @@
 .movie-cards-container {
-    height: calc(100dvh - $margin * 5 - 1.5rem - $navbar-height);
+    height: calc(100dvh - $margin * 5 - 19px - $navbar-height);
     border: $border-size solid var(--accent);
     border-radius: $border-radius-lg;
     overflow-x: hidden;

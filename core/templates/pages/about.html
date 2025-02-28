@@ -1,0 +1,49 @@
+{% extends "page.html" %}
+{% load static %}
+
+{% block title %} Cinematica | About {% endblock %}
+
+{%block main_content%}
+<section id="team">
+    <h2>Meet Our Team</h2>
+    <div class="team-members">
+        <div class="team-member">
+            <img src="{% static 'images/andria.jpg' %}" alt="Team Member 1" class="team-photo">
+            <h3>Andria Beridze</h3>
+            <p>role</p>
+        </div>
+        <div class="team-member">
+            <img src="{% static 'images/brendon.jpg' %}" alt="Team Member 2" class="team-photo">
+            <h3>Brendon Mani</h3>
+            <p>role</p>
+        </div>
+        <div class="team-member">
+            <img src="{% static 'images/beckham.jpg' %}" alt="Team Member 3" class="team-photo">
+            <h3>Beckham Truong</h3>
+            <p>role</p>
+        </div>
+        <div class="team-member">
+            <img src="path/to/member4.jpg" alt="Team Member 4" class="team-photo">
+            <h3>Shahab Din</h3>
+            <p>role</p>
+        </div>
+    </div>
+</section>
+
+<section id="brief" style="max-width: 900px; margin: 0 auto; padding: 20px;">
+    <h2 style="text-align: center;">About Our Site</h2>
+    <p style="text-align: center;">Welcome to Cinematica, your go-to platform for discovering and recommending movies based on your unique preferences. By integrating the vast IMDb movie database, we allow users to explore movies, select genres they enjoy, and receive personalized recommendations. Whether you're looking for a movie similar to your favorite or just need fresh ideas for your next binge, Cinematica is here to help you find your next great movie experience.</p>
+    
+    <h3 style="text-align: center;">Our Mission</h3>
+    <p style="text-align: center;">Our mission is to enhance movie discovery by offering personalized, data-driven recommendations tailored to each user's taste. We aim to make movie watching more exciting and convenient by providing users with accurate suggestions based on their preferences, ensuring they never run out of options to explore.</p>
+
+    <h3 style="text-align: center;">Our Core Values</h3>
+    <ul style="text-align: center;">
+        <li><strong>Personalization:</strong> We believe every movie lover is unique, and we tailor our recommendations to reflect individual tastes and preferences.</li>
+        <li><strong>Innovation:</strong> We are committed to using the latest technologies and data to provide the most accurate and engaging movie suggestions possible.</li>
+        <li><strong>Accessibility:</strong> We aim to make movie discovery easy for everyone, regardless of their movie knowledge or experience.</li>
+        <li><strong>Entertainment:</strong> Above all, we are passionate about creating enjoyable and satisfying experiences for movie enthusiasts of all kinds.</li>
+    </ul>
+</section>
+
+{%endblock%}

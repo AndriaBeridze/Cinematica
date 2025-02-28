@@ -97,3 +97,9 @@ def user_preference_data(request):
         "disliked": user_pref.disliked_movies,
         "recommended": user_pref.recommended
     })
+
+def about(request):
+    if not request.user.is_authenticated:
+        return redirect("core:login")
+    
+    return render(request, "pages/about.html")

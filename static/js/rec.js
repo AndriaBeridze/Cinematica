@@ -24,7 +24,7 @@ function createMovieCard(movie, includeDetails = true) {
     const recommendedContainer = document.getElementById('recommended-movies-container');
     if(data.recommended && data.recommended.length > 0) {
       data.recommended.forEach(movie => {
-        recommendedContainer.innerHTML += createMovieCard(movie, true);
+        recommendedContainer.innerHTML += createMovieCard(movie, false);
       });
     } else {
       recommendedContainer.innerHTML = '<p>No recommendations available at the moment.</p>';

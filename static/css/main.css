@@ -409,15 +409,16 @@ body {
 }
 
 .movie-cards-container {
-  height: 200px;
+  height: calc(100dvh - 5rem - 1.5rem - 60px);
   border: 1px solid var(--accent);
-  margin: 0 1rem 1rem 1rem;
   border-radius: 12px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-auto-rows: 33.3%;
+  place-items: center;
   margin: 0 1rem 2rem 1rem;
 }
 .movie-cards-container .card {
@@ -426,6 +427,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.movie-cards-container .card h3 {
+  font-size: 0.75em;
+  margin: 0;
+  padding: 0;
+}
+.movie-cards-container .card p {
+  font-size: 0.5em;
+  margin: 0;
+  padding: 0;
 }
 
 body {

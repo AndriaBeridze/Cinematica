@@ -3,26 +3,24 @@
 
 {% block content %}
     <nav class="navbar">
-        <a href="{% url 'core:home' %}" class="navbar-brand">
-            <img 
-                src="{% static 'images/logo.png' %}" 
-                alt="Cinematica Logo" 
-                style="height: 117px; margin-top: 16px; margin-left: -30px;"   
-            >
+        <a href="" class="brand-icon">
+            <img src="{% static 'images/logo.png' %}" alt="Cinematica">
         </a>
-        <div class="collapse">
-            <ul class="navbar-menu">
-                <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="{% url 'core:movies' %}" class="nav-link">Preferences</a></li>
-                <li class="nav-item"><a href="{% url 'core:about' %}" class="nav-link">About</a></li>
+        <div class="accessability">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="{% url 'core:home' %}">Home</a></li>
+                <li class="nav-item"><a href="{% url 'core:preferences' %}">Preferences</a></li>
+                <li class="nav-item"><a href="{% url 'core:about' %}">About</a></li>
             </ul>
-            <div class="tools">
-                <p><span>{{ user.username }}</span> | <a href="{% url 'core:logout' %}">Logout</a></p>
-                <button onclick="toggleTheme()" class="theme-toggler" id="theme-toggler">Dark</button>
-            </div>
+            <ul class="nav-tools">
+                <li class="nav-item"><span>{{ user.username }}</span> | <a href="{% url 'core:logout' %}">Logout</a></li>
+                <li class="nav-item"><div class="btn theme-toggler" id="theme-toggler" onclick="toggleTheme()"></div></li>
+            </ul>
         </div>
+        <script src="{% static 'js/theme.js' %}"></script>
     </nav>
     {% block main_content %}
+
     {% endblock %}
     <footer class="footer">
         <p>Cinematica 2025 &copy; This site is for personal use only and not an official or commercial entity.</p>

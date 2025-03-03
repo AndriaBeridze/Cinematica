@@ -1,0 +1,54 @@
+.btn {
+    @include size(8rem, 1.75rem);
+    @include flex(row, center, center, 0);
+    background-color: var(--primary);
+    color: var(--text);
+    border: $default-border;
+    border-radius: $border-radius-sm;
+    transition: $transition-regular;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--secondary);
+    }
+}
+
+.opt {
+    @include size(100%, $input-height);
+    border: $border-size-md solid var(--accent);
+    border-radius: $border-radius-xs;
+    transition: $transition-regular;
+
+    &.like {
+        background-color: $button-like-background;
+        border-color: $button-like-border;
+    
+        &:hover {
+            background-color: $button-like-border;
+        }
+    }
+
+    &.dislike {
+        background-color: $button-dislike-background;
+        border-color: $button-dislike-border;
+    
+        &:hover {
+            background-color: $button-dislike-border;
+        }
+    }
+
+    &.remove {
+        background-color: $button-remove-background;
+        border-color: $button-remove-border;
+    
+        &:hover {
+            background-color: $button-remove-border;
+        }
+    }
+}
+
+.disabled {
+    opacity: 0.7;
+    pointer-events: none;
+    cursor: not-allowed;
+}

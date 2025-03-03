@@ -1,0 +1,65 @@
+$navbar-height: 4rem;
+
+.navbar {
+    @include fixed(0, 0, auto, 0);
+    @include flex(row, space-between, center);
+    height: $navbar-height;
+    border-bottom: $default-border;
+    padding: 0 $padding-xl;
+    background-color: var(--background);
+
+    .brand-icon {
+        @include size(90px, $navbar-height);
+        @include flex(row, center, center);
+        position: relative;
+
+        img {
+            height: 150%;
+            width: auto;
+        }
+    }
+
+    .accessability {
+        @include flex(row, center, center);
+        gap: $gap-lg;
+
+        .nav-menu {
+            @include flex(row, center, center);
+            gap: $gap-lg;
+
+            a {
+                @include flex(row, center, center);
+                color: var(--text);
+
+                &:hover {
+                    color: var(--primary);
+                }
+            }
+        }
+
+        .nav-tools {
+            @include flex(row, center, center);
+            gap: $gap-md;
+
+            span {
+                color: var(--primary);
+            }
+
+            a:hover {
+                color: var(--secondary);
+            }
+
+            .theme-toggler {
+                @include size(calc(0.5 * $navbar-height));
+                @include flex(row, center, center);
+                color: var(--secondary);
+                transition: none;
+
+                &:hover {
+                    color: var(--secondary);
+                    background-color: var(--primary);
+                }
+            }
+        }
+    }
+}

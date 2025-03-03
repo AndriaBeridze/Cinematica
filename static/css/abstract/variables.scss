@@ -1,0 +1,95 @@
+// Define theme maps
+$themes: (
+    light: (
+        text: #0c120e,
+        background: #f9fbfa,
+        primary: #689d7b,
+        secondary: #a3c3be,
+        accent: #88acb1
+    ),
+    dark: (
+        text: #edf3ef,
+        background: #040605,
+        primary: #639776,
+        secondary: #3c5d58,
+        accent: #2f474b
+    )
+);
+
+$standard: 1rem;
+
+// Spacing
+$padding-xs: 0.25 * $standard;
+$padding-sm: 0.5 * $standard;
+$padding-md: 1 * $standard;
+$padding-lg: 2 * $standard;
+$padding-xl: 4 * $standard;
+
+$margin-xs: 0.25 * $standard;
+$margin-sm: 0.5 * $standard;
+$margin-md: 1 * $standard;
+$margin-lg: 2 * $standard;
+$margin-xl: 4 * $standard;
+
+$gap-xs: 0.25 * $standard;
+$gap-sm: 0.5 * $standard;
+$gap-md: 1 * $standard;
+$gap-lg: 2 * $standard;
+$gap-xl: 4 * $standard;
+
+// Border radius
+$border-radius-xs: 0.25 * $standard;
+$border-radius-sm: 0.5 * $standard;
+$border-radius-md: 1 * $standard;
+$border-radius-lg: 2 * $standard;
+$border-radius-xl: 4 * $standard;
+
+// Font sizes
+$font-xs: 0.75 * $standard;
+$font-sm: 0.875 * $standard;
+$font-md: 1 * $standard;
+$font-lg: 1.25 * $standard;
+$font-xl: 1.5 * $standard;
+
+// Z-index
+$z-n1: -1;
+$z-0: 0;
+$z-1: 1;
+$z-2: 2;
+$z-3: 3;
+$z-4: 4;
+$z-5: 5;
+
+// Borders
+$border-size-md: 0.0625 * $standard;
+$border-size-lg: 0.125 * $standard;
+$border-size-xl: 0.25 * $standard;
+
+$border-solid: solid;
+$border-dashed: dashed;
+$border-dotted: dotted;
+
+$border-color: var(--accent);
+
+$default-border: $border-size-md $border-solid $border-color;
+
+// Transition
+$transition-fast: 0.1s ease-in-out;
+$transition-regular: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Navbar
+$auth-form-max-width: 300px;
+$auth-form-padding-x: $padding-sm;
+$auth-form-padding-y: $padding-lg;
+$input-height: 1.5rem;
+
+$error-color: rgb(225, 102, 102);
+
+// Buttons 
+$button-like-background: #3d62db;
+$button-like-border: #2f50ba;
+$button-dislike-background: #db3d3d;
+$button-dislike-border: #a02020;
+$button-remove-background: #7e7e7e;
+$button-remove-border: #454545;

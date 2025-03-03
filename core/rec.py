@@ -3,10 +3,10 @@ import random
 
 API_KEY = "595786e6aaaa7490b57f9936a7ae819f"
 
-def fetch_recommendations(watched_movie_ids):  # Default movie IDs for testing
+def fetch_recommendations(liked_ids, disliked_ids):  # Default movie IDs for testing
     recommendations = {}
 
-    for movie_id in watched_movie_ids:
+    for movie_id in liked_ids:
         # Fetch recommendations and similar movies
         rec_url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key={API_KEY}"
         sim_url = f"https://api.themoviedb.org/3/movie/{movie_id}/similar?api_key={API_KEY}"
@@ -15,7 +15,7 @@ def fetch_recommendations(watched_movie_ids):  # Default movie IDs for testing
         sim_movies = requests.get(sim_url).json().get("results", [])
 
         for movie in rec_movies + sim_movies:
-            if movie["id"] not in watched_movie_ids:  # Exclude already watched movies
+            if movie["id"] not in liked_ids and movie["id"] not in disliked_ids:  # Exclude liked and disliked movies
                 recommendations[movie["id"]] = movie  # Store unique movies by ID
 
     # Sort by popularity in descending order

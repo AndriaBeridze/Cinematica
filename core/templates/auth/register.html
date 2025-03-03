@@ -2,23 +2,21 @@
 
 {% block title %} Cinematica | Register {% endblock %}
 
-{% block extra_css %}{% endblock %}
-
 {% block content %}
     <form action="{% url 'core:register' %}" method="post" class="auth-form">
         {% csrf_token %}
-        <h2 class="form-title">Register</h2>
+        <h2 class="title">Register</h2>
         {% if error %}
-            <div class="alert">{{ error }}</div>
+            <div class="error">{{ error }}</div>
         {% endif %}
-        <div class="form-group">
-            <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
-            <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
-            <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirm Password" required>
+        <div class="input-group">
+            <input class="input" type="text" name="username" id="username" placeholder="Username" required>
+            <input class="input" type="email" name="email" id="email" placeholder="Email" required>
+            <input class="input" type="password" name="password" id="password" placeholder="Password" required>
+            <input class="input" type="password" name="password2" id="password2" placeholder="Confirm Password" required>
         </div>
-        <input type="submit" value="Register" class="btn btn-primary">
+        <input type="submit" value="Register" class="btn submit">
         <hr>
-        <p>Already have an account? <a href="{% url 'core:login' %}">Login</a></p>
+        <p class="alt-option">Already have an account? <a href="{% url 'core:login' %}">Login</a></p>
     </form>
 {% endblock %}

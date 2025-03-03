@@ -1,9 +1,10 @@
-footer {
-    border-top: $border-size solid var(--accent);
-    padding: $padding-sm $padding;
+.footer {
+    border-top: $default-border;
     text-align: center;
+    margin-top: calc($margin-md + $margin-sm - 1px);
 
     p {
-        margin: 0;
+        margin: $margin-md;
+        padding: 0;
     }
 }

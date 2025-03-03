@@ -1,0 +1,59 @@
+@import "abstract/fonts";
+@import "abstract/variables";
+@import "abstract/mixins";
+@import "components/buttons";
+@import "components/card";
+@import "components/forms";
+@import "components/container";
+@import "layout/header";
+@import "layout/page";
+@import "layout/footer";
+@import "pages/home";
+@import "pages/preferences";
+@import "pages/about";
+
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: $font-family !important;
+    padding: $navbar-height $padding-lg 0 $padding-lg;
+    margin: 0;
+
+    &.light {
+        @include theme(light);
+    }
+
+    &.dark {
+        @include theme(dark);
+    }
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+li, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button {
+    color: var(--text);
+    font-family: $font-family;
+}
+
+i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    font-family: $font-family;
+}

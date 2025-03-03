@@ -1,0 +1,55 @@
+@mixin theme($theme) {
+    $theme-map: map-get($themes, $theme);
+  
+    @each $key, $value in $theme-map {
+        --#{$key}: #{$value};
+    }
+}
+
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $spacing: 0) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+    gap: $spacing;
+}
+
+@mixin position($position: relative) {
+    position: $position;
+}
+
+@mixin size($width, $height: $width) {
+    width: $width;
+    height: $height;
+}
+
+@mixin absolute($top: 0, $right: 0, $bottom: 0, $left: 0) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}
+
+@mixin position-center($x: true, $y: true) {
+    position: absolute;
+    @if $x and $y {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    } @else if $x {
+        left: 50%;
+        transform: translateX(-50%);
+    } @else if $y {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+@mixin fixed($top: 0, $right: 0, $bottom: 0, $left: 0) {
+    position: fixed;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}

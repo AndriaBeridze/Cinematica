@@ -1,12 +1,17 @@
 {% extends "page.html" %}
 {% load static %}
 
-{% block title %}Cinematica | Home{% endblock %}
+{% block title %} Cinematica | Home {% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/recommended.js' %}"></script>
+{% endblock %}
 
 {% block main_content %}
-  <h2 class="page-title">Recommended For You</h2>
-  <div class="movie-cards-container" id="recommended-movies-container">
+    <div class="page-title">
+        <h1>Recommended for You</h1>
+    </div>
+    <div class="container recommended-movies" id="recommended">
 
-  </div>
-  <script src="{% static 'js/rec.js' %}"></script>
+    </div>
 {% endblock %}

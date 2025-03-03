@@ -6,10 +6,33 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .rec import fetch_recommendations
 import json
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
-def home(request):
+@csrf_exempt
+def home(request):    
     if not request.user.is_authenticated:
         return redirect("core:login")
+    
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_pref = UserPreference.objects.get(user=request.user)
+        if data.get("liked"):
+            user_pref.liked_movies.append({
+                "id": data.get("id"),
+                "poster_path": data.get("poster_path")
+            })
+        else:
+            user_pref = UserPreference.objects.get(user=request.user)
+            user_pref.disliked_movies.append({
+                "id": data.get("id"),
+                "poster_path": data.get("poster_path")
+            })
+        
+        user_pref.save()
+        recommended_movies = fetch_recommendations([movie["id"] for movie in user_pref.liked_movies], [movie["id"] for movie in user_pref.disliked_movies])
+        user_pref.recommended_movies = recommended_movies
+        user_pref.save()
     
     return render(request, "pages/home.html")
 
@@ -55,7 +78,7 @@ def register_user(request):
 
 def logout_user(request):  
     logout(request)
-    return redirect("core:home")  
+    return redirect("core:login")  
 
 @csrf_exempt
 def movie_preferences(request):
@@ -65,22 +88,33 @@ def movie_preferences(request):
     if request.method == "POST":
         data = json.loads(request.body)
         liked_movies = []
-        for movie in data.get("movies"):
+        disliked_movies = []
+        for movie in data.get("movies")["liked"]:
             liked_movies.append({
                 "id": movie["id"],
                 "poster_path": movie["poster_path"]
             })
-            
-        recommended_movies = fetch_recommendations([movie["id"] for movie in liked_movies])
+        
+        for movie in data.get("movies")["disliked"]:
+            disliked_movies.append({
+                "id": movie["id"],
+                "poster_path": movie["poster_path"]
+            })    
+    
+        recommended_movies = fetch_recommendations([movie["id"] for movie in liked_movies], [movie["id"] for movie in disliked_movies])
             
         user_pref = UserPreference.objects.get(user=request.user)
         user_pref.liked_movies = liked_movies
+        user_pref.disliked_movies = disliked_movies
         user_pref.recommended_movies = recommended_movies
         user_pref.save()
         
         return redirect("core:home")
     
-    return render(request, "pages/movie-preference.html")
+    current_year = datetime.now().year
+    all_years = list(range(current_year, 1899, -1))
+    
+    return render(request, "pages/preferences.html", {"years": all_years})
 
 def user_preference_data(request):
     user_pref = UserPreference.objects.get(user=request.user)

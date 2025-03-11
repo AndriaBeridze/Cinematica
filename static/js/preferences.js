@@ -146,7 +146,11 @@ window.savePreferences = function () {
     const saveButton = document.querySelector('#save-preferences');
     saveButton.innerHTML = 'Saving...';
     saveButton.classList.add('disabled');
-    document.body.style.setProperty('cursor', 'progress', 'important');
+    document.body.style.setProperty('cursor', 'progress');
+    document.querySelectorAll('*').forEach(element => {
+        element.style.setProperty('cursor', 'progress');
+        element.style.setProperty('pointer-events', 'none');
+    });
 
     fetch('/preferences/', {
         method: 'POST',

@@ -47,7 +47,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function update(movieId, posterPath, liked) {
-    document.body.style.setProperty('cursor', 'wait');
+    document.body.style.setProperty('cursor', 'progress');
+    document.querySelectorAll('*').forEach(element => {
+        element.style.setProperty('cursor', 'progress');
+        element.style.setProperty('pointer-events', 'none');
+    });
+
     fetch('/', {
         method: 'POST',
         headers: {

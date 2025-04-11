@@ -111,6 +111,17 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
     fetch(url)
         .then(response => response.json())
         .then(data => {
+            if (!data.results || data.results.length === 0) {
+                const msg = document.createElement('p');
+                msg.style.textAlign = 'center';
+                msg.style.fontSize = '1.25rem';
+                msg.style.width = '100%';
+                msg.classList.add('no-results');
+                msg.textContent = 'No movies found. Try different filters.';
+                movieSectionAll.appendChild(msg);
+                return;
+            }
+
             data.results.forEach(movie => {
                 if (!movie.poster_path || movie.original_language !== 'en' || movie.vote_average < 4) return;
                 movieSectionAll.appendChild(generateMovieCard(movie));
@@ -122,6 +133,7 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
 }
 
 function clearMovieResults() {
+    currentPage = 1;
     movieSectionAll.innerHTML = '';
 }
 
@@ -176,10 +188,14 @@ document.addEventListener('DOMContentLoaded', function () {
     ratingSelect = document.querySelector('select#rating');
 
     // Event Listeners for Filters
+    let searchTimeout;
     searchBar.addEventListener('input', () => {
-        resetFilters();
-        clearMovieResults();
-        fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            resetFilters();
+            clearMovieResults();
+            fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
+        }, 100);
     });
 
     genreSelect.addEventListener('change', () => {

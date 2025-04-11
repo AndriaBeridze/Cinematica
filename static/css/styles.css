@@ -187,6 +187,9 @@
 .auth-form .alt-option a:hover {
   text-decoration: underline;
 }
+.auth-form select {
+  font: "Nunito";
+}
 
 .container {
   border: 0.0625rem solid var(--accent);

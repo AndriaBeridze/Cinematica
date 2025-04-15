@@ -89,6 +89,7 @@ function generateMovieCard(movie, includeContent = true) {
                     <h5 class="card-title">${movie.title}</h5>
                     <button class="opt like" data-id="${movie.id}" onclick="like(${movie.id}, '${movie.poster_path}')">Like</button>
                     <button class="opt dislike" data-id="${movie.id}" onclick="dislike(${movie.id}, '${movie.poster_path}')">Dislike</button>
+                    <button class="opt overview" data-id="${movie.id}" onclick="overview(${movie.id}, '${movie.poster_path}')">Overview</button>
                     <button class="opt remove" data-id="${movie.id}" onclick="remove(${movie.id})">Remove</button>
                 </div>`
                 : ''

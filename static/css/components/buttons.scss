@@ -37,6 +37,15 @@
         }
     }
 
+    &.overview {
+        background-color: $button-overview-background;
+        border-color: $button-overview-border;
+    
+        &:hover {
+            background-color: $button-overview-border;
+        }
+    }
+
     &.remove {
         background-color: $button-remove-background;
         border-color: $button-remove-border;

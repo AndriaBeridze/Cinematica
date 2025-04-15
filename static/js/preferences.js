@@ -19,6 +19,18 @@ let genreSelect;
 let yearSelect;
 let ratingSelect;
 
+function showLoading() {
+    movieSectionAll.querySelector('#loading').style.display = 'flex';
+    movieSectionAll.style.pointerEvents = 'none';
+}
+
+function hideLoading() {
+    setTimeout(() => {
+    movieSectionAll.querySelector('#loading').style.display = 'none';
+    movieSectionAll.style.pointerEvents = 'auto';
+    }, 500);
+}
+
 window.like = function (id) {
     console.log("Liked movie with ID:", id);;
 
@@ -154,6 +166,7 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
     if (year !== 'all') url += `&primary_release_year=${year}`;
     if (rating !== 'all') url += `&vote_average.gte=${rating}`;
 
+    showLoading();
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -165,20 +178,26 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
                 msg.classList.add('no-results');
                 msg.textContent = 'No movies found. Try different filters.';
                 movieSectionAll.appendChild(msg);
+                hideLoading();
                 return;
             }
 
-            data.results.forEach(movie => {
-                if (!movie.poster_path || movie.original_language !== 'en' || movie.vote_average < 4) return;
-                generateMovieCard(movie.id, 1).then(card => {
+            const cardPromises = data.results.map(movie => {
+                if (!movie.poster_path || movie.original_language !== 'en' || movie.vote_average < 4) return null;
+                return generateMovieCard(movie.id, 1).then(card => {
                     if (card && !movieSectionAll.querySelector(`#movie-${movie.id}`) && movie.id != undefined) {
                         movieSectionAll.appendChild(card);
                     }
                 });
             });
+
+            Promise.all(cardPromises).then(() => {
+                hideLoading();
+            });
         })
         .catch(error => {
             console.error('Error fetching movies:', error);
+            hideLoading();
         });
 }
 
@@ -253,7 +272,21 @@ function resetSearchBar() {
 
 function clearMovieResults() {
     currentPage = 1;
-    movieSectionAll.innerHTML = '';
+    movieSectionAll.innerHTML = 
+    `<div class="loading" id="loading" style="
+            background-color: black;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        ">
+        <p>Loading...</p>
+    </div>`;
 }
 
 function getUserData() {

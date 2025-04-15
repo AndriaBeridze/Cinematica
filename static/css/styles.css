@@ -34,7 +34,6 @@
 }
 .opt.like:hover {
   background-color: #2f50ba;
-  cursor: pointer;
 }
 .opt.dislike {
   background-color: #db3d3d;
@@ -42,15 +41,13 @@
 }
 .opt.dislike:hover {
   background-color: #a02020;
-  cursor: pointer;
 }
 .opt.overview {
-  background-color: #30a71e;
-  border-color: #206007;
+  background-color: #4caf50;
+  border-color: #388e3c;
 }
 .opt.overview:hover {
-  background-color: #406615;
-  cursor: pointer;
+  background-color: #388e3c;
 }
 .opt.remove {
   background-color: #7e7e7e;
@@ -58,7 +55,6 @@
 }
 .opt.remove:hover {
   background-color: #454545;
-  cursor: pointer;
 }
 
 .disabled {

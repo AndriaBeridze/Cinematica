@@ -19,83 +19,128 @@ let genreSelect;
 let yearSelect;
 let ratingSelect;
 
-// Movie Interaction Functions
-window.like = function (id, posterPath) {
-    console.log("Liked movie with ID:", id);
-    const movie = { id, poster_path: posterPath };
+window.like = function (id) {
+    console.log("Liked movie with ID:", id);;
 
     // Remove from disliked list if present
-    const dislikedIndex = dislikedMovies.findIndex(m => m.id === id);
+    const dislikedIndex = dislikedMovies.findIndex(m => m === id);
     if (dislikedIndex !== -1) {
         dislikedMovies.splice(dislikedIndex, 1);
         movieSectionDisliked.removeChild(movieSectionDisliked.children[dislikedIndex]);
     }
 
     // Add to liked list if not already present
-    if (!likedMovies.some(m => m.id === id)) {
-        likedMovies.push(movie);
-        movieSectionLiked.appendChild(generateMovieCard(movie));
+    if (!likedMovies.some(m => m === id)) {
+        likedMovies.push(id);
+        generateMovieCard(id, 0).then(card => {    
+            movieSectionLiked.appendChild(card);
+        });
     }
+
+    console.log("Liked movies:", likedMovies);
+    console.log("Disliked movies:", dislikedMovies);    
 };
 
-window.dislike = function (id, posterPath) {
+window.dislike = function (id) {
     console.log("Disliked movie with ID:", id);
-    const movie = { id, poster_path: posterPath };
 
     // Remove from liked list if present
-    const likedIndex = likedMovies.findIndex(m => m.id === id);
+    const likedIndex = likedMovies.findIndex(m => m === id);
     if (likedIndex !== -1) {
         likedMovies.splice(likedIndex, 1);
         movieSectionLiked.removeChild(movieSectionLiked.children[likedIndex]);
     }
 
     // Add to disliked list if not already present
-    if (!dislikedMovies.some(m => m.id === id)) {
-        dislikedMovies.push(movie);
-        movieSectionDisliked.appendChild(generateMovieCard(movie));
+    if (!dislikedMovies.some(m => m === id)) {
+        dislikedMovies.push(id);
+        generateMovieCard(id, 0).then(card => {
+            movieSectionDisliked.appendChild(card);
+        });
     }
+
+    console.log("Liked movies:", likedMovies);
+    console.log("Disliked movies:", dislikedMovies);   
 };
 
 window.remove = function (id) {
     console.log("Removed movie with ID:", id);
 
     // Remove from liked list
-    const likedIndex = likedMovies.findIndex(m => m.id === id);
+    const likedIndex = likedMovies.findIndex(m => m === id);
     if (likedIndex !== -1) {
         likedMovies.splice(likedIndex, 1);
         movieSectionLiked.removeChild(movieSectionLiked.children[likedIndex]);
     }
 
     // Remove from disliked list
-    const dislikedIndex = dislikedMovies.findIndex(m => m.id === id);
+    const dislikedIndex = dislikedMovies.findIndex(m => m === id);
     if (dislikedIndex !== -1) {
         dislikedMovies.splice(dislikedIndex, 1);
         movieSectionDisliked.removeChild(movieSectionDisliked.children[dislikedIndex]);
     }
 };
 
-// Helper Functions
-function generateMovieCard(movie, includeContent = true) {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    const posterPath = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+window.savePreferences = function () {
+    const saveButton = document.querySelector('#save-preferences');
+    saveButton.innerHTML = 'Saving...';
+    saveButton.classList.add('disabled');
+    document.body.style.setProperty('cursor', 'progress');
+    document.querySelectorAll('*').forEach(element => {
+        element.style.setProperty('cursor', 'progress');
+        element.style.setProperty('pointer-events', 'none');
+    });
 
-    card.innerHTML = `
-        <img src="${posterPath}" class="card-img-top" alt="${movie.title}">
-        ${
-            includeContent
-                ? `
+    fetch('/preferences/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ movies: { liked: likedMovies, disliked: dislikedMovies } }),
+    })
+        .catch(error => console.error('Error saving preferences:', error))
+        .finally(() => {
+            window.location.href = '/';
+        });
+};
+
+
+
+function getMovieByID(id) {
+    return fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
+        .then(response => response.json())
+        .catch(error => {
+            console.error('Error fetching movie data:', error);
+            return null;
+        });
+}
+
+function generateMovieCard(movieId, status) {
+    return getMovieByID(movieId).then(movie => {
+        if (movie) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.id = `movie-${movie.id}`;
+
+            card.innerHTML = `
+                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title">${movie.title}</h5>
-                    <button class="opt like" data-id="${movie.id}" onclick="like(${movie.id}, '${movie.poster_path}')">Like</button>
-                    <button class="opt dislike" data-id="${movie.id}" onclick="dislike(${movie.id}, '${movie.poster_path}')">Dislike</button>
-                    <button class="opt overview" data-id="${movie.id}" onclick="overview(${movie.id}, '${movie.poster_path}')">Overview</button>
-                    <button class="opt remove" data-id="${movie.id}" onclick="remove(${movie.id})">Remove</button>
-                </div>`
-                : ''
+                        <h5 class="card-title">${movie.title}</h5>
+                        <button class="opt overview" data-id="${movie.id}" onclick="overview(${movie.id})">Overview</button>
+                        ${
+                            status === 1 ?
+                            `<button class="opt like" data-id="${movie.id}" onclick="like(${movie.id})">Like</button>
+                             <button class="opt dislike" data-id="${movie.id}" onclick="dislike(${movie.id})">Dislike</button>`
+                            :
+                            `<button class="opt remove" data-id="${movie.id}" onclick="remove(${movie.id})">Remove</button>`
+                        }
+                </div>
+            `;
+
+            return card;
         }
-    `;
-    return card;
+    }).catch(error => {
+        console.error('Error generating movie card:', error);
+        return null;
+    });
 }
 
 function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating = 'all') {
@@ -125,7 +170,11 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
 
             data.results.forEach(movie => {
                 if (!movie.poster_path || movie.original_language !== 'en' || movie.vote_average < 4) return;
-                movieSectionAll.appendChild(generateMovieCard(movie));
+                generateMovieCard(movie.id, 1).then(card => {
+                    if (card && !movieSectionAll.querySelector(`#movie-${movie.id}`) && movie.id != undefined) {
+                        movieSectionAll.appendChild(card);
+                    }
+                });
             });
         })
         .catch(error => {
@@ -133,51 +182,8 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
         });
 }
 
-function clearMovieResults() {
-    currentPage = 1;
-    movieSectionAll.innerHTML = '';
-}
 
-function getUserData() {
-    fetch('/preferences/data')
-        .then(response => response.json())
-        .then(data => {
-            data.liked.forEach(movie => {
-                likedMovies.push(movie);
-                movieSectionLiked.appendChild(generateMovieCard(movie));
-            });
-
-            data.disliked.forEach(movie => {
-                dislikedMovies.push(movie);
-                movieSectionDisliked.appendChild(generateMovieCard(movie));
-            });
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-}
-
-window.savePreferences = function () {
-    const saveButton = document.querySelector('#save-preferences');
-    saveButton.innerHTML = 'Saving...';
-    saveButton.classList.add('disabled');
-    document.body.style.setProperty('cursor', 'progress');
-    document.querySelectorAll('*').forEach(element => {
-        element.style.setProperty('cursor', 'progress');
-        element.style.setProperty('pointer-events', 'none');
-    });
-
-    fetch('/preferences/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ movies: { liked: likedMovies, disliked: dislikedMovies } }),
-    })
-        .catch(error => console.error('Error saving preferences:', error))
-        .finally(() => {
-            window.location.href = '/';
-        });
-};
-
-// Event Listeners and Initialization
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     // Initialize DOM Elements
     movieSectionAll = document.querySelector('.section#all');
     movieSectionLiked = document.querySelector('.section#liked');
@@ -219,25 +225,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Infinite Scroll
     movieSectionAll.addEventListener('scroll', function () {
-        if (movieSectionAll.scrollTop + movieSectionAll.clientHeight >= movieSectionAll.scrollHeight - 500) {
+        if (movieSectionAll.scrollTop + movieSectionAll.clientHeight * 2 >= movieSectionAll.scrollHeight) {
             currentPage++;
             fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
         }
     });
 
+
     // Initial Fetch and User Data Load
     fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-    getUserData();
 });
+
 
 // Utility Functions
 function resetFilters() {
     genreSelect.value = 'all';
     yearSelect.value = 'all';
     ratingSelect.value = 'all';
+    currentPage = 1;
 }
 
 function resetSearchBar() {
     searchBar.value = '';
     currentPage = 1;
+}
+
+function clearMovieResults() {
+    currentPage = 1;
+    movieSectionAll.innerHTML = '';
 }

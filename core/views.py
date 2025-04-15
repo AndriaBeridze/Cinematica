@@ -20,13 +20,11 @@ def home(request):
         if data.get("liked"):
             user_pref.liked_movies.append({
                 "id": data.get("id"),
-                "poster_path": data.get("poster_path")
             })
         else:
             user_pref = UserPreference.objects.get(user=request.user)
             user_pref.disliked_movies.append({
                 "id": data.get("id"),
-                "poster_path": data.get("poster_path")
             })
         
         user_pref.save()
@@ -91,14 +89,12 @@ def movie_preferences(request):
         disliked_movies = []
         for movie in data.get("movies")["liked"]:
             liked_movies.append({
-                "id": movie["id"],
-                "poster_path": movie["poster_path"]
+                "id": movie,
             })
         
         for movie in data.get("movies")["disliked"]:
             disliked_movies.append({
-                "id": movie["id"],
-                "poster_path": movie["poster_path"]
+                "id": movie,
             })    
     
         recommended_movies = fetch_recommendations([movie["id"] for movie in liked_movies], [movie["id"] for movie in disliked_movies])
@@ -137,14 +133,3 @@ def about(request):
         return redirect("core:login")
     
     return render(request, "pages/about.html")
-
-def movies_data(request):
-    user_pref, created = UserPreference.objects.get_or_create(user=request.user)
-    liked = user_pref.liked_movies  
-    
-    recommended = fetch_recommendations([m['id'] for m in liked]) if liked else []
-
-    return JsonResponse({
-        "liked": liked,
-        "recommended": recommended
-    })

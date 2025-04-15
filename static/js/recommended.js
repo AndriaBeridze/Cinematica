@@ -10,8 +10,8 @@ function generateMovieCard(movie, content = true) {
             content ? `
             <div class="card-body">
                 <h5 class="card-title">${movie.title}</h5>
-                <button class="opt like" data-id="${movie.id}" onclick="update(${movie.id}, '${movie.poster_path}', true)">Like</button>
-                <button class="opt dislike" data-id="${movie.id}" onclick="update(${movie.id}, '${movie.poster_path}', false)">Dislike</button>
+                <button class="opt like" data-id="${movie.id}" onclick="update(${movie.id}, true)">Like</button>
+                <button class="opt dislike" data-id="${movie.id}" onclick="update(${movie.id}, false)">Dislike</button>
             </div>` : ``
         }   
     `;
@@ -58,7 +58,7 @@ function update(movieId, posterPath, liked) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id: movieId, poster_path: posterPath, liked: liked })
+        body: JSON.stringify({ id: movieId, liked: liked })
     })
     .then(response => response.json())
     .catch(error => {

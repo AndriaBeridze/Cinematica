@@ -234,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial Fetch and User Data Load
     fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
+    getUserData();
 });
 
 
@@ -253,4 +254,25 @@ function resetSearchBar() {
 function clearMovieResults() {
     currentPage = 1;
     movieSectionAll.innerHTML = '';
+}
+
+function getUserData() {
+    fetch('/preferences/data')
+        .then(response => response.json())
+        .then(data => {
+            data.liked.forEach(movie => {
+                likedMovies.push(movie.id);
+                generateMovieCard(movie.id, 0).then(card => {
+                    movieSectionLiked.appendChild(card);
+                });
+            });
+
+            data.disliked.forEach(movie => {
+                dislikedMovies.push(movie.id);
+                generateMovieCard(movie.id, 0).then(card => {
+                    movieSectionDisliked.appendChild(card);
+                });
+            });
+        })
+        .catch(error => console.error('Error fetching user data:', error));
 }

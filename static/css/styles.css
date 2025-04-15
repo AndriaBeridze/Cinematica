@@ -445,12 +445,44 @@
   margin: 0;
   padding: 0;
 }
-.preferences .sort #liked {
-  border-color: #2f50ba !important;
+
+#liked, #disliked {
+  position: relative;
+  border: 2px solid;
+  padding-top: 0.5em; 
 }
-.preferences .sort #disliked {
-  border-color: #a02020 !important;
+
+#liked {
+  border-color: #2f50ba;
 }
+#disliked {
+  border-color: #a02020;
+}
+
+#liked::before,
+#disliked::before {
+  position: absolute;
+  top: 0.25em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 0 0.6em;
+  font-weight: bold;
+  font-size: 0.9em;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#liked::before {
+  content: "Liked";
+  color: #2f50ba;
+}
+
+#disliked::before {
+  content: "Disliked";
+  color: #a02020;
+}
+
 .preferences .options {
   height: 1.5rem;
   display: flex;

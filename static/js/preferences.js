@@ -81,6 +81,10 @@ window.remove = function (id) {
     }
 };
 
+window.overview = function (id) {
+    window.location.href = `/overview/${id}/`;
+};
+
 window.savePreferences = function () {
     const saveButton = document.querySelector('#save-preferences');
     saveButton.innerHTML = 'Saving...';

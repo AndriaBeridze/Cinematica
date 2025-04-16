@@ -8,6 +8,8 @@ from .rec import fetch_recommendations
 import json
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+import requests
+from django.conf import settings
 
 @csrf_exempt
 def home(request):    
@@ -133,3 +135,26 @@ def about(request):
         return redirect("core:login")
     
     return render(request, "pages/about.html")
+
+def movie_overview(request, movie_id):
+    api_key = '595786e6aaaa7490b57f9936a7ae819f' 
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&append_to_response=credits"
+    
+    response = requests.get(url)
+    if response.status_code != 200:
+        return render(request, 'overview.html', {'movie': None})
+
+    data = response.json()
+
+    movie_data = {
+        'title': data.get('title'),
+        'poster_url': f"https://image.tmdb.org/t/p/w500{data.get('poster_path')}" if data.get('poster_path') else '',
+        'genre': ', '.join([genre['name'] for genre in data.get('genres', [])]),
+        'release_year': data.get('release_date', '')[:4],
+        'description': data.get('overview'),
+        'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
+        'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),  # Top 5 actors
+        'comments': [],  # Placeholder if you plan to implement comments later
+    }
+
+    return render(request, 'overview.html', {'movie': movie_data})

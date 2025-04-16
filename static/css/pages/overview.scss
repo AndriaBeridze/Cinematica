@@ -1,0 +1,91 @@
+.overview-page {
+    padding: $padding-md;
+    
+  
+    .movie-overview {
+      @include flex(column, $gap: 1.5rem);
+      background-color: var(--bg-secondary);
+      border-radius: $border-radius-xs;
+      padding: $padding-md;
+  
+      .row {
+        @include flex(row, nowrap, flex-start, stretch);
+        gap: 2rem;
+  
+        img {
+          min-width: 300px;
+          min-height: 450px;      
+          border-radius: $border-radius-xs;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+  
+        h1 {
+          font-size: 2rem;
+          margin-bottom: 0.5rem;
+        }
+  
+        .text-muted {
+          color: var(--text-muted);
+          margin-bottom: 1rem;
+        }
+  
+        p {
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  
+    .ratings-comments {
+      background-color: var(--bg-light);
+      border-radius: $border-radius-xs;
+      padding: $padding-md;
+      margin-top: 2rem;
+  
+      h2, h3 {
+        margin-bottom: 1rem;
+      }
+  
+      .form-group {
+        margin-bottom: 1rem;
+  
+        label {
+          font-weight: bold;
+        }
+  
+        select, textarea {
+          width: 100%;
+          padding: 0.5rem;
+          border-radius: $border-radius-xs;
+          border: 1px solid var(--border-color);
+        }
+      }
+  
+      .btn {
+        @include size(auto, 2.5rem);
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: $border-radius-xs;
+  
+        &:hover {
+          background-color: darken(var(--accent), 10%);
+        }
+      }
+  
+      .existing-comments {
+        margin-top: 2rem;
+  
+        ul {
+          list-style: none;
+          padding: 0;
+  
+          li {
+            background-color: var(--bg-secondary);
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: $border-radius-xs;
+          }
+        }
+      }
+    }
+  }

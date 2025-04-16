@@ -13,4 +13,5 @@ urlpatterns = [
     path('preferences/', views.movie_preferences, name='preferences'),
     path('preferences/data', views.user_preference_data, name='preferences_data'),
     path('about/', views.about, name='about'),
+    path('overview/<int:movie_id>/', views.movie_overview, name='overview'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

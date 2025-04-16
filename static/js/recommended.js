@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchRecommendedMovies();
 });
 
-function update(movieId, posterPath, liked) {
+function update(movieId, liked) {
     document.body.style.setProperty('cursor', 'progress');
     document.querySelectorAll('*').forEach(element => {
         element.style.setProperty('cursor', 'progress');

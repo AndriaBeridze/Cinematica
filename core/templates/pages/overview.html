@@ -1,72 +1,69 @@
 {% extends "page.html" %}
 {% load static %}
 
+{% block title %}
+    {{ movie.title }} - Movie Overview
+{% endblock %}
+
 {% block main_content %}
-<div class="page-title">
-    <h1>{{ movie.title }}</h1>
-</div>
-<div class="container overview-page">
-    <section class="movie-overview">
-        <div class="row">
-            <div class="col-md-4">
+    <div class="container overview">
+        <section class="movie-overview">
+            <div class="poster-container">
                 <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="poster">
             </div>
-            <div class="col-md-8">
-                <p class="text-muted">{{ movie.genre }} | {{ movie.release_year }}</p>
-                <p><strong>Director:</strong> {{ movie.director }}</p>
-                <p><strong>Starring:</strong> {{ movie.actors }}</p>
-                <p>{{ movie.description }}</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="ratings-comments mt-4">
-        <h2>Ratings and Reviews</h2>
-
-        <div class="rating mb-4">
-            <h3>Your Rating:</h3>
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="rating">Rate this movie (1-5):</label>
-                    <select name="rating" id="rating" class="form-control" required>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+            <div class="movie-details">
+                <div class="brief-description">
+                    <h1>{{ movie.title }} (<span style="color: var(--primary);">{{ movie.release_year }}</span>)</h1>
+                    <p>{{ movie.release_date }} <span>&#9679;</span> {{ movie.single_genre }} <span>&#9679;</span> {{ movie.duration }}</p>
                 </div>
-                <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
-            </form>
-        </div>
+                <div class="rating-indicator" id="indicator">{{ movie.rating }}%</div>
+                <div class="description">
+                    <h2>Description</h2>
+                    <p>{{ movie.description }}</p>
+                </div>
+                <div class="people">
+                    <span>Director:</span> {{ movie.director }}
+                    <br>
+                    <span>Cast: </span> {{ movie.actors }}
+                </div>
+            </div>
 
-        <div class="comments">
-            <h3>Leave a Comment:</h3>
+            <script src="{% static 'js/overview.js' %}"></script>
+        </section>
+        <hr>
+        <section class="user-reviews">
+            <h3>Leave a Review</h3>
             <form action="{% url 'core:submit_comment' %}" method="post">
                 {% csrf_token %}
-                <div class="form-group">
+                <div class="form-group"><label for="rating">Rating </label>:
+                    <span><input type="number" name="rating" id="rating" min="1" max="10" required> / 10</span>
                     <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                    <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Write your thoughts here..." required></textarea>
+                    <textarea name="comment" id="comment" rows="4" placeholder="Write your thoughts here..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
             </form>
-
-            <div class="existing-comments mt-4">
-                <h4>Comments:</h4>
+            <hr>
+            <div class="existing-comments">
+                <h3>Past Reviews</h3>
                 <ul class="list-group">
-                    {% for comment in movie.comments %}
-                        <li class="list-group-item">
-                            <strong>{{ comment.user }}:</strong> {{ comment.text }} 
-                            <small class="text-muted">{{ comment.date_posted }}</small>
+                    {% for review in movie.reviews %}
+                        <li class="list-group-item review">
+                            <div class="about-user">
+                                <span class="user">{{ review.user }}</span> 
+                                <span class="rating-indicator" id="indicator">{{ review.rating }} / 10</span>
+                                <span class="created_at">{{ review.created_at }}</span>
+                            </div>
+                            <hr>
+                            <div class="content">
+                                <p>{{ review.text }}</p>
+                            </div>
                         </li>
                     {% empty %}
                         <li class="list-group-item">No comments yet.</li>
                     {% endfor %}
                 </ul>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 {% endblock %}
 

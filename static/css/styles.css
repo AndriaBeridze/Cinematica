@@ -527,92 +527,160 @@
   color: var(--secondary);
 }
 
-.overview-page {
-  padding: 1rem;
+.container.overview {
+  margin: 1rem 0;
 }
-.overview-page .poster {
-  height: 300px;
-  border-radius: 100px;
+.container.overview hr {
+  margin: 0 1rem;
+  border: 0.5px solid var(--secondary);
 }
-.overview-page .movie-overview {
+.container.overview .movie-overview {
+  padding: 1rem 2rem;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
-  background-color: var(--bg-secondary);
-  border-radius: 0.25rem;
-  padding: 1rem;
-}
-.overview-page .movie-overview .row {
-  display: flex;
-  flex-direction: row;
-  justify-content: nowrap;
-  align-items: flex-start;
-  gap: stretch;
   gap: 2rem;
+  position: relative;
 }
-.overview-page .movie-overview .row img {
-  min-width: 300px;
-  min-height: 450px;
-  border-radius: 0.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-.overview-page .movie-overview .row h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-.overview-page .movie-overview .row .text-muted {
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-.overview-page .movie-overview .row p {
-  margin-bottom: 0.5rem;
-}
-.overview-page .ratings-comments {
-  background-color: var(--bg-light);
-  border-radius: 0.25rem;
-  padding: 1rem;
-  margin-top: 2rem;
-}
-.overview-page .ratings-comments h2, .overview-page .ratings-comments h3 {
-  margin-bottom: 1rem;
-}
-.overview-page .ratings-comments .form-group {
-  margin-bottom: 1rem;
-}
-.overview-page .ratings-comments .form-group label {
-  font-weight: bold;
-}
-.overview-page .ratings-comments .form-group select, .overview-page .ratings-comments .form-group textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid var(--border-color);
-}
-.overview-page .ratings-comments .btn {
-  width: auto;
-  height: 2.5rem;
-  background-color: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 0.25rem;
-}
-.overview-page .ratings-comments .btn:hover {
-  background-color: rgba(var(--accent-rgb), 0.9);
-}
-.overview-page .ratings-comments .existing-comments {
-  margin-top: 2rem;
-}
-.overview-page .ratings-comments .existing-comments ul {
-  list-style: none;
+.container.overview .movie-overview .poster-container {
+  margin: 0;
   padding: 0;
 }
-.overview-page .ratings-comments .existing-comments ul li {
-  background-color: var(--bg-secondary);
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0.25rem;
+.container.overview .movie-overview .poster-container .poster {
+  height: 450px;
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.5rem;
+}
+.container.overview .movie-overview .movie-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 450px;
+}
+.container.overview .movie-overview .movie-details .brief-description h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
+.container.overview .movie-overview .movie-details .brief-description p {
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+.container.overview .movie-overview .movie-details .brief-description p span {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+}
+.container.overview .movie-overview .movie-details .rating-indicator {
+  background-color: grey;
+  height: 22px;
+  width: 69px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  border: 2px solid #4d4d4d;
+}
+.container.overview .movie-overview .movie-details .description h2 {
+  margin: 0;
+  padding: 0;
+  color: var(--primary);
+}
+.container.overview .movie-overview .movie-details .description p {
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+}
+.container.overview .movie-overview .movie-details .people {
+  margin: 1rem 0;
+}
+.container.overview .movie-overview .movie-details .people span {
+  color: var(--primary);
+}
+.container.overview .user-reviews {
+  padding: 1rem 2rem;
+  padding-top: 0;
+}
+.container.overview .user-reviews .form-group label {
+  color: var(--primary);
+}
+.container.overview .user-reviews .form-group input[type=number] {
+  background-color: var(--background);
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.5rem;
+  height: 1.5rem;
+  width: 3rem;
+  font-size: 16px;
+  color: var(--text);
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  margin: 0;
+}
+.container.overview .user-reviews .form-group input[type=number]:focus {
+  outline: none;
+}
+.container.overview .user-reviews .form-group textarea {
+  width: calc(100% - 1rem);
+  height: 150px;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.5rem;
+  color: var(--text);
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  resize: none;
+  font-size: 15px;
+}
+.container.overview .user-reviews .form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.753);
+}
+.container.overview .user-reviews .form-group textarea:focus {
+  outline: 2px solid rgb(51, 116, 228);
+}
+.container.overview .user-reviews button[type=submit] {
+  margin: 0.5rem 0;
+}
+.container.overview .user-reviews hr {
+  margin: 1rem 0;
+  border: 0.5px solid var(--secondary);
+}
+.container.overview .user-reviews .review {
+  margin: 1rem 0;
+  border: 0.0625rem solid var(--accent);
+  padding: 0.5rem 1rem;
+}
+.container.overview .user-reviews .review .about-user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  height: 30px;
+}
+.container.overview .user-reviews .review .about-user .user {
+  color: var(--primary);
+}
+.container.overview .user-reviews .review .about-user .rating-indicator {
+  background-color: grey;
+  height: 22px;
+  width: 69px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  border: 2px solid #4d4d4d;
+}
+.container.overview .user-reviews .review .about-user .created_at {
+  flex: 1;
+  justify-self: flex-end;
+  text-align: right;
+  opacity: 0.7;
 }
 
 body {

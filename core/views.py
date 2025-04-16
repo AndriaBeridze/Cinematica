@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import User, UserPreference, Comment, Movie
+from .models import Review, UserPreference, User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .rec import fetch_recommendations
@@ -9,7 +9,6 @@ import json
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 import requests
-from django.conf import settings
 
 @csrf_exempt
 def home(request):    
@@ -146,46 +145,57 @@ def movie_overview(request, movie_id):
     
     data = response.json()
     
-    comments_qs = Comment.objects.filter(movie_id=movie_id).order_by("-created_at")
-    comments_list = [
+    review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
+    review_list = [
         {
-            "user": comment.user.username,
-            "text": comment.comment,
-            "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "user": review.user.username,
+            "rating": review.rating,
+            "text": review.text,
+            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S")
         }
-        for comment in comments_qs
+        for review in review_qs
     ]
-    print(comments_list)
     
     movie_data = {
-        'id': movie_id,  # Add this key so the movie id is available in the template
         'title': data.get('title'),
+        'id': movie_id,
         'poster_url': f"https://image.tmdb.org/t/p/w500{data.get('poster_path')}" if data.get('poster_path') else '',
-        'genre': ', '.join([genre['name'] for genre in data.get('genres', [])]),
         'release_year': data.get('release_date', '')[:4],
+        'release_date': data.get('release_date', ''),
+        'single_genre': data.get('genres', [{}])[0].get('name', '') if data.get('genres') else '',
+        'duration': f"{data.get('runtime', 0) // 60}h {data.get('runtime', 0) % 60}m" if data.get('runtime') else 'N/A',
+        'rating': f"{data.get('vote_average', 0) * 10:.2f}",  # Convert to percentage and format to 2 decimal points
         'description': data.get('overview'),
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
-        'comments': comments_list
+        'reviews': review_list
     }
     
-    return render(request, 'pages/overview.html', {'movie': movie_data})
+    reviewed = Review.objects.filter(user=request.user, movie_id=movie_id).exists() if request.user.is_authenticated else False
+    
+    return render(request, 'pages/overview.html', {'movie': movie_data, 'reviewed': reviewed})
 
 
 @login_required
 def submit_comment(request):
     if request.method == "POST":
         movie_id = request.POST.get('movie_id', '').strip()
-        comment_text = request.POST.get('comment', '').strip()
+        rating = request.POST.get('rating', '').strip()
+        text = request.POST.get('comment', '').strip()
         
-        if movie_id and comment_text:
-            new_comment = Comment.objects.create(
+        print(movie_id, rating, text)
+        
+        if movie_id and text and rating:
+            new_review = Review.objects.create(
                 user=request.user,
                 movie_id=movie_id,
-                comment=comment_text
+                rating=rating,
+                text=text,
             )
-            new_comment.save()
+            new_review.save()
             
-        return redirect('core:overview', movie_id=movie_id)
+            return redirect(f'/overview/{ movie_id }')
+    
+    
         
     return JsonResponse({"error": "Invalid request."}, status=400)

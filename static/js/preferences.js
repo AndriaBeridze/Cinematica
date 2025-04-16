@@ -170,7 +170,7 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
     if (year !== 'all') url += `&primary_release_year=${year}`;
     if (rating !== 'all') url += `&vote_average.gte=${rating}`;
 
-    showLoading();
+    if (page === 1) showLoading();
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -196,7 +196,7 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
             });
 
             Promise.all(cardPromises).then(() => {
-                hideLoading();
+                if (page === 1) hideLoading();
             });
         })
         .catch(error => {

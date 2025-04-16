@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import User, UserPreference
+from .models import User, UserPreference, Comment, Movie
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .rec import fetch_recommendations
@@ -143,18 +143,53 @@ def movie_overview(request, movie_id):
     response = requests.get(url)
     if response.status_code != 200:
         return render(request, 'overview.html', {'movie': None})
-
+    
     data = response.json()
-
+    
+    comments_qs = Comment.objects.filter(movie__tmdb_id=movie_id).order_by("-created_at")
+    comments_list = [
+        {
+            "user": comment.user.username,
+            "text": comment.text,
+            "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        for comment in comments_qs
+    ]
+    
     movie_data = {
+        'tmdb_id': movie_id,  # Add this key so the movie id is available in the template
         'title': data.get('title'),
         'poster_url': f"https://image.tmdb.org/t/p/w500{data.get('poster_path')}" if data.get('poster_path') else '',
         'genre': ', '.join([genre['name'] for genre in data.get('genres', [])]),
         'release_year': data.get('release_date', '')[:4],
         'description': data.get('overview'),
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
-        'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),  # Top 5 actors
-        'comments': [],  # Placeholder if you plan to implement comments later
+        'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
+        'comments': comments_list
     }
-
+    
     return render(request, 'overview.html', {'movie': movie_data})
+
+
+@csrf_exempt
+@login_required
+def submit_comment(request):
+    if request.method == "POST":
+        movie_id = request.POST.get('movie_id')
+        comment_text = request.POST.get('comment', '').strip()
+        if movie_id and comment_text:
+            try:
+                movie = Movie.objects.get(tmdb_id=movie_id)
+            except Movie.DoesNotExist:
+                return JsonResponse({"error": "Movie not found."}, status=404)
+            new_comment = Comment.objects.create(movie=movie, user=request.user, text=comment_text)
+            response_data = {
+                "status": "success",
+                "comment": {
+                    "user": new_comment.user.username,
+                    "text": new_comment.text,
+                    "created_at": new_comment.created_at.strftime("%Y-%m-%d %H:%M:%S")
+                }
+            }
+            return JsonResponse(response_data)
+    return JsonResponse({"error": "Invalid request."}, status=400)

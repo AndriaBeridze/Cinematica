@@ -7,6 +7,7 @@ $navbar-height: 4rem;
     border-bottom: $default-border;
     padding: 0 $padding-xl;
     background-color: var(--background);
+    z-index: $z-5;
 
     .brand-icon {
         @include size(90px, $navbar-height);

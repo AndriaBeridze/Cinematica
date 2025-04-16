@@ -146,18 +146,19 @@ def movie_overview(request, movie_id):
     
     data = response.json()
     
-    comments_qs = Comment.objects.filter(movie__tmdb_id=movie_id).order_by("-created_at")
+    comments_qs = Comment.objects.filter(movie_id=movie_id).order_by("-created_at")
     comments_list = [
         {
             "user": comment.user.username,
-            "text": comment.text,
+            "text": comment.comment,
             "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M:%S")
         }
         for comment in comments_qs
     ]
+    print(comments_list)
     
     movie_data = {
-        'tmdb_id': movie_id,  # Add this key so the movie id is available in the template
+        'id': movie_id,  # Add this key so the movie id is available in the template
         'title': data.get('title'),
         'poster_url': f"https://image.tmdb.org/t/p/w500{data.get('poster_path')}" if data.get('poster_path') else '',
         'genre': ', '.join([genre['name'] for genre in data.get('genres', [])]),
@@ -168,28 +169,23 @@ def movie_overview(request, movie_id):
         'comments': comments_list
     }
     
-    return render(request, 'overview.html', {'movie': movie_data})
+    return render(request, 'pages/overview.html', {'movie': movie_data})
 
 
-@csrf_exempt
 @login_required
 def submit_comment(request):
     if request.method == "POST":
-        movie_id = request.POST.get('movie_id')
+        movie_id = request.POST.get('movie_id', '').strip()
         comment_text = request.POST.get('comment', '').strip()
+        
         if movie_id and comment_text:
-            try:
-                movie = Movie.objects.get(tmdb_id=movie_id)
-            except Movie.DoesNotExist:
-                return JsonResponse({"error": "Movie not found."}, status=404)
-            new_comment = Comment.objects.create(movie=movie, user=request.user, text=comment_text)
-            response_data = {
-                "status": "success",
-                "comment": {
-                    "user": new_comment.user.username,
-                    "text": new_comment.text,
-                    "created_at": new_comment.created_at.strftime("%Y-%m-%d %H:%M:%S")
-                }
-            }
-            return JsonResponse(response_data)
+            new_comment = Comment.objects.create(
+                user=request.user,
+                movie_id=movie_id,
+                comment=comment_text
+            )
+            new_comment.save()
+            
+        return redirect('core:overview', movie_id=movie_id)
+        
     return JsonResponse({"error": "Invalid request."}, status=400)

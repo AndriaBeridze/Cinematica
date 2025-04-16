@@ -1,9 +1,13 @@
 .overview-page {
     padding: $padding-md;
     
+    .poster {
+      height: 300px;
+      border-radius: 100px;
+    }
   
     .movie-overview {
-      @include flex(column, $gap: 1.5rem);
+      @include flex(column, flex-start, center, $gap-md);
       background-color: var(--bg-secondary);
       border-radius: $border-radius-xs;
       padding: $padding-md;
@@ -68,7 +72,7 @@
         border-radius: $border-radius-xs;
   
         &:hover {
-          background-color: darken(var(--accent), 10%);
+          background-color: rgba(var(--accent-rgb), 0.9); // Adjust opacity or use a fallback
         }
       }
   

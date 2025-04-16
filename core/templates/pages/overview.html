@@ -1,42 +1,17 @@
-{% extends "base.html" %}
+{% extends "page.html" %}
 {% load static %}
 
-{% block content %}
-<nav class="navbar">
-    <a href="" class="brand-icon">
-        <img src="{% static 'images/logo.png' %}" alt="Cinematica">
-    </a>
-    <div class="accessability">
-        <ul class="nav-menu">
-            <li class="nav-item"><a href="{% url 'core:home' %}">Home</a></li>
-            <li class="nav-item"><a href="{% url 'core:preferences' %}">Preferences</a></li>
-            <li class="nav-item"><a href="{% url 'core:about' %}">About</a></li>
-        </ul>
-        <ul class="nav-tools">
-            <li class="nav-item">
-                <span>{{ user.username }}</span> | <a href="{% url 'core:logout' %}">Logout</a>
-            </li>
-            <li class="nav-item">
-                <div class="btn theme-toggler" id="theme-toggler" onclick="toggleTheme()"></div>
-            </li>
-        </ul>
-    </div>
-    <script src="{% static 'js/theme.js' %}"></script>
-</nav>
-
 {% block main_content %}
+<div class="page-title">
+    <h1>{{ movie.title }}</h1>
+</div>
 <div class="container overview-page">
     <section class="movie-overview">
         <div class="row">
             <div class="col-md-4">
-                {% if movie.poster_url %}
-                    <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="img-fluid rounded">
-                {% else %}
-                    <p>No poster available.</p>
-                {% endif %}
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="poster">
             </div>
             <div class="col-md-8">
-                <h1>{{ movie.title }}</h1>
                 <p class="text-muted">{{ movie.genre }} | {{ movie.release_year }}</p>
                 <p><strong>Director:</strong> {{ movie.director }}</p>
                 <p><strong>Starring:</strong> {{ movie.actors }}</p>
@@ -50,7 +25,7 @@
 
         <div class="rating mb-4">
             <h3>Your Rating:</h3>
-            <form action="/submit_rating/" method="POST">
+            <form action="" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="rating">Rate this movie (1-5):</label>
@@ -68,20 +43,21 @@
 
         <div class="comments">
             <h3>Leave a Comment:</h3>
-            <form action="/submit_comment/" method="POST">
+            <form action="{% url 'core:submit_comment' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
                     <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Write your thoughts here..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
             </form>
 
             <div class="existing-comments mt-4">
-                <h4>Existing Comments:</h4>
+                <h4>Comments:</h4>
                 <ul class="list-group">
-                    {% for comment in movie.comments.all %}
+                    {% for comment in movie.comments %}
                         <li class="list-group-item">
-                            <strong>{{ comment.user.username }}:</strong> {{ comment.text }} 
+                            <strong>{{ comment.user }}:</strong> {{ comment.text }} 
                             <small class="text-muted">{{ comment.date_posted }}</small>
                         </li>
                     {% empty %}
@@ -92,10 +68,5 @@
         </div>
     </section>
 </div>
-{% endblock %}
-
-<footer class="footer">
-    <p>Cinematica 2025 &copy; This site is for personal use only and not an official or commercial entity.</p>
-</footer>
 {% endblock %}
 

@@ -21,7 +21,7 @@ class UserPreference(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie_id = models.IntegerField(null=True, blank=False)  # TMDB ID of the movie
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

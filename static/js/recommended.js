@@ -1,15 +1,25 @@
 var recommendedContainer;
 
+window.overview = function (id) {
+    window.location.href = `/overview/${id}/`;
+};
+
 function generateMovieCard(movie, content = true) {
     const card = document.createElement('div');
     card.classList.add('card');
     const posterPath = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
     card.innerHTML = `
-        <img src="${posterPath}" class="card-img-top" alt="${movie.title}">   
+        <a href="/overview/${movie.id}/">
+        <div class="poster-wrapper">
+            <img src="${posterPath}" class="card-img-top" alt="${movie.title}">
+            <div class="poster-title">${movie.title}
+            <div class="poster-year">(${movie.release_date?.split('-')[0] ?? 'N/A'})</div>
+            </div>
+        </div>
+        </a>     
         ${  
             content ? `
             <div class="card-body">
-                <h5 class="card-title">${movie.title}</h5>
                 <button class="opt like" data-id="${movie.id}" onclick="update(${movie.id}, true)">Like</button>
                 <button class="opt dislike" data-id="${movie.id}" onclick="update(${movie.id}, false)">Dislike</button>
             </div>` : ``

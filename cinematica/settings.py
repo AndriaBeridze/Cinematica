@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = '6!=b-&s+y(y%f_w(^#e#rkfvnop5#i(k7eb$^&&pogwhm@gqws'
 
-DEBUG = 'True'
+DEBUG = os.getenv('DEBUG') == 'True'
 
 
 ALLOWED_HOSTS = ['*']

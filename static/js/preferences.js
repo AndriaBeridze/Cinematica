@@ -138,21 +138,18 @@ function generateMovieCard(movieId, status) {
 
             card.innerHTML = `
             <a href="/overview/${movie.id}/">
-            <div class="poster-wrapper">
                 <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="card-img-top">
-                <div class="poster-title">${movie.title}
-                <div class="poster-year">(${movie.release_date?.split('-')[0] ?? 'N/A'})</div>
-            </div>
             </a>
-                <div class="card-body">
-                        ${
-                            status === 1 ?
-                            `<button class="opt like" data-id="${movie.id}" onclick="like(${movie.id})">Like</button>
-                             <button class="opt dislike" data-id="${movie.id}" onclick="dislike(${movie.id})">Dislike</button>`
-                            :
-                            `<button class="opt remove" data-id="${movie.id}" onclick="remove(${movie.id})">Remove</button>`
-                        }
-                </div>
+            <div class="card-body"> 
+                <h5 class="card-title">${movie.title}</h5> 
+                ${
+                    status === 1 ?
+                    `<button class="opt like" data-id="${movie.id}" onclick="like(${movie.id})">Like</button>
+                    <button class="opt dislike" data-id="${movie.id}" onclick="dislike(${movie.id})">Dislike</button>`
+                    :
+                    `<button class="opt remove" data-id="${movie.id}" onclick="remove(${movie.id})">Remove</button>`
+                }
+            </div>
             `;
 
             return card;

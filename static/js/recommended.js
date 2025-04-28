@@ -1,5 +1,9 @@
 var recommendedContainer;
 
+var recommended = [];
+var searchResults = [];
+var searchBar;
+
 window.overview = function (id) {
     window.location.href = `/overview/${id}/`;
 };
@@ -10,22 +14,33 @@ function generateMovieCard(movie, content = true) {
     const posterPath = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
     card.innerHTML = `
         <a href="/overview/${movie.id}/">
-        <div class="poster-wrapper">
-            <img src="${posterPath}" class="card-img-top" alt="${movie.title}">
-            <div class="poster-title">${movie.title}
-            <div class="poster-year">(${movie.release_date?.split('-')[0] ?? 'N/A'})</div>
-            </div>
+            <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="card-img-top">
+        </a>
+        <div class="card-body"> 
+            <h5 class="card-title">${movie.title}</h5> 
+            ${
+                content ? `
+                    <button class="opt like" data-id="${movie.id}" onclick="update(${movie.id}, true)">Like</button>
+                    <button class="opt dislike" data-id="${movie.id}" onclick="update(${movie.id}, false)">Dislike</button>
+                ` : ``
+            }
         </div>
-        </a>     
-        ${  
-            content ? `
-            <div class="card-body">
-                <button class="opt like" data-id="${movie.id}" onclick="update(${movie.id}, true)">Like</button>
-                <button class="opt dislike" data-id="${movie.id}" onclick="update(${movie.id}, false)">Dislike</button>
-            </div>` : ``
-        }   
     `;
     return card;
+}
+
+function createCards(movies) {
+    recommendedContainer.innerHTML = '';
+    movies.forEach(movie => {
+        const card = generateMovieCard(movie);
+        recommendedContainer.appendChild(card);
+    });
+
+    console.log(movies);
+
+    if (movies.length === 0) {
+        recommendedContainer.innerHTML = '<p>No recommendations available at the moment.</p>';
+    }
 }
 
 function fetchRecommendedMovies() {
@@ -39,11 +54,13 @@ function fetchRecommendedMovies() {
                 if (movie.original_language != 'en') return;
                 if (movie.vote_average < 4) return;
 
-                recommendedContainer.appendChild(generateMovieCard(movie));
+                recommended.push(movie);    
+                searchResults.push(movie);
             });
-        } else {
-            recommendedContainer.innerHTML = '<p>No recommendations available at the moment.</p>';
         }
+    })
+    .finally(() => {    
+        createCards(searchResults);
     })
     .catch(error => {
         console.error('Error fetching movies data:', error);
@@ -52,6 +69,13 @@ function fetchRecommendedMovies() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    searchBar = document.querySelector('#search');
+    searchBar.addEventListener('input', function() {
+        const query = searchBar.value.toLowerCase();
+        searchResults = recommended.filter(movie => movie.title.toLowerCase().includes(query));
+        createCards(searchResults);
+    });
+
     recommendedContainer = document.querySelector('#recommended');
     fetchRecommendedMovies();
 });

@@ -66,7 +66,7 @@
 .card {
   height: calc(100% - 2rem);
   width: auto;
-  position: relative;
+  position: relative !important;
   border: 1px solid var(--accent);
   border-radius: 0.5rem;
   transition: scale 0.3s;
@@ -87,13 +87,23 @@
   border-radius: 0 0 0.5rem 0.5rem;
   background-color: var(--background);
   border: 0.0625rem solid var(--accent);
+  overflow: hidden;
 }
-.card .card-body h5 {
-  margin: 0;
+.card .card-body .card-title {
   padding: 0;
+  margin: 0;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.card img {
+.card a {
+  height: 100%;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+.card a img {
   height: 100%;
   border-radius: calc(0.5rem - 1px);
 }
@@ -204,6 +214,68 @@
   position: relative;
 }
 
+.filter {
+  width: 100%;
+  height: 1.875rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.filter input {
+  height: 100%;
+  flex: 3;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.25rem;
+  padding: 0 1rem;
+  color: var(--text);
+}
+.filter input::placeholder {
+  color: var(--text);
+  opacity: 0.7;
+}
+.filter input:focus {
+  outline: none;
+}
+.filter .filter-options {
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+.filter .filter-options .filter-option {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.filter .filter-options .filter-option select {
+  flex: 1;
+  height: 1.875rem;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.25rem;
+  padding: 0 1rem;
+  color: var(--text);
+  cursor: pointer;
+}
+.filter .filter-options .filter-option select:focus {
+  outline: none;
+}
+.filter .filter-options .filter-option select option {
+  background-color: var(--background);
+  color: var(--text);
+}
+.filter .filter-options .filter-option select::-ms-expand {
+  display: none;
+}
+
 .navbar {
   position: fixed;
   top: 0;
@@ -309,13 +381,9 @@
 }
 
 .recommended-movies {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
-  min-height: calc(100dvh - 4rem - 1.5rem - 2rem - 4rem - 0.125rem);
-  max-height: calc(100dvh - 4rem - 1.5rem - 2rem - 4rem - 0.125rem);
+  height: calc(100dvh - 4rem - 1.5rem - 6rem - 1.5rem - 1rem - 0.125rem);
+  max-height: calc(100dvh - 4rem - 1.5rem - 6rem - 1.5rem - 1rem - 0.125rem);
+  margin-top: 1rem;
   padding: 1rem;
   position: relative;
   overflow-x: hidden;
@@ -326,7 +394,7 @@
   gap: 0.5rem;
   place-items: center;
 }
-.recommended-movies p {
+.recommended-movies > p {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -346,67 +414,6 @@
   gap: 1rem;
   padding: 1rem;
   position: relative;
-}
-.preferences .filter {
-  width: 100%;
-  height: 1.875rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
-}
-.preferences .filter input {
-  height: 100%;
-  flex: 3;
-  background-color: var(--background);
-  border: 0.0625rem solid var(--accent);
-  border-radius: 0.25rem;
-  padding: 0 1rem;
-  color: var(--text);
-}
-.preferences .filter input::placeholder {
-  color: var(--text);
-  opacity: 0.7;
-}
-.preferences .filter input:focus {
-  outline: none;
-}
-.preferences .filter .filter-options {
-  flex: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
-}
-.preferences .filter .filter-options .filter-option {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-.preferences .filter .filter-options .filter-option select {
-  flex: 1;
-  height: 1.875rem;
-  background-color: var(--background);
-  border: 0.0625rem solid var(--accent);
-  border-radius: 0.25rem;
-  padding: 0 1rem;
-  color: var(--text);
-  cursor: pointer;
-}
-.preferences .filter .filter-options .filter-option select:focus {
-  outline: none;
-}
-.preferences .filter .filter-options .filter-option select option {
-  background-color: var(--background);
-  color: var(--text);
-}
-.preferences .filter .filter-options .filter-option select::-ms-expand {
-  display: none;
 }
 .preferences .titles {
   height: 1.5rem;
@@ -784,7 +791,5 @@ input {
   margin-top: 0.25rem;
   opacity: 0.9;
 }
-.trailer-button {
-  margin-top: 10px; /* Add space between the description and buttons */
-}
+
 /*# sourceMappingURL=styles.css.map */

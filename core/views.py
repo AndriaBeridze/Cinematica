@@ -144,6 +144,17 @@ def movie_overview(request, movie_id):
         return render(request, 'overview.html', {'movie': None})
     
     data = response.json()
+
+    trailer_url = None
+    video_url = f"https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key={api_key}"
+    video_response = requests.get(video_url)
+    if video_response.status_code == 200:
+        videos = video_response.json().get('results', [])
+        for video in videos:
+            if video['site'] == 'YouTube':
+                trailer_url = f"https://www.youtube.com/embed/{video['key']}"
+            if video['type'] == 'Trailer':
+                break
     
     review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
     review_list = [
@@ -155,6 +166,7 @@ def movie_overview(request, movie_id):
         }
         for review in review_qs
     ]
+
     
     movie_data = {
         'title': data.get('title'),
@@ -168,7 +180,8 @@ def movie_overview(request, movie_id):
         'description': data.get('overview'),
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
-        'reviews': review_list
+        'reviews': review_list,
+        'trailer_url': trailer_url
     }
     
     reviewed = Review.objects.filter(user=request.user, movie_id=movie_id).exists() if request.user.is_authenticated else False

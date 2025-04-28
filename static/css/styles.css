@@ -784,5 +784,7 @@ input {
   margin-top: 0.25rem;
   opacity: 0.9;
 }
-
+.trailer-button {
+  margin-top: 10px; /* Add space between the description and buttons */
+}
 /*# sourceMappingURL=styles.css.map */

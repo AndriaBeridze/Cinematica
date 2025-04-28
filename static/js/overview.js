@@ -48,3 +48,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+function playTrailer() {
+    const trailerDiv = document.getElementById('trailer-container');
+    const stopButton = document.querySelector('.stop-btn'); // Stop button
+    const watchButton = document.querySelector('.trailer-btn'); // Watch button
+    const movieOverview = document.querySelector('.movie-overview'); // Movie overview container
+    const hrElement = document.querySelector('hr'); // HR element to move further down
+
+    // Show the trailer
+    trailerDiv.style.display = 'block';
+
+    // Show the stop button and hide the watch button
+    stopButton.style.display = 'inline-block';
+    watchButton.style.display = 'none';
+
+    // Increase the padding-bottom of the movie overview so it expands with the trailer
+    movieOverview.style.paddingBottom = '200px'; // Adjust this value as needed
+
+    // Adjust the position of the <hr> by adding a margin to it
+    hrElement.style.marginTop = '20px'; // Adjust this value based on the trailer's height
+}
+
+function stopTrailer() {
+    const trailerDiv = document.getElementById('trailer-container');
+    const stopButton = document.querySelector('.stop-btn');
+    const watchButton = document.querySelector('.trailer-btn');
+    const movieOverview = document.querySelector('.movie-overview'); 
+    const hrElement = document.querySelector('hr');
+
+    // Hide the trailer
+    trailerDiv.style.display = 'none';
+
+    // Show the watch button and hide the stop button
+    stopButton.style.display = 'none';
+    watchButton.style.display = 'inline-block';
+
+    // Reset padding and margin
+    movieOverview.style.paddingBottom = '0'; // Reset the padding-bottom
+    hrElement.style.marginTop = '0.25'; // Reset the margin-top
+}

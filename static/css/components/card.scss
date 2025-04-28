@@ -1,13 +1,12 @@
 .card {
     height: calc(100% - 2 * $padding-md);
     width: auto;
-    position: relative;
+    position: relative !important;
     border: 1px solid var(--accent);
     border-radius: $border-radius-sm;
     transition: scale 0.3s;
     margin: 0 $margin-md;
     cursor: pointer;
-
 
     .card-body {
         @include absolute(100%, -$border-size-md, auto, -$border-size-md);
@@ -19,17 +18,28 @@
         border-radius: 0 0 $border-radius-sm $border-radius-sm;
         background-color: var(--background);
         border: $default-border;
+        overflow: hidden;
 
-        h5 {
-            margin: 0;
+        .card-title {
             padding: 0;
+            margin: 0;
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
-    img {
+    a {
         height: 100%;
-        border-radius: calc($border-radius-sm - 1px);
+        position: relative;
+        padding: 0;
+        margin: 0;
+
+        img {
+            height: 100%;
+            border-radius: calc($border-radius-sm - 1px);
+        }
     }
 
     &:not(:has(.card-body)) {

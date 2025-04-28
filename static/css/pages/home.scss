@@ -1,7 +1,7 @@
 .recommended-movies {
-    @include flex(column, flex-start, center, $gap-md);
-    min-height: calc(100dvh - $navbar-height - $font-xl - $margin-md * 2 - $padding-md * 4 - $border-size-md * 2);
-    max-height: calc(100dvh - $navbar-height - $font-xl - $margin-md * 2 - $padding-md * 4 - $border-size-md * 2);
+    height: calc(100dvh - $navbar-height - $input-height - 6 * $margin-md - $font-xl - $padding-md - $border-size-md * 2);
+    max-height: calc(100dvh - $navbar-height - $input-height - 6 * $margin-md - $font-xl - $padding-md - $border-size-md * 2);
+    margin-top: $margin-md;
     padding: $padding-md;
     position: relative;
     overflow-x: hidden;
@@ -12,7 +12,8 @@
     gap: $gap-sm;
     place-items: center;
 
-    p {
+
+    > p{
         @include position-center(true, true);
         margin: 0;
         padding: 0;

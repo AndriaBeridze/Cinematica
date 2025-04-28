@@ -136,26 +136,44 @@ def about(request):
     return render(request, "pages/about.html")
 
 def movie_overview(request, movie_id):
-    api_key = '595786e6aaaa7490b57f9936a7ae819f' 
+    api_key = '595786e6aaaa7490b57f9936a7ae819f'
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&append_to_response=credits"
-    
+
     response = requests.get(url)
     if response.status_code != 200:
         return render(request, 'overview.html', {'movie': None})
-    
+
     data = response.json()
-    
-    review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
-    review_list = [
-        {
-            "user": review.user.username,
-            "rating": review.rating,
-            "text": review.text,
-            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S")
+
+    # only top-level reviews (no parent)
+    review_qs = Review.objects.filter(
+        movie_id=movie_id,
+        parent__isnull=True
+    ).order_by("-created_at")
+
+    review_list = []
+    for review in review_qs:
+        review_data = {
+            "id":         review.id,
+            "user":       review.user.username,
+            "rating":     review.rating,
+            "text":       review.text,
+            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "replies":    [],
         }
-        for review in review_qs
-    ]
-    
+
+        # now fetch replies *for this specific* review instance
+        replies = Review.objects.filter(parent=review).order_by("created_at")
+        for reply in replies:
+            review_data["replies"].append({
+                "id":         reply.id,
+                "user":       reply.user.username,
+                "text":       reply.text,
+                "created_at": reply.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            })
+
+        review_list.append(review_data)
+
     movie_data = {
         'title': data.get('title'),
         'id': movie_id,
@@ -170,10 +188,18 @@ def movie_overview(request, movie_id):
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
         'reviews': review_list
     }
-    
-    reviewed = Review.objects.filter(user=request.user, movie_id=movie_id).exists() if request.user.is_authenticated else False
-    
-    return render(request, 'pages/overview.html', {'movie': movie_data, 'reviewed': reviewed})
+    reviewed = (
+        Review.objects
+              .filter(user=request.user, movie_id=movie_id)
+              .exists()
+        if request.user.is_authenticated else False
+    )
+
+    return render(request, 'pages/overview.html', {
+        'movie':    movie_data,
+        'reviewed': reviewed,
+    })
+
 
 
 @login_required
@@ -195,7 +221,28 @@ def submit_comment(request):
             new_review.save()
             
             return redirect(f'/overview/{ movie_id }')
-    
-    
         
     return JsonResponse({"error": "Invalid request."}, status=400)
+
+@login_required
+def submit_reply(request):
+    if request.method == 'POST':
+        parent_id    = request.POST.get('parent_id')
+        movie_id     = request.POST.get('movie_id')
+        comment_text = request.POST.get('comment', '').strip()
+
+        if parent_id and movie_id and comment_text:
+            try:
+                parent_review = Review.objects.get(id=parent_id)
+                Review.objects.create(
+                    user=request.user,
+                    movie_id=movie_id,
+                    text=comment_text,
+                    parent=parent_review,
+                )
+            except Review.DoesNotExist:
+                pass
+
+        return redirect('core:overview', movie_id=movie_id)
+
+    return redirect('core:home')

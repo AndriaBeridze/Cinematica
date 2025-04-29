@@ -7,9 +7,12 @@
     }
 
     .movie-overview {
-        padding: $padding-md $padding-lg;
+        transition: padding-bottom 0.3s ease;
         display: flex;
-        gap: $gap-lg;
+        flex-direction: column;
+        gap: $gap-md;
+        overflow: hidden; 
+
         position: relative;
 
         .poster-container {
@@ -22,6 +25,8 @@
                 border-radius: $border-radius-sm;
             }
         }
+
+
 
         .movie-details {
             display: flex;
@@ -76,6 +81,15 @@
                     padding: 0;
     
                 }
+            }
+
+            #trailer-container{
+                transition: height 0.3s ease;
+                width: 100%;
+                margin-top: 0px;
+            }
+            .stop-btn {
+                transition: opacity 0.3s ease;
             }
     
             .people {

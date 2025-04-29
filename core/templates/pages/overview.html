@@ -21,6 +21,20 @@
                     <h2>Description</h2>
                     <p>{{ movie.description }}</p>
                 </div>
+                <div class="trailer-button">
+                    {% if movie.trailer_url %}
+                        <button class="btn trailer-btn" onclick="playTrailer()">Watch Trailer</button>
+                        <button class="btn stop-btn" onclick="stopTrailer()" style="display: none;">Hide Trailer</button>                   
+                    {% endif %}
+                </div>
+                <div id="trailer-container" style="display: none; margin-top: 20px;">
+                    <iframe width="560" height="315" 
+                        src="{{ movie.trailer_url }}" 
+                        title="YouTube trailer" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
                 <div class="people">
                     <span>Director:</span> {{ movie.director }}
                     <br>

@@ -172,7 +172,7 @@ def movie_overview(request, movie_id):
     }
     
 
-    }
+    
     reviewed = (
         Review.objects
               .filter(user=request.user, movie_id=movie_id)

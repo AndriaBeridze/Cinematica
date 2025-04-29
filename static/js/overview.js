@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function playTrailer() {
     const trailerDiv = document.getElementById('trailer-container');
-    const stopButton = document.querySelector('.stop-btn'); // Stop button
-    const watchButton = document.querySelector('.trailer-btn'); // Watch button
-    const movieOverview = document.querySelector('.movie-overview'); // Movie overview container
-    const hrElement = document.querySelector('hr'); // HR element to move further down
+    const stopButton = document.querySelector('.stop-btn'); 
+    const watchButton = document.querySelector('.trailer-btn'); 
+    const movieOverview = document.querySelector('.movie-overview'); 
+    const hrElement = document.querySelector('hr');
 
     // Show the trailer
     trailerDiv.style.display = 'block';

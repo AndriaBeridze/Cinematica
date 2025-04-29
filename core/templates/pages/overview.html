@@ -42,16 +42,22 @@
                 </div>
             </div>
 
-            <script src="{% static 'js/overview.js' %}"></script>
+            <script src="{% static 'js/overview.js' %}" defer></script>
         </section>
         <hr>
         <section class="user-reviews">
             <h3>Leave a Review</h3>
-            <form action="{% url 'core:submit_comment' %}" method="post">
+            <form action="{% url 'core:submit_comment' %}" method="post" id="comment-form">
                 {% csrf_token %}
-                <div class="form-group"><label for="rating">Rating </label>:
-                    <span><input type="number" name="rating" id="rating" min="1" max="10" required> / 10</span>
-                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <span>
+                        <input type="number" name="rating" id="rating" min="1" max="10" required> / 10
+                    </span>
+                </div>
+                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                <div class="form-group">
+                    <label for="comment">Your Review:</label>
                     <textarea name="comment" id="comment" rows="4" placeholder="Write your thoughts here..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
@@ -71,6 +77,49 @@
                             <div class="content">
                                 <p>{{ review.text }}</p>
                             </div>
+
+                            {# Reply form, with a smaller textarea #}
+                            <form action="{% url 'core:submit_reply' %}"
+                                  method="post"
+                                  class="reply-form"
+                                  style="margin-top: 5px;">
+                                {% csrf_token %}
+                                <input type="hidden" name="parent_id" value="{{ review.id }}">
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <div class="form-group" style="margin-bottom: .5rem;">
+                                    <label for="reply-{{ review.id }}" style="margin-bottom: .25rem;">
+                                        Your Reply:
+                                    </label>
+                                    <textarea name="comment"
+                                              id="reply-{{ review.id }}"
+                                              rows="1"
+                                              style="height: 2em; line-height: 1.2; resize: vertical;"
+                                              placeholder="Write your reply..."
+                                              required></textarea>
+                                </div>
+                                <button type="submit"
+                                        class="btn btn-sm btn-primary mt-1">
+                                    Submit Reply
+                                </button>
+                            </form>
+
+                            {# Display replies under this comment #}
+                            {% if review.replies %}
+                                <ul class="list-group replies"
+                                    style="margin-left: 20px; margin-top: 5px;">
+                                    {% for reply in review.replies %}
+                                        <li class="list-group-item reply">
+                                            <div class="about-user">
+                                                <span class="user">{{ reply.user }}</span>
+                                                <span class="created_at">{{ reply.created_at }}</span>
+                                            </div>
+                                            <div class="content">
+                                                <p>{{ reply.text }}</p>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </li>
                     {% empty %}
                         <li class="list-group-item">No comments yet.</li>
@@ -80,4 +129,3 @@
         </section>
     </div>
 {% endblock %}
-

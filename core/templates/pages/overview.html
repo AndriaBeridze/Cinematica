@@ -16,7 +16,10 @@
                     <h1>{{ movie.title }} (<span style="color: var(--primary);">{{ movie.release_year }}</span>)</h1>
                     <p>{{ movie.release_date }} <span>&#9679;</span> {{ movie.single_genre }} <span>&#9679;</span> {{ movie.duration }}</p>
                 </div>
-                <div class="rating-indicator" id="indicator">{{ movie.rating }}%</div>
+                <div class="score-container">
+                    <div class="score"><div class="rating-indicator" id="indicator">{{ movie.global_rating }}%</div><span>Global Score</span></div>
+                    <div class="score"><div class="rating-indicator" id="indicator">{{ movie.local_rating }}</div><span>Local Score</span></div>
+                </div>
                 <div class="description">
                     <h2>Description</h2>
                     <p>{{ movie.description }}</p>
@@ -57,7 +60,6 @@
                 </div>
                 <input type="hidden" name="movie_id" value="{{ movie.id }}">
                 <div class="form-group">
-                    <label for="comment">Your Review:</label>
                     <textarea name="comment" id="comment" rows="4" placeholder="Write your thoughts here..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
@@ -93,7 +95,7 @@
                                     <textarea name="comment"
                                               id="reply-{{ review.id }}"
                                               rows="1"
-                                              style="height: 2em; line-height: 1.2; resize: vertical;"
+                                              style="height: 5rem; line-height: 1.2;"
                                               placeholder="Write your reply..."
                                               required></textarea>
                                 </div>
@@ -105,14 +107,14 @@
 
                             {# Display replies under this comment #}
                             {% if review.replies %}
-                                <ul class="list-group replies"
-                                    style="margin-left: 20px; margin-top: 5px;">
+                                <ul class="list-group replies">
                                     {% for reply in review.replies %}
                                         <li class="list-group-item reply">
-                                            <div class="about-user">
+                                            <div class="about-user" style="margin-bottom: -10px;">
                                                 <span class="user">{{ reply.user }}</span>
                                                 <span class="created_at">{{ reply.created_at }}</span>
                                             </div>
+                                            <hr>
                                             <div class="content">
                                                 <p>{{ reply.text }}</p>
                                             </div>

@@ -9,8 +9,9 @@
     .movie-overview {
         transition: padding-bottom 0.3s ease;
         display: flex;
-        flex-direction: column;
         gap: $gap-md;
+        padding: $padding-md $padding-lg;
+        gap: $gap-xl;
         overflow: hidden; 
 
         position: relative;
@@ -55,18 +56,29 @@
                     }
                 }
             }
-            .rating-indicator {
-                background-color: grey;
-                height: 22px;
-                width: 69px;
-                font-size: 14px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+
+            .score-container {
                 margin: $margin-md 0;
-                border-radius: $border-radius-sm;
-                border: 2px solid darken(grey, 20%);
-            }
+
+                .score {
+                    display: flex;
+                    align-items: center;
+                    gap: $gap-sm;
+                    margin: $margin-sm 0;
+
+                    .rating-indicator {
+                        background-color: grey;
+                        height: 22px;
+                        width: 69px;
+                        font-size: 14px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: $border-radius-sm;
+                        border: 2px solid darken(grey, 20%);
+                    }
+                }
+            } 
     
             .description {
                 h2 {
@@ -83,11 +95,16 @@
                 }
             }
 
+            .trailer-button {
+                margin-top: $margin-md;
+            }
+
             #trailer-container{
                 transition: height 0.3s ease;
                 width: 100%;
-                margin-top: 0px;
+                margin-top: $margin-sm;
             }
+
             .stop-btn {
                 transition: opacity 0.3s ease;
             }
@@ -170,7 +187,7 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
-                gap: $gap-md;
+                gap: $gap-sm;
                 height: 30px;
 
                 .user {
@@ -197,6 +214,15 @@
                     opacity: 0.7;
                 }
             } 
+
+            .replies {
+                margin-top: $margin-md;
+
+                .reply {
+                    border: $default-border;
+                    padding: $margin-sm $padding-md;
+                }
+            }
         }
     }
 }

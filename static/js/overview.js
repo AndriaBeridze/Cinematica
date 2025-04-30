@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let rating = parseFloat(indicator.textContent.replace('%', ''));
 
         if (!isNaN(rating)) {
-            if (count !== 0) {
+            if (count >= 2) {
                 rating *= 10;
             }
             

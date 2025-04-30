@@ -185,6 +185,10 @@ def movie_overview(request, movie_id):
 
         review_list.append(review_data)
 
+    # Calculate average rating and fetch all comments
+    all_ratings = [review['rating'] for review in review_list if review['rating']]
+    average_rating = sum(all_ratings) * 10 / len(all_ratings) if all_ratings else None
+
     movie_data = {
         'title': data.get('title'),
         'id': movie_id,
@@ -193,14 +197,13 @@ def movie_overview(request, movie_id):
         'release_date': data.get('release_date', ''),
         'single_genre': data.get('genres', [{}])[0].get('name', '') if data.get('genres') else '',
         'duration': f"{data.get('runtime', 0) // 60}h {data.get('runtime', 0) % 60}m" if data.get('runtime') else 'N/A',
-        'rating': f"{data.get('vote_average', 0) * 10:.2f}",  # Convert to percentage and format to 2 decimal points
+        'global_rating': f"{data.get('vote_average', 0) * 10:.2f}",  # Convert to percentage and format to 2 decimal points
+        'local_rating': f"{average_rating:.2f}%" if average_rating else 'N/A',
         'description': data.get('overview'),
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
         'reviews': review_list,
         'trailer_url': trailer_url,
-    
-
     }
     reviewed = (
         Review.objects

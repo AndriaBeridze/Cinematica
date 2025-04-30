@@ -542,9 +542,12 @@
   border: 0.5px solid var(--secondary);
 }
 .container.overview .movie-overview {
-  padding: 1rem 2rem;
+  transition: padding-bottom 0.3s ease;
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  gap: 4rem;
+  overflow: hidden;
   position: relative;
 }
 .container.overview .movie-overview .poster-container {
@@ -579,7 +582,16 @@
   display: flex;
   align-items: center;
 }
-.container.overview .movie-overview .movie-details .rating-indicator {
+.container.overview .movie-overview .movie-details .score-container {
+  margin: 1rem 0;
+}
+.container.overview .movie-overview .movie-details .score-container .score {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.container.overview .movie-overview .movie-details .score-container .score .rating-indicator {
   background-color: grey;
   height: 22px;
   width: 69px;
@@ -587,7 +599,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem 0;
   border-radius: 0.5rem;
   border: 2px solid #4d4d4d;
 }
@@ -600,6 +611,17 @@
   font-size: 15px;
   margin: 0;
   padding: 0;
+}
+.container.overview .movie-overview .movie-details .trailer-button {
+  margin-top: 1rem;
+}
+.container.overview .movie-overview .movie-details #trailer-container {
+  transition: height 0.3s ease;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+.container.overview .movie-overview .movie-details .stop-btn {
+  transition: opacity 0.3s ease;
 }
 .container.overview .movie-overview .movie-details .people {
   margin: 1rem 0;
@@ -665,7 +687,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: 0.5rem;
   height: 30px;
 }
 .container.overview .user-reviews .review .about-user .user {
@@ -688,6 +710,13 @@
   justify-self: flex-end;
   text-align: right;
   opacity: 0.7;
+}
+.container.overview .user-reviews .review .replies {
+  margin-top: 1rem;
+}
+.container.overview .user-reviews .review .replies .reply {
+  border: 0.0625rem solid var(--accent);
+  padding: 0.5rem 1rem;
 }
 
 body {
@@ -740,57 +769,5 @@ i {
 input {
   font-family: "Nunito";
 }
-
-.poster-link {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.poster-wrapper {
-  position: relative;
-}
-
-.poster-wrapper img {
-  display: block;
-  width: 125px;
-  height: auto;
-  transition: opacity 0.3s ease;
-}
-
-.poster-title {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1rem;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.poster-wrapper:hover img {
-  opacity: 0.6;
-}
-
-.poster-wrapper:hover .poster-title {
-  opacity: 1;
-}
-
-.poster-year {
-  font-size: 0.85rem;
-  font-weight: normal;
-  margin-top: 0.25rem;
-  opacity: 0.9;
-}
-
 
 /*# sourceMappingURL=styles.css.map */

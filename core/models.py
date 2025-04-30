@@ -16,6 +16,14 @@ class Review(models.Model):
     rating = models.IntegerField(null=True, blank=False, default=0)  # Rating out of 10
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.movie.title}" 
+        return f"Comment by {self.user.username} on {self.movie_id}" 
+    
+class Reply(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='replies')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reply by {self.user.username} to {self.review.user.username}'s comment"

@@ -9,15 +9,11 @@
     .movie-overview {
         transition: padding-bottom 0.3s ease;
         display: flex;
-<<<<<<< HEAD
         gap: $gap-md;
         padding: $padding-md $padding-lg;
         gap: $gap-xl;
         overflow: hidden; 
-
-=======
         gap: $gap-lg;
->>>>>>> 588cd89b64ea9951503de96c7b563bbba36ff2e3
         position: relative;
         overflow: hidden; 
 
@@ -226,6 +222,7 @@
                 .reply {
                     border: $default-border;
                     padding: $margin-sm $padding-md;
+                    margin: $margin-sm 0;
                 }
             }
         }

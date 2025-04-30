@@ -86,7 +86,7 @@
                                   class="reply-form"
                                   style="margin-top: 5px;">
                                 {% csrf_token %}
-                                <input type="hidden" name="parent_id" value="{{ review.id }}">
+                                <input type="hidden" name="review_id" value="{{ review.id }}">
                                 <input type="hidden" name="movie_id" value="{{ movie.id }}">
                                 <div class="form-group" style="margin-bottom: .5rem;">
                                     <label for="reply-{{ review.id }}" style="margin-bottom: .25rem;">

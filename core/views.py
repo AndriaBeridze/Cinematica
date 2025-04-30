@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Review, UserPreference, User
+from .models import Review, UserPreference, User, Reply
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .rec import fetch_recommendations
@@ -146,36 +146,34 @@ def movie_overview(request, movie_id):
     data = response.json()
     
     review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
-    review_list = [
-        {
+    review_list = []
+    for review in review_qs:
+        review_data = {
+            "id": review.id,
             "user": review.user.username,
             "rating": review.rating,
             "text": review.text,
-            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "replies": []
         }
-<<<<<<< HEAD
-
-        # now fetch replies *for this specific* review instance
-        replies = Review.objects.filter(parent=review).order_by("created_at")
-        for reply in replies:
-            review_data["replies"].append({
-                "id":         reply.id,
-                "user":       reply.user.username,
-                "text":       reply.text,
+        
+        replies_qs = review.replies.filter(review=review).order_by("-created_at")
+        for reply in replies_qs:
+            reply_data = {
+                "user": reply.user.username,
+                "text": reply.text,
                 "created_at": reply.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            })
-
+            }
+            review_data["replies"].append(reply_data)
+        
         review_list.append(review_data)
 
     # Calculate average rating and fetch all comments
     all_ratings = [review['rating'] for review in review_list if review['rating']]
     average_rating = sum(all_ratings) * 10 / len(all_ratings) if all_ratings else None
 
-=======
-        for review in review_qs
-    ]
-    
->>>>>>> 588cd89b64ea9951503de96c7b563bbba36ff2e3
+    trailer_url = data.get('videos', {}).get('results', [{}])[0].get('key', '')  # Define trailer_url properly
+
     movie_data = {
         'title': data.get('title'),
         'id': movie_id,
@@ -189,17 +187,10 @@ def movie_overview(request, movie_id):
         'description': data.get('overview'),
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
-<<<<<<< HEAD
         'reviews': review_list,
-        'trailer_url': trailer_url,
+        'trailer_url': f"https://www.youtube.com/watch?v={trailer_url}" if trailer_url else 'N/A',
     }
-=======
-        'reviews': review_list
-    }
-    
 
-    
->>>>>>> 588cd89b64ea9951503de96c7b563bbba36ff2e3
     reviewed = (
         Review.objects
               .filter(user=request.user, movie_id=movie_id)
@@ -208,7 +199,7 @@ def movie_overview(request, movie_id):
     )
 
     return render(request, 'pages/overview.html', {
-        'movie':    movie_data,
+        'movie': movie_data,
         'reviewed': reviewed,
     })
 
@@ -239,22 +230,25 @@ def submit_comment(request):
 @login_required
 def submit_reply(request):
     if request.method == 'POST':
-        parent_id    = request.POST.get('parent_id')
-        movie_id     = request.POST.get('movie_id')
+        review_id = request.POST.get('review_id')
+        movie_id = request.POST.get('movie_id')
         comment_text = request.POST.get('comment', '').strip()
 
-        if parent_id and movie_id and comment_text:
+        print(review_id, movie_id, comment_text)
+
+        if review_id and movie_id and comment_text:
             try:
-                parent_review = Review.objects.get(id=parent_id)
-                Review.objects.create(
+                parent_review = Review.objects.get(id=review_id)
+                new_reply = Reply.objects.create(
                     user=request.user,
-                    movie_id=movie_id,
                     text=comment_text,
-                    parent=parent_review,
+                    review=parent_review,
                 )
+                
+                new_reply.save()
             except Review.DoesNotExist:
                 pass
 
-        return redirect('core:overview', movie_id=movie_id)
+            return redirect(f'/overview/{ movie_id }')
 
     return redirect('core:home')

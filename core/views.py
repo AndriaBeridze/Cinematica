@@ -144,34 +144,16 @@ def movie_overview(request, movie_id):
         return render(request, 'overview.html', {'movie': None})
 
     data = response.json()
-
-    trailer_url = None
-    video_url = f"https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key={api_key}"
-    video_response = requests.get(video_url)
-    if video_response.status_code == 200:
-        videos = video_response.json().get('results', [])
-        for video in videos:
-            if video['site'] == 'YouTube':
-                trailer_url = f"https://www.youtube.com/embed/{video['key']}"
-            if video['type'] == 'Trailer':
-                break
-
-    # only top-level reviews (no parent)
-    review_qs = Review.objects.filter(
-        movie_id=movie_id,
-        parent__isnull=True
-    ).order_by("-created_at")
-
-    review_list = []
-    for review in review_qs:
-        review_data = {
-            "id":         review.id,
-            "user":       review.user.username,
-            "rating":     review.rating,
-            "text":       review.text,
-            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "replies":    [],
+    
+    review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
+    review_list = [
+        {
+            "user": review.user.username,
+            "rating": review.rating,
+            "text": review.text,
+            "created_at": review.created_at.strftime("%Y-%m-%d %H:%M:%S")
         }
+<<<<<<< HEAD
 
         # now fetch replies *for this specific* review instance
         replies = Review.objects.filter(parent=review).order_by("created_at")
@@ -189,6 +171,11 @@ def movie_overview(request, movie_id):
     all_ratings = [review['rating'] for review in review_list if review['rating']]
     average_rating = sum(all_ratings) * 10 / len(all_ratings) if all_ratings else None
 
+=======
+        for review in review_qs
+    ]
+    
+>>>>>>> 588cd89b64ea9951503de96c7b563bbba36ff2e3
     movie_data = {
         'title': data.get('title'),
         'id': movie_id,
@@ -202,9 +189,17 @@ def movie_overview(request, movie_id):
         'description': data.get('overview'),
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
+<<<<<<< HEAD
         'reviews': review_list,
         'trailer_url': trailer_url,
     }
+=======
+        'reviews': review_list
+    }
+    
+
+    
+>>>>>>> 588cd89b64ea9951503de96c7b563bbba36ff2e3
     reviewed = (
         Review.objects
               .filter(user=request.user, movie_id=movie_id)

@@ -144,6 +144,18 @@ def movie_overview(request, movie_id):
         return render(request, 'overview.html', {'movie': None})
 
     data = response.json()
+
+    #fetch the YouTube videos for trailers
+    trailer_url = None
+    video_url = f"https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key={api_key}"
+    video_response = requests.get(video_url)
+    if video_response.status_code == 200:
+        videos = video_response.json().get('results', [])
+        for video in videos:
+            if video['type'] == 'Trailer' and video['site'] == 'YouTube':
+                trailer_url = f"https://www.youtube.com/embed/{video['key']}"
+                break
+
     
     review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
     review_list = []
@@ -172,8 +184,6 @@ def movie_overview(request, movie_id):
     all_ratings = [review['rating'] for review in review_list if review['rating']]
     average_rating = sum(all_ratings) * 10 / len(all_ratings) if all_ratings else None
 
-    trailer_url = data.get('videos', {}).get('results', [{}])[0].get('key', '')  # Define trailer_url properly
-
     movie_data = {
         'title': data.get('title'),
         'id': movie_id,
@@ -188,7 +198,7 @@ def movie_overview(request, movie_id):
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
         'reviews': review_list,
-        'trailer_url': f"https://www.youtube.com/watch?v={trailer_url}" if trailer_url else 'N/A',
+        'trailer_url': trailer_url
     }
 
     reviewed = (

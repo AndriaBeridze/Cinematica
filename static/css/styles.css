@@ -306,6 +306,10 @@
 .navbar .brand-icon img {
   height: 150%;
   width: auto;
+  transition: transform 0.3s ease; 
+  &:hover {
+    transform: scale(1.1); 
+  }
 }
 .navbar .accessability {
   display: flex;
@@ -771,6 +775,27 @@ i {
 
 input {
   font-family: "Nunito";
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track (background of scrollbar) */
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /*# sourceMappingURL=styles.css.map */

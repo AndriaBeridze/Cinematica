@@ -304,7 +304,7 @@
   position: relative;
 }
 .navbar .brand-icon img {
-  height: 150%;
+  height: 80%;
   width: auto;
   transition: transform 0.3s ease; 
   &:hover {

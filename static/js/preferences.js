@@ -19,18 +19,19 @@ let genreSelect;
 let yearSelect;
 let ratingSelect;
 
+//Show loading overlay
 function showLoading() {
     movieSectionAll.querySelector('#loading').style.display = 'flex';
     movieSectionAll.style.pointerEvents = 'none';
 }
-
+//Hide loading overlay
 function hideLoading() {
     setTimeout(() => {
     movieSectionAll.querySelector('#loading').style.display = 'none';
     movieSectionAll.style.pointerEvents = 'auto';
     }, 500);
 }
-
+//Add movie to liked list
 window.like = function (id) {
     console.log("Liked movie with ID:", id);;
 
@@ -52,7 +53,7 @@ window.like = function (id) {
     console.log("Liked movies:", likedMovies);
     console.log("Disliked movies:", dislikedMovies);    
 };
-
+//Add movie to disliked movie list
 window.dislike = function (id) {
     console.log("Disliked movie with ID:", id);
 
@@ -74,7 +75,7 @@ window.dislike = function (id) {
     console.log("Liked movies:", likedMovies);
     console.log("Disliked movies:", dislikedMovies);   
 };
-
+//Remove movie from any list
 window.remove = function (id) {
     console.log("Removed movie with ID:", id);
 
@@ -92,11 +93,11 @@ window.remove = function (id) {
         movieSectionDisliked.removeChild(movieSectionDisliked.children[dislikedIndex]);
     }
 };
-
+//Navigating to movie overview
 window.overview = function (id) {
     window.location.href = `/overview/${id}/`;
 };
-
+//Storing movie preference data
 window.savePreferences = function () {
     const saveButton = document.querySelector('#save-preferences');
     saveButton.innerHTML = 'Saving...';
@@ -119,7 +120,7 @@ window.savePreferences = function () {
 };
 
 
-
+//Grabbing movie ID through API
 function getMovieByID(id) {
     return fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
         .then(response => response.json())
@@ -128,14 +129,14 @@ function getMovieByID(id) {
             return null;
         });
 }
-
+//Movie card creation
 function generateMovieCard(movieId, status) {
     return getMovieByID(movieId).then(movie => {
         if (movie) {
             const card = document.createElement('div');
             card.classList.add('card');
             card.id = `movie-${movie.id}`;
-
+            //Creating card html
             card.innerHTML = `
             <a href="/overview/${movie.id}/">
                 <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="card-img-top">
@@ -159,7 +160,7 @@ function generateMovieCard(movieId, status) {
         return null;
     });
 }
-
+//Fetching all movies based on current filters
 function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating = 'all') {
     console.log("Fetching movies with filters:", { page, query, genre, year, rating });
 
@@ -175,6 +176,7 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
     fetch(url)
         .then(response => response.json())
         .then(data => {
+            //Error message for no results
             if (!data.results || data.results.length === 0) {
                 const msg = document.createElement('p');
                 msg.style.textAlign = 'center';
@@ -186,7 +188,7 @@ function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating =
                 hideLoading();
                 return;
             }
-
+            
             const cardPromises = data.results.map(movie => {
                 if (!movie.poster_path || movie.original_language !== 'en' || movie.vote_average < 4) return null;
                 return generateMovieCard(movie.id, 1).then(card => {

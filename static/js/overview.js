@@ -1,15 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
     let count = 0;
+    //Selecting all indicators
     const indicators = document.querySelectorAll("#indicator");
-
+    //Looping through indicators
     indicators.forEach((indicator) => {
+        //Grabbing rating number, removing percentage
         let rating = parseFloat(indicator.textContent.replace('%', ''));
-
+        //Ensures validity of the number
         if (!isNaN(rating)) {
             if (count >= 2) {
                 rating *= 10;
             }
-            
+            //Changing color based on rating range
             var color = "#d9534f"; // Softer red
             if (60 <= rating && rating < 70) {
                 color = "#f0ad4e"; // Warm orange
@@ -22,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (rating === 100) {
                 color = "#337ab7"; // Calming blue
             }
-
+            //Function to darken colors by percent
             const darkenColor = (color, percent) => {
                 const num = parseInt(color.slice(1), 16);
                 const amt = Math.round(2.55 * percent);
@@ -38,8 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 .toString(16)
                 .slice(1)}`;
             };
-
+            //Apply to border color
             const darkenedColor = darkenColor(color, 20);
+            //Apply styles
             indicator.style.backgroundColor = color;
             indicator.style.borderColor = darkenedColor;
     
@@ -49,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+//Trailer display function
 function playTrailer() {
     const trailerDiv = document.getElementById('trailer-container');
     const stopButton = document.querySelector('.stop-btn'); 
@@ -69,7 +73,7 @@ function playTrailer() {
     // Adjust the position of the <hr> by adding a margin to it
     hrElement.style.marginTop = '20px'; // Adjust this value based on the trailer's height
 }
-
+//Function to remove trailer and restore layout
 function stopTrailer() {
     const trailerDiv = document.getElementById('trailer-container');
     const stopButton = document.querySelector('.stop-btn');

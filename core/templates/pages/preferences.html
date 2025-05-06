@@ -3,10 +3,6 @@
 
 {% block title %} Cinematica | Preferences {% endblock %}
 
-{% block extra_js %}
-    <script src="{% static 'js/preferences.js' %}" type="module"></script>
-{% endblock %}
-
 {% block main_content %}
     <div class="page-title">
         <h1>Preferences</h1>
@@ -68,7 +64,7 @@
         <div class="sort">
             <div class="container section all-movies" id="all">
                 <div class="loading" id="loading" style="
-                        background-color: black;
+                        background-color: var(--background);
                         position: absolute;
                         top: 0;
                         left: 0;

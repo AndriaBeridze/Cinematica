@@ -292,6 +292,8 @@
   padding: 0 4rem;
   background-color: var(--background);
   z-index: 5;
+  display: flex;
+  gap: 2rem;
 }
 .navbar .brand-icon {
   width: 90px;
@@ -306,18 +308,15 @@
 .navbar .brand-icon img {
   height: 80%;
   width: auto;
-  transition: transform 0.3s ease; 
-  &:hover {
-    transform: scale(1.1); 
-  }
 }
 .navbar .accessability {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 0;
   gap: 2rem;
+  flex: 1;
 }
 .navbar .accessability .nav-menu {
   display: flex;
@@ -352,6 +351,26 @@
 .navbar .accessability .nav-tools a:hover {
   color: var(--secondary);
 }
+.navbar .accessability .nav-tools .nav-search {
+  height: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--accent);
+  transition: none;
+  padding: 0 0.5rem;
+  color: var(--text);
+}
+.navbar .accessability .nav-tools .nav-search::placeholder {
+  color: var(--text);
+  opacity: 0.7;
+}
+.navbar .accessability .nav-tools .nav-search:focus {
+  outline: 2px solid var(--primary);
+}
 .navbar .accessability .nav-tools .theme-toggler {
   width: 2rem;
   height: 2rem;
@@ -370,6 +389,40 @@
 
 .page-title h1 {
   margin: 1rem 0;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+.search-results-main {
+  position: fixed;
+  top: 4.0625rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--background);
+  z-index: 5;
+  display: none;
+}
+.search-results-main .results-body {
+  border: 0.0625rem solid var(--accent);
+  margin: 2rem;
+  height: calc(100% - 4rem);
+  border-radius: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-auto-rows: 200px;
+  gap: 0.5rem;
+  place-items: center;
+}
+.search-results-main .results-body p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
   padding: 0;
   font-size: 1.5rem;
 }
@@ -775,27 +828,6 @@ i {
 
 input {
   font-family: "Nunito";
-}
-
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-/* Track (background of scrollbar) */
-::-webkit-scrollbar-track {
-  background: var(--background);
-  border-radius: 5px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 /*# sourceMappingURL=styles.css.map */

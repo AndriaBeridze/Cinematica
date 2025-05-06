@@ -1,17 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     let count = 0;
-    //Selecting all indicators
     const indicators = document.querySelectorAll("#indicator");
-    //Looping through indicators
+
     indicators.forEach((indicator) => {
-        //Grabbing rating number, removing percentage
         let rating = parseFloat(indicator.textContent.replace('%', ''));
-        //Ensures validity of the number
+
         if (!isNaN(rating)) {
             if (count >= 2) {
                 rating *= 10;
             }
-            //Changing color based on rating range
+            
             var color = "#d9534f"; // Softer red
             if (60 <= rating && rating < 70) {
                 color = "#f0ad4e"; // Warm orange
@@ -24,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (rating === 100) {
                 color = "#337ab7"; // Calming blue
             }
-            //Function to darken colors by percent
+
             const darkenColor = (color, percent) => {
                 const num = parseInt(color.slice(1), 16);
                 const amt = Math.round(2.55 * percent);
@@ -32,17 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const G = ((num >> 8) & 0x00FF) - amt;
                 const B = (num & 0x0000FF) - amt;
                 return `#${(
-                0x1000000 +
-                (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
-                (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
-                (B < 255 ? (B < 0 ? 0 : B) : 255)
+                    0x1000000 +
+                    (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
+                    (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
+                    (B < 255 ? (B < 0 ? 0 : B) : 255)
                 )
                 .toString(16)
                 .slice(1)}`;
             };
-            //Apply to border color
+
             const darkenedColor = darkenColor(color, 20);
-            //Apply styles
             indicator.style.backgroundColor = color;
             indicator.style.borderColor = darkenedColor;
     
@@ -52,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-//Trailer display function
 function playTrailer() {
     const trailerDiv = document.getElementById('trailer-container');
     const stopButton = document.querySelector('.stop-btn'); 
@@ -68,12 +64,12 @@ function playTrailer() {
     watchButton.style.display = 'none';
 
     // Increase the padding-bottom of the movie overview so it expands with the trailer
-    movieOverview.style.paddingBottom = '200px'; // Adjust this value as needed
+    movieOverview.style.paddingBottom = '200px';
 
     // Adjust the position of the <hr> by adding a margin to it
-    hrElement.style.marginTop = '20px'; // Adjust this value based on the trailer's height
+    hrElement.style.marginTop = '20px';
 }
-//Function to remove trailer and restore layout
+
 function stopTrailer() {
     const trailerDiv = document.getElementById('trailer-container');
     const stopButton = document.querySelector('.stop-btn');
@@ -89,6 +85,10 @@ function stopTrailer() {
     watchButton.style.display = 'inline-block';
 
     // Reset padding and margin
-    movieOverview.style.paddingBottom = '0'; // Reset the padding-bottom
-    hrElement.style.marginTop = '0.25'; // Reset the margin-top
+    movieOverview.style.paddingBottom = '0';
+    hrElement.style.marginTop = '0.25';
 }
+
+// Export functions that need to be called from HTML
+window.playTrailer = playTrailer;
+window.stopTrailer = stopTrailer;

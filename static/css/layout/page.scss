@@ -5,3 +5,36 @@
         font-size: $font-xl;
     }
 }
+
+.search-results-main {
+    position: fixed;
+    top: calc($navbar-height + $border-size-md);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--background);
+    z-index: $z-5;
+    display: none;
+
+    .results-body {
+        border: $default-border;
+        margin: $margin-lg;
+        height: calc(100% - #{$margin-lg * 2});
+        border-radius: $border-radius-sm;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        grid-auto-rows: 200px;
+        gap: $gap-sm;
+        place-items: center;
+
+        p {
+            @include position-center(true, true);
+            margin: 0;
+            padding: 0;
+            font-size: $font-xl;
+        }
+    }
+}

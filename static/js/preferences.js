@@ -1,318 +1,279 @@
-const API_KEY = '595786e6aaaa7490b57f9936a7ae819f';
+import { getMovieById, searchMovies, updatePreferences, getUserPreferences } from './apiService.js';
+import { generateMovieCard } from './movieCard.js';
 
-// DOM Elements
-let movieSectionAll;
-let movieSectionLiked;
-let movieSectionDisliked;
+class PreferencesManager {
+    constructor() {
+        this.movieSectionAll = document.querySelector('.section#all');
+        this.movieSectionLiked = document.querySelector('.section#liked');
+        this.movieSectionDisliked = document.querySelector('.section#disliked');
 
-// Movie Lists
-let likedMovies = [];
-let dislikedMovies = [];
+        this.likedMovies = [];
+        this.dislikedMovies = [];
+        this.currentPage = 1;
+        this.isLoading = false;
+        this.searchToken = 0;
 
-// Pagination and Loading State
-let currentPage = 1;
-let isLoading = false;
-
-// Search and Filter Elements
-let searchBar;
-let genreSelect;
-let yearSelect;
-let ratingSelect;
-
-//Show loading overlay
-function showLoading() {
-    movieSectionAll.querySelector('#loading').style.display = 'flex';
-    movieSectionAll.style.pointerEvents = 'none';
-}
-//Hide loading overlay
-function hideLoading() {
-    setTimeout(() => {
-    movieSectionAll.querySelector('#loading').style.display = 'none';
-    movieSectionAll.style.pointerEvents = 'auto';
-    }, 500);
-}
-//Add movie to liked list
-window.like = function (id) {
-    console.log("Liked movie with ID:", id);;
-
-    // Remove from disliked list if present
-    const dislikedIndex = dislikedMovies.findIndex(m => m === id);
-    if (dislikedIndex !== -1) {
-        dislikedMovies.splice(dislikedIndex, 1);
-        movieSectionDisliked.removeChild(movieSectionDisliked.children[dislikedIndex]);
+        this.initEventListeners();
+        this.fetchInitialData();
     }
 
-    // Add to liked list if not already present
-    if (!likedMovies.some(m => m === id)) {
-        likedMovies.push(id);
-        generateMovieCard(id, 0).then(card => {    
-            movieSectionLiked.appendChild(card);
+    initEventListeners() {
+        const searchBar = document.querySelector('input#search');
+        const genreSelect = document.querySelector('select#genre');
+        const yearSelect = document.querySelector('select#year');
+        const ratingSelect = document.querySelector('select#rating');
+
+        let searchTimeout;
+        searchBar.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                this.resetFilters();
+                this.clearMovieResults();
+                const token = ++this.searchToken;
+                this.fetchMovies(searchBar.value, 'all', 'all', 'all', token);
+            }, 200);
+        });
+
+        [genreSelect, yearSelect, ratingSelect].forEach(select => {
+            select.addEventListener('change', () => {
+                this.resetSearchBar();
+                this.clearMovieResults();
+                const token = ++this.searchToken;
+                this.fetchMovies('', genreSelect.value, yearSelect.value, ratingSelect.value, token);
+            });
+        });
+
+        this.movieSectionAll.addEventListener('scroll', () => {
+            if (this.shouldLoadMore()) {
+                this.currentPage++;
+                const token = this.searchToken;
+                this.fetchMovies(
+                    document.querySelector('input#search').value,
+                    genreSelect.value,
+                    yearSelect.value,
+                    ratingSelect.value,
+                    token
+                );
+            }
         });
     }
 
-    console.log("Liked movies:", likedMovies);
-    console.log("Disliked movies:", dislikedMovies);    
-};
-//Add movie to disliked movie list
-window.dislike = function (id) {
-    console.log("Disliked movie with ID:", id);
-
-    // Remove from liked list if present
-    const likedIndex = likedMovies.findIndex(m => m === id);
-    if (likedIndex !== -1) {
-        likedMovies.splice(likedIndex, 1);
-        movieSectionLiked.removeChild(movieSectionLiked.children[likedIndex]);
+    shouldLoadMore() {
+        return this.movieSectionAll.scrollTop + this.movieSectionAll.clientHeight * 2 >= 
+               this.movieSectionAll.scrollHeight && !this.isLoading;
     }
 
-    // Add to disliked list if not already present
-    if (!dislikedMovies.some(m => m === id)) {
-        dislikedMovies.push(id);
-        generateMovieCard(id, 0).then(card => {
-            movieSectionDisliked.appendChild(card);
-        });
+    showLoading() {
+        this.movieSectionAll.querySelector('#loading').style.display = 'flex';
+        this.movieSectionAll.style.pointerEvents = 'none';
+        this.isLoading = true;
     }
 
-    console.log("Liked movies:", likedMovies);
-    console.log("Disliked movies:", dislikedMovies);   
-};
-//Remove movie from any list
-window.remove = function (id) {
-    console.log("Removed movie with ID:", id);
-
-    // Remove from liked list
-    const likedIndex = likedMovies.findIndex(m => m === id);
-    if (likedIndex !== -1) {
-        likedMovies.splice(likedIndex, 1);
-        movieSectionLiked.removeChild(movieSectionLiked.children[likedIndex]);
+    hideLoading() {
+        setTimeout(() => {
+            this.movieSectionAll.querySelector('#loading').style.display = 'none';
+            this.movieSectionAll.style.pointerEvents = 'auto';
+            this.isLoading = false;
+        }, 500);
     }
 
-    // Remove from disliked list
-    const dislikedIndex = dislikedMovies.findIndex(m => m === id);
-    if (dislikedIndex !== -1) {
-        dislikedMovies.splice(dislikedIndex, 1);
-        movieSectionDisliked.removeChild(movieSectionDisliked.children[dislikedIndex]);
-    }
-};
-//Navigating to movie overview
-window.overview = function (id) {
-    window.location.href = `/overview/${id}/`;
-};
-//Storing movie preference data
-window.savePreferences = function () {
-    const saveButton = document.querySelector('#save-preferences');
-    saveButton.innerHTML = 'Saving...';
-    saveButton.classList.add('disabled');
-    document.body.style.setProperty('cursor', 'progress');
-    document.querySelectorAll('*').forEach(element => {
-        element.style.setProperty('cursor', 'progress');
-        element.style.setProperty('pointer-events', 'none');
-    });
-
-    fetch('/preferences/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ movies: { liked: likedMovies, disliked: dislikedMovies } }),
-    })
-        .catch(error => console.error('Error saving preferences:', error))
-        .finally(() => {
-            window.location.href = '/';
-        });
-};
-
-
-//Grabbing movie ID through API
-function getMovieByID(id) {
-    return fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
-        .then(response => response.json())
-        .catch(error => {
-            console.error('Error fetching movie data:', error);
-            return null;
-        });
-}
-//Movie card creation
-function generateMovieCard(movieId, status) {
-    return getMovieByID(movieId).then(movie => {
-        if (movie) {
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.id = `movie-${movie.id}`;
-            //Creating card html
-            card.innerHTML = `
-            <a href="/overview/${movie.id}/">
-                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="card-img-top">
-            </a>
-            <div class="card-body"> 
-                <h5 class="card-title">${movie.title}</h5> 
-                ${
-                    status === 1 ?
-                    `<button class="opt like" data-id="${movie.id}" onclick="like(${movie.id})">Like</button>
-                    <button class="opt dislike" data-id="${movie.id}" onclick="dislike(${movie.id})">Dislike</button>`
-                    :
-                    `<button class="opt remove" data-id="${movie.id}" onclick="remove(${movie.id})">Remove</button>`
-                }
-            </div>
-            `;
-
-            return card;
+    async fetchInitialData() {
+        try {
+            const data = await getUserPreferences();
+            await Promise.all([
+                ...data.liked.map(movie => this.addMovieToList(movie.id, 'liked')),
+                ...data.disliked.map(movie => this.addMovieToList(movie.id, 'disliked'))
+            ]);
+            const token = ++this.searchToken;
+            this.fetchMovies('', 'all', 'all', 'all', token);
+        } catch (error) {
+            console.error('Error fetching initial data:', error);
         }
-    }).catch(error => {
-        console.error('Error generating movie card:', error);
-        return null;
-    });
-}
-//Fetching all movies based on current filters
-function fetchMovies(page = 1, query = '', genre = 'all', year = 'all', rating = 'all') {
-    console.log("Fetching movies with filters:", { page, query, genre, year, rating });
+    }
 
-    let url = query
-        ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&page=${page}&query=${query}`
-        : `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&page=${page}`;
+    async fetchMovies(query = '', genre = 'all', year = 'all', rating = 'all', token) {
+        if (this.isLoading) return;
 
-    if (genre !== 'all') url += `&with_genres=${genre}`;
-    if (year !== 'all') url += `&primary_release_year=${year}`;
-    if (rating !== 'all') url += `&vote_average.gte=${rating}`;
+        this.showLoading();
 
-    if (page === 1) showLoading();
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            //Error message for no results
-            if (!data.results || data.results.length === 0) {
-                const msg = document.createElement('p');
-                msg.style.textAlign = 'center';
-                msg.style.fontSize = '1.25rem';
-                msg.style.width = '100%';
-                msg.classList.add('no-results');
-                msg.textContent = 'No movies found. Try different filters.';
-                movieSectionAll.appendChild(msg);
-                hideLoading();
+        try {
+            const data = await searchMovies(this.currentPage, query, genre, year, rating);
+
+            if (token !== this.searchToken) {
+                this.hideLoading();
                 return;
             }
-            
-            const cardPromises = data.results.map(movie => {
-                if (!movie.poster_path || movie.original_language !== 'en' || movie.vote_average < 4) return null;
-                return generateMovieCard(movie.id, 1).then(card => {
-                    if (card && !movieSectionAll.querySelector(`#movie-${movie.id}`) && movie.id != undefined) {
-                        movieSectionAll.appendChild(card);
-                    }
-                });
-            });
 
-            Promise.all(cardPromises).then(() => {
-                if (page === 1) hideLoading();
-            });
-        })
-        .catch(error => {
+            if (!data.results || data.results.length === 0) {
+                this.showNoResultsMessage();
+                return;
+            }
+
+            const validMovies = data.results.filter(movie => 
+                movie.poster_path && movie.original_language === 'en' && movie.vote_average >= 4
+            );
+
+            await Promise.all(validMovies.map(movie => 
+                this.addMovieToAllSection(movie.id)
+            ));
+        } catch (error) {
             console.error('Error fetching movies:', error);
-            hideLoading();
-        });
-}
+        } finally {
+            this.hideLoading();
+        }
+    }
 
+    async addMovieToAllSection(movieId) {
+        if (this.movieSectionAll.querySelector(`#movie-${movieId}`)) return;
+
+        const card = await generateMovieCard(
+            await getMovieById(movieId),
+            {
+                showActions: true,
+                showRemove: false,
+                onClickLike: this.likeMovie.bind(this),
+                onClickDislike: this.dislikeMovie.bind(this)
+            }
+        );
+
+        if (card) {
+            this.movieSectionAll.appendChild(card);
+        }
+    }
+
+    async addMovieToList(movieId, listType) {
+        const section = listType === 'liked' ? this.movieSectionLiked : this.movieSectionDisliked;
+        const array = listType === 'liked' ? this.likedMovies : this.dislikedMovies;
+
+        if (array.includes(movieId)) return;
+
+        array.push(movieId);
+
+        const card = await generateMovieCard(
+            await getMovieById(movieId),
+            {
+                showActions: true,
+                showLike: false,
+                showDislike: false,
+                showRemove: true,
+                onClickRemove: this.removeMovie.bind(this)
+            }
+        );
+
+        if (card) {
+            section.appendChild(card);
+        }
+    }
+
+    likeMovie(id) {
+        const dislikedIndex = this.dislikedMovies.indexOf(id);
+        if (dislikedIndex !== -1) {
+            this.dislikedMovies.splice(dislikedIndex, 1);
+            this.movieSectionDisliked.removeChild(this.movieSectionDisliked.children[dislikedIndex]);
+        }
+
+        if (!this.likedMovies.includes(id)) {
+            this.addMovieToList(id, 'liked');
+        }
+    }
+
+    dislikeMovie(id) {
+        const likedIndex = this.likedMovies.indexOf(id);
+        if (likedIndex !== -1) {
+            this.likedMovies.splice(likedIndex, 1);
+            this.movieSectionLiked.removeChild(this.movieSectionLiked.children[likedIndex]);
+        }
+
+        if (!this.dislikedMovies.includes(id)) {
+            this.addMovieToList(id, 'disliked');
+        }
+    }
+
+    removeMovie(id) {
+        const likedIndex = this.likedMovies.indexOf(id);
+        if (likedIndex !== -1) {
+            this.likedMovies.splice(likedIndex, 1);
+            this.movieSectionLiked.removeChild(this.movieSectionLiked.children[likedIndex]);
+        }
+
+        const dislikedIndex = this.dislikedMovies.indexOf(id);
+        if (dislikedIndex !== -1) {
+            this.dislikedMovies.splice(dislikedIndex, 1);
+            this.movieSectionDisliked.removeChild(this.movieSectionDisliked.children[dislikedIndex]);
+        }
+    }
+
+    showNoResultsMessage() {
+        const msg = document.createElement('p');
+        msg.style.textAlign = 'center';
+        msg.style.fontSize = '1.25rem';
+        msg.style.width = '100%';
+        msg.classList.add('no-results');
+        msg.textContent = 'No movies found. Try different filters.';
+        this.movieSectionAll.appendChild(msg);
+    }
+
+    clearMovieResults() {
+        this.currentPage = 1;
+        this.movieSectionAll.innerHTML = `
+            <div class="loading" id="loading" style="
+                background-color: var(--background);
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                z-index: 5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            ">
+                <p>Loading...</p>
+            </div>`;
+    }
+
+    resetFilters() {
+        document.querySelector('select#genre').value = 'all';
+        document.querySelector('select#year').value = 'all';
+        document.querySelector('select#rating').value = 'all';
+        this.currentPage = 1;
+    }
+
+    resetSearchBar() {
+        document.querySelector('input#search').value = '';
+        this.currentPage = 1;
+    }
+
+    async savePreferences() {
+        const saveButton = document.querySelector('#save-preferences');
+        saveButton.innerHTML = 'Saving...';
+        saveButton.classList.add('disabled');
+        document.body.style.setProperty('cursor', 'progress');
+        document.querySelectorAll('*').forEach(element => {
+            element.style.setProperty('cursor', 'progress');
+            element.style.setProperty('pointer-events', 'none');
+        });
+
+        try {
+            await updatePreferences({ 
+                movies: { 
+                    liked: this.likedMovies, 
+                    disliked: this.dislikedMovies 
+                } 
+            });
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error saving preferences:', error);
+        }
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize DOM Elements
-    movieSectionAll = document.querySelector('.section#all');
-    movieSectionLiked = document.querySelector('.section#liked');
-    movieSectionDisliked = document.querySelector('.section#disliked');
+    const manager = new PreferencesManager();
 
-    searchBar = document.querySelector('input#search');
-    genreSelect = document.querySelector('select#genre');
-    yearSelect = document.querySelector('select#year');
-    ratingSelect = document.querySelector('select#rating');
-
-    // Event Listeners for Filters
-    let searchTimeout;
-    searchBar.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            resetFilters();
-            clearMovieResults();
-            fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-        }, 100);
-    });
-
-    genreSelect.addEventListener('change', () => {
-        resetSearchBar();
-        clearMovieResults();
-        fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-    });
-
-    yearSelect.addEventListener('change', () => {
-        resetSearchBar();
-        clearMovieResults();
-        fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-    });
-
-    ratingSelect.addEventListener('change', () => {
-        resetSearchBar();
-        clearMovieResults();
-        fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-    });
-
-    // Infinite Scroll
-    movieSectionAll.addEventListener('scroll', function () {
-        if (movieSectionAll.scrollTop + movieSectionAll.clientHeight * 2 >= movieSectionAll.scrollHeight) {
-            currentPage++;
-            fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-        }
-    });
-
-
-    // Initial Fetch and User Data Load
-    fetchMovies(currentPage, searchBar.value, genreSelect.value, yearSelect.value, ratingSelect.value);
-    getUserData();
+    window.like = manager.likeMovie.bind(manager);
+    window.dislike = manager.dislikeMovie.bind(manager);
+    window.remove = manager.removeMovie.bind(manager);
+    window.overview = (id) => window.location.href = `/overview/${id}/`;
+    window.savePreferences = manager.savePreferences.bind(manager);
 });
-
-
-// Utility Functions
-function resetFilters() {
-    genreSelect.value = 'all';
-    yearSelect.value = 'all';
-    ratingSelect.value = 'all';
-    currentPage = 1;
-}
-
-function resetSearchBar() {
-    searchBar.value = '';
-    currentPage = 1;
-}
-
-function clearMovieResults() {
-    currentPage = 1;
-    movieSectionAll.innerHTML = 
-    `<div class="loading" id="loading" style="
-            background-color: black;
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        ">
-        <p>Loading...</p>
-    </div>`;
-}
-
-function getUserData() {
-    fetch('/preferences/data')
-        .then(response => response.json())
-        .then(data => {
-            data.liked.forEach(movie => {
-                likedMovies.push(movie.id);
-                generateMovieCard(movie.id, 0).then(card => {
-                    movieSectionLiked.appendChild(card);
-                });
-            });
-
-            data.disliked.forEach(movie => {
-                dislikedMovies.push(movie.id);
-                generateMovieCard(movie.id, 0).then(card => {
-                    movieSectionDisliked.appendChild(card);
-                });
-            });
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-}

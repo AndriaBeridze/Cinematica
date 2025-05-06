@@ -8,6 +8,8 @@ $navbar-height: 4rem;
     padding: 0 $padding-xl;
     background-color: var(--background);
     z-index: $z-5;
+    display: flex;
+    gap: $gap-lg;
 
     .brand-icon {
         @include size(90px, $navbar-height);
@@ -21,8 +23,9 @@ $navbar-height: 4rem;
     }
 
     .accessability {
-        @include flex(row, center, center);
+        @include flex(row, space-between, center);
         gap: $gap-lg;
+        flex: 1;
 
         .nav-menu {
             @include flex(row, center, center);
@@ -48,6 +51,25 @@ $navbar-height: 4rem;
 
             a:hover {
                 color: var(--secondary);
+            }
+
+            .nav-search {
+                height: $input-height;
+                @include flex(row, center, center);
+                background-color: var(--background);
+                border: $default-border;
+                transition: none;
+                padding: 0 $padding-sm;
+                color: var(--text);
+
+                &::placeholder {
+                    color: var(--text);
+                    opacity: 0.7;
+                }
+
+                &:focus {
+                    outline: 2px solid var(--primary);
+                }
             }
 
             .theme-toggler {

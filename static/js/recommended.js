@@ -91,3 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expose overview function needed in HTML
     window.overview = (id) => window.location.href = `/overview/${id}/`;
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/api/trending-movies/")
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("trending-movies");
+            data.forEach(movie => {
+                const movieEl = document.createElement("div");
+                movieEl.innerHTML = `
+                    <h3>${movie.title}</h3>
+                    <p>${movie.overview}</p>
+                    <p><strong>Rating:</strong> ${movie.vote_average}</p>
+                    ${movie.poster_path ? `<img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">` : ''}
+                    <hr>
+                `;
+                container.appendChild(movieEl);
+            });
+        });
+});

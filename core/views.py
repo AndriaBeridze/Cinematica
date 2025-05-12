@@ -9,6 +9,7 @@ import json
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 import requests
+from .utils import fetch_trending_movies
 
 @csrf_exempt
 def home(request):    
@@ -262,3 +263,7 @@ def submit_reply(request):
             return redirect(f'/overview/{ movie_id }')
 
     return redirect('core:home')
+
+def trending_movies_api(request):
+    movies = fetch_trending_movies()
+    return JsonResponse(movies, safe=False)

@@ -11,8 +11,15 @@ from django.contrib.auth.decorators import login_required
 import requests
 from .utils import fetch_trending_movies
 
+
 @csrf_exempt
-def home(request):    
+def home(request):
+    """
+    For the home page:
+      - If GET: just render the home.html template.
+      - If POST: user clicked Like/Dislike on a movie card, so update their UserPreference.liked_movies or .disliked_movies,
+        recommendations, save, and return the same page.
+    """    
     if not request.user.is_authenticated:
         return redirect("core:login")
     
@@ -37,6 +44,11 @@ def home(request):
     return render(request, "pages/home.html")
 
 def login_user(request):  
+    """
+    The login page:
+      - If already authenticated, redirect to home.
+      - On POST attempt Django auth, on success redirect home, if it fails then errors happen.
+    """
     if request.user.is_authenticated:
         return redirect("core:home")
     
@@ -53,6 +65,11 @@ def login_user(request):
     return render(request, "auth/login.html") 
 
 def register_user(request):
+    """
+    Registration page:
+      - If already logged in send to home
+      - On POST validate password match and unique username, create User + UserPreference, log them in, redirect home.
+    """
     if request.user.is_authenticated:
         return redirect("core:home")
     
@@ -82,6 +99,11 @@ def logout_user(request):
 
 @csrf_exempt
 def movie_preferences(request):
+    """
+    Movie Preferences page:
+      - On GET render the form template (letting JS fetch years or movies).
+      - On POST receive liked/disliked arrays, compute recommendations, save them all, then redirect to home so JS can pull them.
+    """
     if not request.user.is_authenticated:
         return redirect("core:login")
     
@@ -115,6 +137,10 @@ def movie_preferences(request):
     return render(request, "pages/preferences.html", {"years": all_years})
 
 def user_preference_data(request):
+    """
+    JSON endpoint for the front-end JS:
+      returns { liked: [...], disliked: [...], recommended: [...] } so the movie-cards JS can render them.
+    """
     user_pref = UserPreference.objects.get(user=request.user)
     
     if request.method == "GET":
@@ -137,6 +163,14 @@ def about(request):
     return render(request, "pages/about.html")
 
 def movie_overview(request, movie_id):
+    """
+    Display the movie details page:
+      - Fetches the movie info + credits from TMDB
+      - Fetches embedded YouTube trailer (if any)
+      - Loads all reviews + nested replies from our database
+      - Calculates an average local rating
+      - Renders the overview template with that data
+    """
     api_key = '595786e6aaaa7490b57f9936a7ae819f'
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&append_to_response=credits"
 
@@ -218,6 +252,12 @@ def movie_overview(request, movie_id):
 
 @login_required
 def submit_comment(request):
+    """
+    Handle a new top-level review submission:
+      - Reads movie_id, rating, comment from POST
+      - Creates a Review()
+      - Redirects back to the same overview page so the new review is visible
+    """
     if request.method == "POST":
         movie_id = request.POST.get('movie_id', '').strip()
         rating = request.POST.get('rating', '').strip()
@@ -240,6 +280,12 @@ def submit_comment(request):
 
 @login_required
 def submit_reply(request):
+    """
+    Handle a reply to an existing review:
+      - Reads parent review ID, movie_id, reply text from POST
+      - Creates a Reply()
+      - Redirects back to overview so the new reply shows up under its review
+    """
     if request.method == 'POST':
         review_id = request.POST.get('review_id')
         movie_id = request.POST.get('movie_id')

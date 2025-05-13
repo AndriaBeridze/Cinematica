@@ -17,4 +17,5 @@ urlpatterns = [
     path('overview/<int:movie_id>/', views.movie_overview, name='overview'),
     path('submit_comment/', views.submit_comment, name='submit_comment'),
     path("submit_reply/", views.submit_reply, name="submit_reply"),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

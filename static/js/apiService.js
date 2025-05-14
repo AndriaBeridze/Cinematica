@@ -30,7 +30,7 @@ export const searchMovies = async (page = 1, query = '', genre = 'all', year = '
 
 export const updatePreferences = async (data) => {
     try {
-        const response = await fetch('/', {
+        const response = await fetch('/preferences/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -45,7 +45,12 @@ export const updatePreferences = async (data) => {
 export const getUserPreferences = async () => {
     try {
         const response = await fetch('/preferences/data');
-        return await response.json();
+        const data = await response.json();
+        return {
+            liked: data.liked.filter(item => item.id !== null),
+            disliked: data.disliked.filter(item => item.id !== null),
+            recommended: data.recommended.filter(item => item.id !== null)
+        };
     } catch (error) {
         console.error('Error fetching user preferences:', error);
         return { recommended: [], liked: [], disliked: [] };

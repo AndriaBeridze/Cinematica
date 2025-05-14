@@ -175,6 +175,8 @@ class PreferencesManager {
         if (!this.likedMovies.includes(id)) {
             this.addMovieToList(id, 'liked');
         }
+
+        console.log('liked movies:', this.likedMovies);
     }
 
     dislikeMovie(id) {
@@ -187,6 +189,8 @@ class PreferencesManager {
         if (!this.dislikedMovies.includes(id)) {
             this.addMovieToList(id, 'disliked');
         }
+
+        console.log('disliked movies:', this.dislikedMovies);
     }
 
     removeMovie(id) {

@@ -38,6 +38,25 @@
                         allowfullscreen>
                     </iframe>
                 </div>
+                {% if movie.providers %}
+                    <div id="provider-logos">
+                        <h3>Available On:</h3>
+                        {% for provider in movie.providers %}
+                            <div class="provider {% if forloop.counter > 5 %}hidden-provider{% endif %}">
+                                <a href="{{ provider.link }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="https://image.tmdb.org/t/p/w45{{ provider.logo_path }}" 
+                                         alt="{{ provider.provider_name }}" 
+                                         title="{{ provider.provider_name }}">
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% if movie.providers|length > 5 %}
+                            <button id="show-all-btn" class="show-all-btn">Show All</button>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No streaming providers available.</p>
+                {% endif %}
                 <div class="people">
                     <span>Director:</span> {{ movie.director }}
                     <br>

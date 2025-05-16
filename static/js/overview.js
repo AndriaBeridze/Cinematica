@@ -45,8 +45,27 @@ document.addEventListener("DOMContentLoaded", () => {
     
             console.log(`Rating: ${rating}, Color: ${color}, Darkened Color: ${darkenedColor}`);
             count++;
-        }
+        }    
     });
+
+    // button to show all providers
+    const showAllBtn = document.getElementById("show-all-btn");
+    if (showAllBtn) {
+        showAllBtn.addEventListener("click", function() {
+            // Get all provider items
+            const providers = document.querySelectorAll("#provider-logos .provider");
+
+            // Loop through the hidden items and show them
+            providers.forEach(function(provider, index) {
+                if (index >= 5) {
+                    provider.style.display = "inline-block";
+                }
+            });
+
+            // Hide the "Show All" button once clicked
+            showAllBtn.style.display = "none";
+        });
+    }
 });
 
 function playTrailer() {

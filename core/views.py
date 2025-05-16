@@ -191,6 +191,43 @@ def movie_overview(request, movie_id):
                 trailer_url = f"https://www.youtube.com/embed/{video['key']}"
                 break
 
+    # fetch the movie providers where the movies are available to watch
+    provider_url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers?api_key={api_key}"
+    provider_response = requests.get(provider_url)
+    PROVIDER_URLS = {
+    8: "https://www.netflix.com",         # Netflix
+    10: "https://www.amazon.com/video",    # Amazon Video
+    15: "https://www.hulu.com",          # Hulu
+    337: "https://www.disneyplus.com",    # Disney+
+    15: "https://www.hbomax.com",         # HBO Max
+    2: "https://www.apple.com/apple-tv-plus/",  # Apple TV+
+    3: "https://play.google.com/store/movies?hl=en_US",  # Google Play
+    192: "https://www.youtube.com/feed/storefront",
+    68: "https://www.microsoft.com/en-us/store/movies-and-tv",
+    257: "http://fubo.tv/stream/ca/fubo-movie-network/",
+    384: "https://www.max.com/",
+}
+    providers = []
+
+    provider_link = None
+
+    if provider_response.status_code == 200:
+        provider_data = provider_response.json().get("results", {})
+        us_data = provider_data.get("US", {}) # providers available in the US
+
+        provider_link = us_data.get("link")  # Base link to watch the movie
+
+        provider_sections = ["flatrate", "rent", "buy", "ads", "free"] # all type of providers
+
+        # make sure to not display duplicate providers
+        seen = set()
+        for section in provider_sections:
+            for p in us_data.get(section, []):
+                pid = p["provider_id"]
+                if pid not in seen:
+                    p["link"] = PROVIDER_URLS.get(pid, provider_link)  # Fallback to TMDB link
+                    providers.append(p)
+                    seen.add(pid)
     
     review_qs = Review.objects.filter(movie_id=movie_id).order_by("-created_at")
     review_list = []
@@ -233,7 +270,8 @@ def movie_overview(request, movie_id):
         'director': next((member['name'] for member in data['credits']['crew'] if member['job'] == 'Director'), 'N/A'),
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
         'reviews': review_list,
-        'trailer_url': trailer_url
+        'trailer_url': trailer_url,
+        'providers': providers
     }
 
     reviewed = (

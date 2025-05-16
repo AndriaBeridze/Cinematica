@@ -10,7 +10,7 @@
 
     .card-body {
         @include absolute(100%, -$border-size-md, auto, -$border-size-md);
-        z-index: $z-2;
+        z-index: $z-5;
         padding: $padding-sm;
         display: none;
         flex-direction: column;

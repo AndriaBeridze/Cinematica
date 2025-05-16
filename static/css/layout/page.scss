@@ -1,8 +1,16 @@
 .page-title {
     h1 {
-        margin: $margin-md 0;
+        margin: $margin-md 0 0 0;
         padding: 0;
         font-size: $font-xl;
+    }
+
+    hr {
+        margin: $margin-sm 0 $margin-md 0;
+        border: none;
+        border-top: $default-border;
+        border-color: var(--text);
+        opacity: 0.4;
     }
 }
 

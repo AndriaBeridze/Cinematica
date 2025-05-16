@@ -1,5 +1,6 @@
 export const generateMovieCard = (movie, options = {}) => {
     const {
+        showBody = true,
         showActions = true,
         showLike = true,
         showDislike = true,
@@ -21,14 +22,16 @@ export const generateMovieCard = (movie, options = {}) => {
                  alt="${movie.title}" 
                  class="card-img-top">
         </a>
-        <div class="card-body"> 
-            <h5 class="card-title">${movie.title}</h5> 
-            ${showActions ? `
-                ${showLike ? `<button class="opt like" data-id="${movie.id}">Like</button>` : ''}
-                ${showDislike ? `<button class="opt dislike" data-id="${movie.id}">Dislike</button>` : ''}
-                ${showRemove ? `<button class="opt remove" data-id="${movie.id}">Remove</button>` : ''}
-            ` : ''}
-        </div>
+        ${showBody ? `
+            <div class="card-body"> 
+                <h5 class="card-title">${movie.title}</h5> 
+                ${showActions ? `
+                    ${showLike ? `<button class="opt like" data-id="${movie.id}">Like</button>` : ''}
+                    ${showDislike ? `<button class="opt dislike" data-id="${movie.id}">Dislike</button>` : ''}
+                    ${showRemove ? `<button class="opt remove" data-id="${movie.id}">Remove</button>` : ''}
+                ` : ''}
+            </div>` : 
+        ''}
     `;
 
     if (showLike) {

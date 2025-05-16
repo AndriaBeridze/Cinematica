@@ -1,17 +1,14 @@
 .recommended-movies {
-    height: calc(100dvh - $navbar-height - $input-height - 6 * $margin-md - $font-xl - $padding-md - $border-size-md * 2);
-    max-height: calc(100dvh - $navbar-height - $input-height - 6 * $margin-md - $font-xl - $padding-md - $border-size-md * 2);
+    height: 225px;
+    max-height: 225px;
     margin-top: $margin-md;
-    padding: $padding-md;
     position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    grid-auto-rows: 225px;
-    gap: $gap-sm;
-    place-items: center;
-
+    overflow-y: visible;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
 
     > p{
         @include position-center(true, true);

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {{ movie.title }} - Movie Overview
+    {{ movie.title }} – Movie Overview
 {% endblock %}
 
 {% block main_content %}
@@ -12,40 +12,56 @@
                 <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="poster">
             </div>
             <div class="movie-details">
-                <div class="brief-description">
-                    <h1>{{ movie.title }} (<span style="color: var(--primary);">{{ movie.release_year }}</span>)</h1>
-                    <p>{{ movie.release_date }} <span>&#9679;</span> {{ movie.single_genre }} <span>&#9679;</span> {{ movie.duration }}</p>
+                <div class="brief-description" style="display: flex; align-items: center; gap: 1rem;">
+                    <h1 style="margin: 0;">
+                        {{ movie.title }}
+                        (<span style="color: var(--primary);">{{ movie.release_year }}</span>)
+                    </h1>
+                    <button type="button" class="opt like" style="width: 8rem;">Like</button>
+                    <button type="button" class="opt dislike" style="width: 8rem;">Dislike</button>
                 </div>
+                <p>{{ movie.release_date }} &#9679; {{ movie.single_genre }} &#9679; {{ movie.duration }}</p>
+
                 <div class="score-container">
-                    <div class="score"><div class="rating-indicator" id="indicator">{{ movie.global_rating }}%</div><span>Global Score</span></div>
-                    <div class="score"><div class="rating-indicator" id="indicator">{{ movie.local_rating }}</div><span>Local Score</span></div>
+                    <div class="score">
+                        <div class="rating-indicator" id="indicator">{{ movie.global_rating }}%</div>
+                        <span>Global Score</span>
+                    </div>
+                    <div class="score">
+                        <div class="rating-indicator" id="indicator">{{ movie.local_rating }}</div>
+                        <span>Local Score</span>
+                    </div>
                 </div>
+
                 <div class="description">
                     <h2>Description</h2>
                     <p>{{ movie.description }}</p>
                 </div>
+
                 <div class="trailer-button">
                     {% if movie.trailer_url %}
                         <button class="btn trailer-btn" onclick="playTrailer()">Watch Trailer</button>
-                        <button class="btn stop-btn" onclick="stopTrailer()" style="display: none;">Hide Trailer</button>                   
+                        <button class="btn stop-btn" onclick="stopTrailer()" style="display: none;">Hide Trailer</button>
                     {% endif %}
                 </div>
+
                 <div id="trailer-container" style="display: none; margin-top: 20px;">
-                    <iframe width="560" height="315" 
-                        src="{{ movie.trailer_url }}" 
-                        title="YouTube trailer" frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    <iframe width="560" height="315"
+                        src="{{ movie.trailer_url }}"
+                        title="YouTube trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen>
                     </iframe>
                 </div>
+
                 {% if movie.providers %}
                     <div class="provider-logos" id="provider-logos">
                         <h4>Available On:</h4>
                         {% for provider in movie.providers %}
                             <div class="provider {% if forloop.counter > 5 %}hidden-provider{% endif %}">
                                 <a href="{{ provider.link }}" target="_blank" rel="noopener noreferrer">
-                                    <img src="https://image.tmdb.org/t/p/w45{{ provider.logo_path }}" 
-                                         alt="{{ provider.provider_name }}" 
+                                    <img src="https://image.tmdb.org/t/p/w45{{ provider.logo_path }}"
+                                         alt="{{ provider.provider_name }}"
                                          title="{{ provider.provider_name }}">
                                 </a>
                             </div>
@@ -57,14 +73,16 @@
                 {% else %}
                     <h4 id="provider-logos">No streaming providers available.</h4>
                 {% endif %}
+
                 <div class="people">
-                    <span>Director:</span> {{ movie.director }}
-                    <br>
-                    <span>Cast: </span> {{ movie.actors }}
+                    <span>Director:</span> {{ movie.director }}<br>
+                    <span>Cast:</span> {{ movie.actors }}
                 </div>
             </div>
         </section>
+
         <hr>
+
         <section class="user-reviews">
             <h3>Leave a Review</h3>
             <form action="{% url 'core:submit_comment' %}" method="post" id="comment-form">
@@ -81,23 +99,26 @@
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
             </form>
+
             <hr>
+
             <div class="existing-comments">
                 <h3>Past Reviews</h3>
                 <ul class="list-group">
                     {% for review in movie.reviews %}
                         <li class="list-group-item review">
                             <div class="about-user">
-                                <span class="user">{{ review.user }}</span> 
-                                <span class="rating-indicator" id="indicator">{{ review.rating }} / 10</span>
+                                <span class="user">{{ review.user }}</span>
+                                <span class="rating-indicator">{{ review.rating }} / 10</span>
                                 <span class="created_at">{{ review.created_at }}</span>
                             </div>
+
                             <hr>
+
                             <div class="content">
                                 <p>{{ review.text }}</p>
                             </div>
 
-                            {# Reply form, with a smaller textarea #}
                             <form action="{% url 'core:submit_reply' %}"
                                   method="post"
                                   class="reply-form"
@@ -122,7 +143,6 @@
                                 </button>
                             </form>
 
-                            {# Display replies under this comment #}
                             {% if review.replies %}
                                 <ul class="list-group replies">
                                     {% for reply in review.replies %}

@@ -17,8 +17,8 @@
                         {{ movie.title }}
                         (<span style="color: var(--primary);">{{ movie.release_year }}</span>)
                     </h1>
-                    <button type="button" class="opt like" style="width: 8rem;">Like</button>
-                    <button type="button" class="opt dislike" style="width: 8rem;">Dislike</button>
+                    <button type="button" class="opt like" style="width: 6rem; height: 1.5rem;">Like</button>
+                    <button type="button" class="opt dislike" style="width: 6rem; height: 1.5rem;">Dislike</button>
                 </div>
                 <p>{{ movie.release_date }} &#9679; {{ movie.single_genre }} &#9679; {{ movie.duration }}</p>
 
@@ -67,7 +67,7 @@
                             </div>
                         {% endfor %}
                         {% if movie.providers|length > 5 %}
-                            <button id="show-all-btn" class="show-all-btn">Show All</button>
+                            <button id="show-all-btn" class="show-all-btn btn">Show All</button>
                         {% endif %}
                     </div>
                 {% else %}

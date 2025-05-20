@@ -87,6 +87,16 @@ function playTrailer() {
 
     // Adjust the position of the <hr> by adding a margin to it
     hrElement.style.marginTop = '20px';
+
+    // hide provider logos and cast
+    const providerLogos = document.querySelector("#provider-logos");
+    const cast = document.querySelector(".people");
+
+    if (providerLogos) {
+        providerLogos.style.display = 'none';
+    } if (cast) {
+        cast.style.display = 'none';
+    }  
 }
 
 function stopTrailer() {
@@ -106,6 +116,16 @@ function stopTrailer() {
     // Reset padding and margin
     movieOverview.style.paddingBottom = '0';
     hrElement.style.marginTop = '0.25';
+
+    // Show provider logos and cast
+    const providerLogos = document.querySelector("#provider-logos");
+    const cast = document.querySelector(".people");
+
+    if (providerLogos) {
+        providerLogos.style.display = 'flex';
+    } if (cast) {
+        cast.style.display = 'block';
+    }
 }
 
 // Export functions that need to be called from HTML

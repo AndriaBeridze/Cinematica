@@ -9,5 +9,5 @@ def fetch_trending_movies():
     }
     response = requests.get(url, params=params)
     if response.status_code == 200:
-        return response.json().get("results", [])[:5]  # return top 5
+        return response.json().get("results", [])[:7]  # return top 7
     return []

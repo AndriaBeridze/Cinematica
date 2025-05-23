@@ -2,20 +2,18 @@
     height: calc(100% - 2 * $padding-md);
     width: auto;
     position: relative !important;
-    border: 1px solid var(--accent);
-    border-radius: $border-radius-sm;
     transition: scale 0.3s;
     margin: 0 $margin-md;
     cursor: pointer;
 
     .card-body {
-        @include absolute(100%, -$border-size-md, auto, -$border-size-md);
+        @include absolute(calc(100% + 2px), -$border-size-md, auto, -$border-size-md);
         z-index: $z-5;
         padding: $padding-sm;
         display: none;
         flex-direction: column;
         gap: $gap-sm;
-        border-radius: 0 0 $border-radius-sm $border-radius-sm;
+        border-radius: $border-radius-sm;
         background-color: var(--background);
         border: $default-border;
         overflow: hidden;
@@ -48,12 +46,6 @@
 
     &:hover {
         &:has(.card-body) {
-            border-radius: $border-radius-sm $border-radius-sm 0 0;
-
-            img {
-                border-radius: $border-radius-sm $border-radius-sm 0 0;
-            }
-
             .card-body {
                 display: flex;
             }
@@ -61,6 +53,59 @@
 
         &:not(:has(.card-body)) {
             transform: scale(1.08);
+        }
+    }
+}
+
+.movie-card-lg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    opacity: 0;
+    transition: 2s;
+
+    &.visible {
+        opacity: 1;
+    }
+
+    .movie-poster {
+        height: 100%;
+    }
+
+    .gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0) 40%);
+    }
+
+    .movie-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: calc(100% - 2 * $padding-md);
+        padding: $padding-sm $padding-md;
+        display: flex;
+        flex-direction: column;
+
+        h2, p {
+            padding: 0;
+            margin: 0;
+        }
+
+        a {
+            position: absolute;
+            top: 50%;
+            right: $padding-md;
+            transform: translate(0, -50%);
+            
+            button {
+                border-radius: $border-radius-xs;
+            }
         }
     }
 }

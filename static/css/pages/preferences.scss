@@ -1,8 +1,9 @@
 .preferences {
-    @include size(auto, calc(100dvh - $navbar-height - $font-xl - $margin-md * 2 - $padding-md * 4 - $border-size-md * 2));
+    @include size(auto, calc(100dvh - $navbar-height - $font-md - $padding-md * 4 - $border-size-md * 2));
     @include flex(column, flex-start, center, $gap-md);
-    padding: $padding-md;
+    padding-top: $padding-md;
     position: relative;
+    border: none;
 
     .titles {
         height: $input-height;

@@ -9,6 +9,7 @@
     flex-direction: row;
     align-items: center;
     white-space: nowrap;
+    border: none;
 
     > p{
         @include position-center(true, true);
@@ -16,4 +17,10 @@
         padding: 0;
         font-size: $font-xl;
     }
+}
+
+.trending-movies {
+    position: relative;
+    height: 33rem;
+
 }

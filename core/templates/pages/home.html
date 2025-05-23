@@ -5,10 +5,37 @@
 
 {% block main_content %}
     <div class="page-title">
+        <h1>Trending Movies</h1>
+        <hr>
+    </div>
+    <div class="trending-movies" id="trending">
+        {% for movie in trending %}
+            <div class="movie-card-lg" id="movie"> 
+                <img src="https://image.tmdb.org/t/p/original/{{ movie.backdrop_path }}" alt="{{ movie.title }}" class="movie-poster">
+                <div class="gradient"></div>
+
+                <div class="movie-info">
+                    <h2 class="movie-title">{{ movie.title }}</h2>
+                    <p class="movie-genres">
+                        {% for genre in genres %}
+                            {% for id in movie.genre_ids %}
+                                {% if genre.id == id %}
+                                    {{ genre.name }}{% if not forloop.last %} &#9679; {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </p>
+
+                    <a href="/overview/{{ movie.id }}"><button class="btn">More Info</button></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>   
+
+    <div class="page-title">
         <h1>Recommended for You</h1>
         <hr>
     </div>
-
     <div class="filter" id="filter">
         <input type="text" id="search" placeholder="Search for a movie...">
     </div>

@@ -67,15 +67,13 @@
   height: calc(100% - 2rem);
   width: auto;
   position: relative !important;
-  border: 1px solid var(--accent);
-  border-radius: 0.5rem;
   transition: scale 0.3s;
   margin: 0 1rem;
   cursor: pointer;
 }
 .card .card-body {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);
   right: -0.0625rem;
   bottom: auto;
   left: -0.0625rem;
@@ -84,7 +82,7 @@
   display: none;
   flex-direction: column;
   gap: 0.5rem;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0.5rem;
   background-color: var(--background);
   border: 0.0625rem solid var(--accent);
   overflow: hidden;
@@ -110,17 +108,57 @@
 .card:not(:has(.card-body)) {
   transition: 0.3s ease-in-out;
 }
-.card:hover:has(.card-body) {
-  border-radius: 0.5rem 0.5rem 0 0;
-}
-.card:hover:has(.card-body) img {
-  border-radius: 0.5rem 0.5rem 0 0;
-}
 .card:hover:has(.card-body) .card-body {
   display: flex;
 }
 .card:hover:not(:has(.card-body)) {
   transform: scale(1.08);
+}
+
+.movie-card-lg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+  opacity: 0;
+  transition: 2s;
+}
+.movie-card-lg.visible {
+  opacity: 1;
+}
+.movie-card-lg .movie-poster {
+  height: 100%;
+}
+.movie-card-lg .gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 10%, rgba(0, 0, 0, 0) 40%);
+}
+.movie-card-lg .movie-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 2rem);
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.movie-card-lg .movie-info h2, .movie-card-lg .movie-info p {
+  padding: 0;
+  margin: 0;
+}
+.movie-card-lg .movie-info a {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translate(0, -50%);
+}
+.movie-card-lg .movie-info a button {
+  border-radius: 0.25rem;
 }
 
 .auth-form {
@@ -209,8 +247,6 @@
 }
 
 .container {
-  border: 0.0625rem solid var(--accent);
-  border-radius: 0.5rem;
   position: relative;
 }
 
@@ -455,6 +491,7 @@
   flex-direction: row;
   align-items: center;
   white-space: nowrap;
+  border: none;
 }
 .recommended-movies > p {
   position: absolute;
@@ -466,16 +503,22 @@
   font-size: 1.5rem;
 }
 
+.trending-movies {
+  position: relative;
+  height: 33rem;
+}
+
 .preferences {
   width: auto;
-  height: calc(100dvh - 4rem - 1.5rem - 2rem - 4rem - 0.125rem);
+  height: calc(100dvh - 4rem - 1rem - 4rem - 0.125rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding-top: 1rem;
   position: relative;
+  border: none;
 }
 .preferences .titles {
   height: 1.5rem;
@@ -597,7 +640,8 @@
 }
 
 .container.overview {
-  margin: 1rem 0;
+  margin-top: 1rem;
+  padding: 0;
 }
 .container.overview hr {
   margin: 0 1rem;

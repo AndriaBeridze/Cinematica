@@ -121,14 +121,25 @@
   left: 50%;
   transform: translate(-50%, -50%);
   height: 100%;
+  width: 100%;
   opacity: 0;
   transition: 2s;
+  z-index: 1;
+  background-color: red;
+  overflow: hidden;
 }
 .movie-card-lg.visible {
   opacity: 1;
+  z-index: 2;
 }
 .movie-card-lg .movie-poster {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 .movie-card-lg .gradient {
   position: absolute;
@@ -505,7 +516,7 @@
 
 .trending-movies {
   position: relative;
-  height: 33rem;
+  height: 30rem;
 }
 
 .preferences {

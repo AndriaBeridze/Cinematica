@@ -17,8 +17,9 @@
                         {{ movie.title }}
                         (<span style="color: var(--primary);">{{ movie.release_year }}</span>)
                     </h1>
-                    <button type="button" class="opt like" style="width: 6rem; height: 1.5rem;">Like</button>
-                    <button type="button" class="opt dislike" style="width: 6rem; height: 1.5rem;">Dislike</button>
+                    <!-- Like/Dislike buttons -->
+                    <button type="button" class="opt like" style="width:6rem; height:1.5rem;">Like</button>
+                    <button type="button" class="opt dislike" style="width:6rem; height:1.5rem;">Dislike</button>
                 </div>
                 <p>{{ movie.release_date }} &#9679; {{ movie.single_genre }} &#9679; {{ movie.duration }}</p>
 
@@ -55,14 +56,15 @@
                 </div>
 
                 {% if movie.providers %}
-                    <div class="provider-logos" id="provider-logos">
+                    <div id="provider-logos" class="provider-logos">
                         <h4>Available On:</h4>
                         {% for provider in movie.providers %}
                             <div class="provider {% if forloop.counter > 5 %}hidden-provider{% endif %}">
-                                <a href="{{ provider.link }}" target="_blank" rel="noopener noreferrer">
-                                    <img src="https://image.tmdb.org/t/p/w45{{ provider.logo_path }}"
-                                         alt="{{ provider.provider_name }}"
-                                         title="{{ provider.provider_name }}">
+                                <a href="{{ provider.link }}" target="_blank" rel="noopener">
+                                    <img
+                                      src="https://image.tmdb.org/t/p/w45{{ provider.logo_path }}"
+                                      alt="{{ provider.provider_name }}"
+                                      title="{{ provider.provider_name }}">
                                 </a>
                             </div>
                         {% endfor %}
@@ -71,7 +73,7 @@
                         {% endif %}
                     </div>
                 {% else %}
-                    <h4 id="provider-logos">No streaming providers available.</h4>
+                    <h4>No streaming providers available.</h4>
                 {% endif %}
 
                 <div class="people">
@@ -127,9 +129,7 @@
                                 <input type="hidden" name="review_id" value="{{ review.id }}">
                                 <input type="hidden" name="movie_id" value="{{ movie.id }}">
                                 <div class="form-group" style="margin-bottom: .5rem;">
-                                    <label for="reply-{{ review.id }}" style="margin-bottom: .25rem;">
-                                        Your Reply:
-                                    </label>
+                                    <label for="reply-{{ review.id }}">Your Reply:</label>
                                     <textarea name="comment"
                                               id="reply-{{ review.id }}"
                                               rows="1"
@@ -167,4 +167,8 @@
             </div>
         </section>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script type="module" src="{% static 'js/overview.js' %}"></script>
 {% endblock %}

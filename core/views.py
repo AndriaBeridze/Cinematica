@@ -222,13 +222,17 @@ def movie_overview(request, movie_id):
     10: "https://www.amazon.com/video",    # Amazon Video
     15: "https://www.hulu.com",          # Hulu
     337: "https://www.disneyplus.com",    # Disney+
-    15: "https://www.hbomax.com",         # HBO Max
-    2: "https://www.apple.com/apple-tv-plus/",  # Apple TV+
-    3: "https://play.google.com/store/movies?hl=en_US",  # Google Play
+    384: "https://www.hbomax.com",         
+    2: "https://www.apple.com/apple-tv-plus/",  
+    3: "https://play.google.com/store/movies?hl=en_US",  
     192: "https://www.youtube.com/feed/storefront",
     68: "https://www.microsoft.com/en-us/store/movies-and-tv",
     257: "http://fubo.tv/stream/ca/fubo-movie-network/",
     384: "https://www.max.com/",
+    73: "https://tubitv.com/",
+    524: "https://www.discoveryplus.com/",
+    118: "https://www.hbo.com/",
+    538: "https://www.plex.tv/",
 }
     providers = []
 

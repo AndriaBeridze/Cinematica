@@ -9,11 +9,19 @@
         <hr>
     </div>
     <div class="trending-movies" id="trending">
+        <div class="control-btns">  
+            <button class="control prev" id="prev"><i class="bi bi-caret-left-fill"></i></button>
+            <button class="control next" id="next"><i class="bi bi-caret-right-fill"></i></button>
+        </div>
+        <div class="indicators-container">
+            {% for movie in trending %}
+                <i class="bi bi-circle" id="ind-{{ forloop.counter }}"></i>
+            {% endfor %}
+        </div>
         {% for movie in trending %}
             <div class="movie-card-lg" id="movie"> 
                 <img src="https://image.tmdb.org/t/p/original/{{ movie.backdrop_path }}" alt="{{ movie.title }}" class="movie-poster">
                 <div class="gradient"></div>
-
                 <div class="movie-info">
                     <h2 class="movie-title">{{ movie.title }}</h2>
                     <p class="movie-genres">

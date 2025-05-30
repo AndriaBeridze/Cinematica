@@ -18,8 +18,16 @@
                         (<span style="color: var(--primary);">{{ movie.release_year }}</span>)
                     </h1>
                     <!-- Like/Dislike buttons -->
-                    <button type="button" class="opt like" style="width:6rem; height:1.5rem;">Like</button>
-                    <button type="button" class="opt dislike" style="width:6rem; height:1.5rem;">Dislike</button>
+                    {% if movie.preference == "liked" %}
+                        <span class="message liked">Liked <i class="bi bi-hand-thumbs-up-fill"></i></span>
+                        <button type="button" class="opt dislike" id="{{ movie.id }}" style="height: 2rem; width: 2rem;"><i class="bi bi-hand-thumbs-down-fill"></i></button>
+                    {% elif movie.preference == "disliked" %}
+                        <button type="button" class="opt like" id="{{ movie.id }}" style="height: 2rem; width: 2rem;"><i class="bi bi-hand-thumbs-up-fill"></i></button>
+                        <span class="message disliked">Disliked <i class="bi bi-hand-thumbs-down-fill"></i></span>
+                    {% else %}
+                        <button type="button" class="opt like" id="{{ movie.id }}" style="height: 2rem; width: 2rem;"><i class="bi bi-hand-thumbs-up-fill"></i></button>
+                        <button type="button" class="opt dislike" id="{{ movie.id }}" style="height: 2rem; width: 2rem;">Dislike <i class="bi bi-hand-thumbs-down-fill"></i></button>
+                    {% endif %}
                 </div>
                 <p>{{ movie.release_date }} &#9679; {{ movie.single_genre }} &#9679; {{ movie.duration }}</p>
 

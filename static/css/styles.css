@@ -13,7 +13,7 @@
   background-color: var(--primary);
   color: var(--text);
   border: 0.0625rem solid var(--accent);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   transition: 0.3s ease-in-out;
   cursor: pointer;
 }
@@ -82,7 +82,7 @@
   display: none;
   flex-direction: column;
   gap: 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background-color: var(--background);
   border: 0.0625rem solid var(--accent);
   overflow: hidden;
@@ -103,7 +103,7 @@
 }
 .card a img {
   height: 100%;
-  border-radius: calc(0.5rem - 1px);
+  border-radius: calc(0.25rem - 1px);
 }
 .card:not(:has(.card-body)) {
   transition: 0.3s ease-in-out;
@@ -186,7 +186,7 @@
   gap: 0.5rem;
   padding: 2rem 0.5rem;
   border: 0.0625rem solid var(--accent);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
 }
 .auth-form .title {
   padding: 0.5rem 0;
@@ -226,13 +226,13 @@
 }
 .auth-form .input-group .input:first-child {
   border-top-width: 0.0625rem;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
 }
 .auth-form .input-group .input:last-child {
   border-bottom-width: 0.0625rem;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }
 .auth-form .submit {
   margin: 1rem 0 0.5rem 0;
@@ -410,6 +410,7 @@
   transition: none;
   padding: 0 0.5rem;
   color: var(--text);
+  border-radius: 0.25rem;
 }
 .navbar .accessability .nav-tools .nav-search::placeholder {
   color: var(--text);
@@ -461,7 +462,7 @@
   border: 0.0625rem solid var(--accent);
   margin: 2rem;
   height: calc(100% - 4rem);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
@@ -570,6 +571,8 @@
   grid-auto-rows: 200px;
   gap: 0.5rem;
   place-items: center;
+  border: 0.0625rem solid var(--accent);
+  border-radius: 0.25rem;
 }
 .preferences .sort .section p {
   position: absolute;
@@ -676,7 +679,7 @@
 .container.overview .movie-overview .poster-container .poster {
   height: 450px;
   border: 0.0625rem solid var(--accent);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
 }
 .container.overview .movie-overview .movie-details {
   display: flex;
@@ -701,6 +704,32 @@
   display: flex;
   align-items: center;
 }
+.container.overview .movie-overview .movie-details .brief-description .message {
+  font-size: 15px;
+  margin: 0.5rem 0;
+  padding: 0 1rem;
+  height: 1.75rem;
+  background-color: grey;
+  border: 2px solid #4d4d4d;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.container.overview .movie-overview .movie-details .brief-description .message.liked {
+  background-color: #3d62db;
+  border-color: #2f50ba;
+  color: white;
+}
+.container.overview .movie-overview .movie-details .brief-description .message.disliked {
+  background-color: #db3d3d;
+  border-color: #a02020;
+  color: white;
+}
+.container.overview .movie-overview .movie-details .brief-description .opt {
+  border-width: 2px;
+}
 .container.overview .movie-overview .movie-details .score-container {
   margin: 1rem 0;
 }
@@ -718,7 +747,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   border: 2px solid #4d4d4d;
 }
 .container.overview .movie-overview .movie-details .description h2 {
@@ -742,6 +771,10 @@
 .container.overview .movie-overview .movie-details .stop-btn {
   transition: opacity 0.3s ease;
 }
+.container.overview .movie-overview .movie-details > h4 {
+  padding: 0;
+  margin: 1rem 0;
+}
 .container.overview .movie-overview .movie-details .provider-logos {
   display: flex;
   flex-direction: row;
@@ -756,7 +789,7 @@
 .container.overview .movie-overview .movie-details .provider-logos .provider img {
   width: 100%;
   height: 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
 }
 .container.overview .movie-overview .movie-details .provider-logos .provider.hidden-provider {
   display: none;
@@ -765,7 +798,7 @@
   width: 7rem;
 }
 .container.overview .movie-overview .movie-details .people {
-  margin: 1rem 0;
+  margin: 0;
 }
 .container.overview .movie-overview .movie-details .people span {
   color: var(--primary);
@@ -780,7 +813,7 @@
 .container.overview .user-reviews .form-group input[type=number] {
   background-color: var(--background);
   border: 0.0625rem solid var(--accent);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   height: 1.5rem;
   width: 3rem;
   font-size: 16px;
@@ -798,7 +831,7 @@
   height: 150px;
   background-color: var(--background);
   border: 0.0625rem solid var(--accent);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   color: var(--text);
   padding: 0.5rem;
   margin: 0.5rem 0;
@@ -822,6 +855,7 @@
   margin: 1rem 0;
   border: 0.0625rem solid var(--accent);
   padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
 }
 .container.overview .user-reviews .review .about-user {
   display: flex;
@@ -843,7 +877,7 @@
   align-items: center;
   justify-content: center;
   margin: 1rem 0;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   border: 2px solid #4d4d4d;
 }
 .container.overview .user-reviews .review .about-user .created_at {
@@ -859,6 +893,7 @@
   border: 0.0625rem solid var(--accent);
   padding: 0.5rem 1rem;
   margin: 0.5rem 0;
+  border-radius: 0.25rem;
 }
 
 body {

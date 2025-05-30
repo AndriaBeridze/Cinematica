@@ -37,6 +37,8 @@
             grid-auto-rows: 200px;
             gap: $gap-sm;
             place-items: center;
+            border: $default-border;
+            border-radius: $border-radius-xs;
 
             p {
                 @include position-center(true, true);

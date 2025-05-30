@@ -1,4 +1,4 @@
-import { getUserPreferences, updatePreferences } from './apiService.js';
+import { updatePreferences } from './apiService.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
   let count = 0;
@@ -38,47 +38,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     showAllBtn.style.display = 'none';
   });
 
-  const likeBtn    = document.querySelector('.opt.like');
-  const dislikeBtn = document.querySelector('.opt.dislike');
-  const movieId    = parseInt(document.querySelector('input[name="movie_id"]').value, 10);
-
-  if (movieId && (likeBtn || dislikeBtn)) {
-    // fetch user's current prefs once
-    const prefs = await getUserPreferences();
-
-    const save = async () => {
-      await updatePreferences({
-        movies: {
-          liked:    prefs.liked,
-          disliked: prefs.disliked
-        }
-      });
-    };
-
-    likeBtn?.addEventListener('click', async () => {
-      // remove from disliked if present
-      prefs.disliked = prefs.disliked.filter(id => id !== movieId);
-      // add to liked if not already
-      if (!prefs.liked.includes(movieId)) prefs.liked.push(movieId);
-
-      await save();
-      likeBtn.classList.add('disabled');
-      dislikeBtn?.classList.remove('disabled');
-    });
-
-    dislikeBtn?.addEventListener('click', async () => {
-      prefs.liked = prefs.liked.filter(id => id !== movieId);
-      if (!prefs.disliked.includes(movieId)) prefs.disliked.push(movieId);
-
-      await save();
-      dislikeBtn.classList.add('disabled');
-      likeBtn?.classList.remove('disabled');
-    });
-
-    // initialize button state
-    if (prefs.liked.includes(movieId))    likeBtn.classList.add('disabled');
-    if (prefs.disliked.includes(movieId)) dislikeBtn.classList.add('disabled');
-  }
+  var likeBtn = document.querySelector(".brief-description .opt.like");
+  var dislikeBtn = document.querySelector(".brief-description .opt.dislike");
+  
+  if (likeBtn) likeBtn.onclick = () => updatePreference(true, likeBtn.id);
+  if (dislikeBtn) dislikeBtn.onclick = () => updatePreference(false, dislikeBtn.id);
 });
 
 function playTrailer() {
@@ -100,6 +64,28 @@ function stopTrailer() {
   document.querySelector('hr').style.marginTop = '';
   document.getElementById('provider-logos').style.display = 'flex';
   document.querySelector('.people').style.display = 'block';
+}
+
+function updatePreference(liked, movieId) {
+  fetch('/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ liked: liked, id: movieId })
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.href = '';
+    } else {
+      return response.json().then(data => {
+        throw new Error(data?.error || 'Failed to update preference');
+      });
+    }
+  })
+  .catch(error => {
+    console.error('Error updating preference:', error);
+  });
 }
 
 window.playTrailer = playTrailer;

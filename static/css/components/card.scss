@@ -13,7 +13,7 @@
         display: none;
         flex-direction: column;
         gap: $gap-sm;
-        border-radius: $border-radius-sm;
+        border-radius: $border-radius-xs;
         background-color: var(--background);
         border: $default-border;
         overflow: hidden;
@@ -36,7 +36,7 @@
 
         img {
             height: 100%;
-            border-radius: calc($border-radius-sm - 1px);
+            border-radius: calc($border-radius-xs - 1px);
         }
     }
 

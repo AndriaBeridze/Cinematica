@@ -28,13 +28,20 @@ def home(request):
         user_pref = UserPreference.objects.get(user=request.user)
         if data.get("liked"):
             user_pref.liked_movies.append({
-                "id": data.get("id"),
+                "id": int(data.get("id")),
             })
         else:
             user_pref = UserPreference.objects.get(user=request.user)
             user_pref.disliked_movies.append({
-                "id": data.get("id"),
+                "id": int(data.get("id")),
             })
+            
+        # Remove the movie from the opposite list if present
+        movie_id = int(data.get("id"))
+        if data.get("liked"):
+            user_pref.disliked_movies = [m for m in user_pref.disliked_movies if m.get("id") != movie_id]
+        else:
+            user_pref.liked_movies = [m for m in user_pref.liked_movies if m.get("id") != movie_id]
         
         user_pref.save()
         recommended_movies = fetch_recommendations([movie["id"] for movie in user_pref.liked_movies], [movie["id"] for movie in user_pref.disliked_movies])
@@ -218,22 +225,22 @@ def movie_overview(request, movie_id):
     provider_url = f"https://api.themoviedb.org/3/movie/{movie_id}/watch/providers?api_key={api_key}"
     provider_response = requests.get(provider_url)
     PROVIDER_URLS = {
-    8: "https://www.netflix.com",         # Netflix
-    10: "https://www.amazon.com/video",    # Amazon Video
-    15: "https://www.hulu.com",          # Hulu
-    337: "https://www.disneyplus.com",    # Disney+
-    384: "https://www.hbomax.com",         
-    2: "https://www.apple.com/apple-tv-plus/",  
-    3: "https://play.google.com/store/movies?hl=en_US",  
-    192: "https://www.youtube.com/feed/storefront",
-    68: "https://www.microsoft.com/en-us/store/movies-and-tv",
-    257: "http://fubo.tv/stream/ca/fubo-movie-network/",
-    384: "https://www.max.com/",
-    73: "https://tubitv.com/",
-    524: "https://www.discoveryplus.com/",
-    118: "https://www.hbo.com/",
-    538: "https://www.plex.tv/",
-}
+        8: "https://www.netflix.com",         # Netflix
+        10: "https://www.amazon.com/video",    # Amazon Video
+        15: "https://www.hulu.com",          # Hulu
+        337: "https://www.disneyplus.com",    # Disney+
+        384: "https://www.hbomax.com",         
+        2: "https://www.apple.com/apple-tv-plus/",  
+        3: "https://play.google.com/store/movies?hl=en_US",  
+        192: "https://www.youtube.com/feed/storefront",
+        68: "https://www.microsoft.com/en-us/store/movies-and-tv",
+        257: "http://fubo.tv/stream/ca/fubo-movie-network/",
+        384: "https://www.max.com/",
+        73: "https://tubitv.com/",
+        524: "https://www.discoveryplus.com/",
+        118: "https://www.hbo.com/",
+        538: "https://www.plex.tv/",
+    }
     providers = []
 
     provider_link = None
@@ -283,6 +290,22 @@ def movie_overview(request, movie_id):
     all_ratings = [review['rating'] for review in review_list if review['rating']]
     average_rating = sum(all_ratings) * 10 / len(all_ratings) if all_ratings else None
 
+    user_pref = None
+    preference = None
+    if request.user.is_authenticated:
+        try:
+            user_pref = UserPreference.objects.get(user=request.user)
+            liked_ids = [m["id"] for m in user_pref.liked_movies]
+            disliked_ids = [m["id"] for m in user_pref.disliked_movies]
+            if int(movie_id) in liked_ids:
+                preference = "liked"
+            elif int(movie_id) in disliked_ids:
+                preference = "disliked"
+            else:
+                preference = "none"
+        except UserPreference.DoesNotExist:
+            preference = "none"
+
     movie_data = {
         'title': data.get('title'),
         'id': movie_id,
@@ -298,7 +321,8 @@ def movie_overview(request, movie_id):
         'actors': ', '.join([actor['name'] for actor in data['credits']['cast'][:5]]),
         'reviews': review_list,
         'trailer_url': trailer_url,
-        'providers': providers
+        'providers': providers,
+        'preference': preference
     }
 
     reviewed = (

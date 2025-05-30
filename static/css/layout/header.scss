@@ -61,6 +61,7 @@ $navbar-height: 4rem;
                 transition: none;
                 padding: 0 $padding-sm;
                 color: var(--text);
+                border-radius: $border-radius-xs;
 
                 &::placeholder {
                     color: var(--text);
